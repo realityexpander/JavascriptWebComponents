@@ -52,7 +52,7 @@
 
   // Listen for the toggle event
   document.addEventListener('toggle', (e) => {
-    const index = todos.findIndex((todo) => todo.id === e.target.id);
+    const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
 
     // console.log(`todos[${index}]`, todos[index]);
 
@@ -63,7 +63,7 @@
 
   // Listen for the delete event
   document.addEventListener('delete', (e) => {
-    const index = todos.findIndex((todo) => todo.id === e.target.id);
+    const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
     todos.splice(index, 1);
     render();
   })
@@ -84,6 +84,17 @@
 
     // focus on title input
     document.querySelector('#todo-title').focus();
+  });
+
+  // Listen for the save item event
+  document.addEventListener('update_todo_item', (e) => {
+    const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
+    if(index != -1) {
+      todos[index].title = e.detail.title;
+      todos[index].description = e.detail.description;
+      todos[index].completed = e.detail.completed;
+      render();
+    }
   });
 
   // // Defer setup until the DOM is ready
@@ -114,7 +125,7 @@
       todoItem.innerHTML = `
         ${todo.title}
         <div slot="description">
-          ${todo.description}
+          <p>${todo.description}</p>
           <p>${todo.completed ? 'Completed' : 'Not Completed'}</p>
         </div>
       `;

@@ -8,17 +8,17 @@ class Todo2Item extends HTMLElement {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.5rem;
+      padding: 0.1rem;
       border: 1px solid #ccc;
       border-radius: 0.25rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.2rem;
     }
     .todo-item__text {
       flex: 1;
-      margin-right: 0.5rem;
+      margin-right: 0.2rem;
     }
     .todo-item__button {
-      padding: 0.25rem 0.5rem;
+      padding: 0.15rem 0.1rem;
       border: 1px solid #ccc;
       border-radius: 0.25rem;
       background-color: #fff;
@@ -31,10 +31,14 @@ class Todo2Item extends HTMLElement {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.5rem;
+      padding: 0.1rem;
       border: 1px solid #ccc;
       border-radius: 0.25rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.1rem;
+    }
+    label {
+      margin: 0;
+      padding: 0;
     }
   `
   }
@@ -52,34 +56,52 @@ class Todo2Item extends HTMLElement {
       </style>
 
       <label class="item">
-        <input id="checkbox-1" type="checkbox">
-        <slot></slot> 
-        :
-        <span class="todo-item__text">
+        <input id="checkbox-completed" type="checkbox">
+        <span id="display-1" class="todo-item__text">
+          <slot></slot> 
+        </span>
+        <span id="display-2" class="todo-item__text">
           <slot name="description"></slot>
         </span>
-        <button class="todo-item__button">Delete</button>
-        <button class="todo-item__button">Edit</button>
-        <button class="todo-item__button">Save</button>
+
+        <div hidden id="editors">
+          <input id="editors-checkbox" type="checkbox">
+          <input type="text" id="editors-todo-title" placeholder="title"/>
+          <input type="text" id="editors-todo-description" placeholder="description"/>
+          <button class="todo-item__button" id="button-editor-save">Save</button>
+          <button class="todo-item__button" id="button-editor-cancel">Cancel</button>
+        </div>
+
+        <div>
+          <button class="todo-item__button" id="button-delete">Delete</button>
+          <button class="todo-item__button" id="button-edit">Edit</button>
+        </div>
       </label>
     `;
     shadowRoot.append(template.content.cloneNode(true));
 
+    // Internal Object properties
+    this._id = ""
     this._completed = false
     this._description = ""
     this._title = ""
+
+    // State of the component
+    this._editMode = false
   }
 
   connectedCallback() {
-    this.shadowRoot.querySelector('input')?.addEventListener('change', this._onToggle.bind(this));
-    this.shadowRoot?.querySelector('button')?.addEventListener('click', this._onDelete.bind(this));
+    this.shadowRoot.querySelector('#checkbox-completed')?.addEventListener('change', this._onToggle.bind(this));
+    this.shadowRoot?.querySelector('#button-delete')?.addEventListener('click', this._onDelete.bind(this));
+    this.shadowRoot?.querySelector('#button-edit')?.addEventListener('click', this._onEdit.bind(this));
 
     this._updateRendering();
   }
 
   disconnectedCallback() {
     this.shadowRoot.querySelector('input').removeEventListener('change', this._onToggle.bind(this));
-    this.shadowRoot.querySelector('button').removeEventListener('click', this._onDelete.bind(this));
+    this.shadowRoot.querySelector('#button-delete').removeEventListener('click', this._onDelete.bind(this));
+    this.shadowRoot.querySelector('#button-edit').removeEventListener('click', this._onEdit.bind(this));
   }
 
   _onToggle() {
@@ -98,6 +120,54 @@ class Todo2Item extends HTMLElement {
     }));
   }
 
+  _onEdit() {
+    this._editMode = true
+    this.shadowRoot.querySelector('#checkbox-completed').hidden = true;
+    this.shadowRoot.querySelector('#display-1').hidden = true;
+    this.shadowRoot.querySelector('#display-2').hidden = true;
+
+    this.shadowRoot.querySelector('#editors').hidden = false;
+    this.shadowRoot.querySelector('#editors-checkbox').checked = this['_completed'];
+    this.shadowRoot.querySelector('#editors-todo-title').value = this['_title'];
+    this.shadowRoot.querySelector('#editors-todo-description').value = this['_description'];
+    this.shadowRoot.querySelector('#editors-todo-title').focus();
+
+    this.shadowRoot.querySelector('#button-editor-save').addEventListener('click', this._onSave.bind(this));
+    this.shadowRoot.querySelector('#button-editor-cancel').addEventListener('click', this._onCancel.bind(this));
+  }
+
+  _onSave() {
+    this._editMode = false
+    this.shadowRoot.querySelector('#checkbox-completed').hidden = false;
+    this.shadowRoot.querySelector('#display-1').hidden = false;
+    this.shadowRoot.querySelector('#display-2').hidden = false;
+
+    this.shadowRoot.querySelector('#editors').hidden = true;
+
+    this.completed = this.shadowRoot.querySelector('#editors-checkbox').checked;
+    this.title = this.shadowRoot.querySelector('#editors-todo-title').value;
+    this.description = this.shadowRoot.querySelector('#editors-todo-description').value;
+
+    this.dispatchEvent(new CustomEvent('update_todo_item', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        id: this.id,
+        completed: this.completed,
+        title: this.title,
+        description: this.description,
+      },
+    }));
+  }
+
+  _onCancel() {
+    this._editMode = false
+    this.shadowRoot.querySelector('#checkbox-completed').hidden = false;
+    this.shadowRoot.querySelector('#display-1').hidden = false;
+    this.shadowRoot.querySelector('#display-2').hidden = false;
+    this.shadowRoot.querySelector('#editors').hidden = true;
+  }
+
   static observedAttributes = ["title", "description", "completed"];
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -105,6 +175,15 @@ class Todo2Item extends HTMLElement {
       this[name] = newValue;
       this._updateRendering();
     }
+  }
+
+  get id() {
+    return this['_id'] ?? "";
+  }
+
+  set id(v) {
+    this.setAttribute("id", v)
+    this['_id'] = v
   }
 
   get title() {
@@ -130,11 +209,11 @@ class Todo2Item extends HTMLElement {
     if (v == "true") {
       this.setAttribute("completed", "");
       this['_completed'] = true
-      this.shadowRoot.getElementById('checkbox-1').checked = true
+      this.shadowRoot.getElementById('checkbox-completed').checked = true
     } else {
       this.removeAttribute("completed");
       this['_completed'] = false
-      this.shadowRoot.getElementById('checkbox-1').checked = false
+      this.shadowRoot.getElementById('checkbox-completed').checked = false
     }
   }
 
