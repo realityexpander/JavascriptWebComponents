@@ -1,4 +1,4 @@
-const todoStyle = `
+const todoStyle1 = `
   .todo-item {
     display: flex;
     justify-content: space-between;

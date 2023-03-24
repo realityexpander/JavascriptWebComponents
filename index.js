@@ -32,7 +32,7 @@
     };
     
     // send 'add' event
-    const event = new CustomEvent('add', {
+    const event = new CustomEvent('add-todo-item', {
       bubbles: true,
       composed: true,
       detail: todo,
@@ -54,29 +54,28 @@
   document.addEventListener('toggle', (e) => {
     const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
 
-    // console.log(`todos[${index}]`, todos[index]);
-
     let todoCompleted = todos[index]?.completed ?? false;
     todos[index].completed = !todoCompleted;
-    render();
+    render_todoList();
   });
 
   // Listen for the delete event
   document.addEventListener('delete', (e) => {
     const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
+    
     todos.splice(index, 1);
-    render();
+    render_todoList();
   })
 
   // Listen for the add event
-  document.addEventListener('add', (e) => {
+  document.addEventListener('add-todo-item', (e) => {
     const todo = {
       id: e.detail.id,
       title: e.detail.title,
       description: e.detail.description,
     };
     todos.push(todo);
-    render();
+    render_todoList();
 
     // clear input fields
     document.querySelector('#todo-title').value = '';
@@ -93,25 +92,11 @@
       todos[index].title = e.detail.title;
       todos[index].description = e.detail.description;
       todos[index].completed = e.detail.completed;
-      render();
+      render_todoList();
     }
   });
 
-  // // Defer setup until the DOM is ready
-  // document.addEventListener('DOMContentLoaded', () => {
-  //   // todoInput.addEventListener('submit', (e) => {
-  //   //   e.preventDefault();
-  //   //   const todo = {
-  //   //     text: todoInput.value,
-  //   //     completed: false,
-  //   //   };
-  //   //   todos.push(todo);
-  //   //   render();
-  //   //   todoInput.value = '';
-  //   // });
-  // });
-
-  function render() {
+  function render_todoList() {
     // render all the todos in the todos array into a ul
     const todoList = document.querySelector('#todo-list');
     todoList.innerHTML = '';
@@ -155,4 +140,4 @@
   }
 
   initTodos();
-  render();
+  render_todoList();

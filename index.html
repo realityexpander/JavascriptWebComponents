@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script defer src="todo-item.js"></script>
     <script defer src="todo2-item.js"></script>
+    <script defer src="jsonplaceholder-item.js"></script>
     <link rel="stylesheet" href="shadowStyle.css">
     <title>Document</title>
     <style>
@@ -15,49 +16,52 @@
     </style>
 </head>
 <body>
-  
-    <h1>My First Heading</h1>
-    <p>My first paragraph.</p>
+    <h1>WebComponents Todo List</h1>
+    <p>Add a todo:</p>
 
-    <start-item></start-item>
-    <start2-item>This is innerText</start2-item>
-    <h3>More h3</h3>
-    
+    <div>
+      <input type="text" id="todo-title" placeholder="title"/>
+      <input type="text" id="todo-description" placeholder="description"/>
+      <button id="add-todo">Add Todo</button>
+    </div>
     <br>
-    <start3-item>Some More InnerText</start3-item>
-    <br>
-    
-    <h3>Another h3</h3>
-    <start3-item>With Description
-      <div slot="description">The Description</div>
-    </start3-item>
-    <br>
+    <div id="todo-list"></div>
 
-    <todo-item>
-      My First Todo
-      <div slot="description">The Description</div>
-    </todo-item>
-    <br>
+    <jsonplaceholder-item></jsonplaceholder-item>
+    <jsonplaceholder-item></jsonplaceholder-item>
+    <jsonplaceholder-item></jsonplaceholder-item>
+    <jsonplaceholder-item></jsonplaceholder-item>
+    <jsonplaceholder-item></jsonplaceholder-item>
 
-    <todo2-item>
-      My Second Todo
-      <div slot="description">The Description</div>
-    </todo2-item>
-    <br>
-    
-    <ol id="todo-list">
-      <todo2-item id="12345">
-        My Third Todo
-        <div slot="description">More stuff</div>
-      </todo2-item>
-    </ol>
-
-    <div class="todo-input"></div>
-
-    <input type="text" id="todo-title" placeholder="title"/>
-    <input type="text" id="todo-description" placeholder="description"/>
-    <button id="add-todo">Add Todo</button>
 </body>
 
 <script type="module" src="index.js"></script>
 </html>
+
+
+<!--
+<start-item></start-item>
+<start2-item>This is innerText</start2-item>
+<h3>More h3</h3>
+
+<br>
+<start3-item>Some More InnerText</start3-item>
+<br>
+
+<h3>Another h3</h3>
+<start3-item>With Description
+  <div slot="description">The Description</div>
+</start3-item>
+<br>
+ 
+<todo-item>
+  My First Todo
+  <div slot="description">The Description</div>
+</todo-item>
+
+<todo2-item>
+  My Second Todo
+  <div slot="description">The Description</div>
+</todo2-item>
+<br>
+-->
