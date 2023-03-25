@@ -38,9 +38,9 @@ class JsonPlaceholder extends HTMLElement {
       margin: 0;
       padding: 0;
     }
-    p {
+    h4 {
       margin: 0;
-      padding: 0;
+      padding: 1rem 1rem 0 1rem;
     }
     img {
       margin: 0;
@@ -59,16 +59,16 @@ class JsonPlaceholder extends HTMLElement {
       </style>
 
       <label id="display" class="item">
-        <span  class="item__text">
+        <span id="loading">
+            <span>Loading...</span>
+            <img id="loading" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" width="50px" height="50px" alt="loading"/>
+        </span>
+
+        <span class="item__text">
           <slot></slot> 
         </span>
 
         <p id="error" hidden>Error</p>
-        
-        <div id="loading">
-        <p>Loading...</p>
-        <img id="loading" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" width="50px" height="50px" alt="loading"/>
-        </div>
       </label>
     `;
     shadowRoot.append(template.content.cloneNode(true));
@@ -84,15 +84,7 @@ class JsonPlaceholder extends HTMLElement {
 
     this.state = "loading"
 
-    fetch('https://jsonplaceholder.typicode.com/todos/1')
-      .then(response => response.json())
-      .then(json => {
-          this._id = json.id
-          this._data = json.title + ", completed:" + json.completed
-
-          this.state = "loaded"
-        }
-      )
+    //this._performFetch()
   }
 
   disconnectedCallback() {
@@ -138,7 +130,7 @@ class JsonPlaceholder extends HTMLElement {
     }));
   }
 
-  static observedAttributes = ["state"];
+  static observedAttributes = ["state", "src", "id"];
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue !== newValue) {
@@ -164,6 +156,15 @@ class JsonPlaceholder extends HTMLElement {
     this._updateUIFromState();
   }
 
+  get src() {
+    return this._src ?? "";
+  }
+  set src(v) {
+    this.setAttribute("src", v);
+    this._src = v
+    this._performFetch();
+  }
+
   _updateUIFromState() {
     this.shadowRoot.querySelector('slot').textContent = this._data;
 
@@ -184,6 +185,20 @@ class JsonPlaceholder extends HTMLElement {
       this.shadowRoot.querySelector('#loading').hidden = true;
       this.shadowRoot.querySelector('#error').hidden = false;
     }
+  }
+
+  _performFetch() {
+    if(this._src==undefined) return
+    
+    fetch(this._src)
+      .then(response => response.json())
+      .then(json => {
+          this._id = json.id
+          this._data = json.title + ", completed:" + json.completed
+
+          this.state = "loaded"
+        }
+      )
   }
 
 }
