@@ -99,8 +99,7 @@ class Todo2Item extends HTMLElement {
   }
 
   connectedCallback() {
-
-    this.shadowRoot.querySelector('#checkbox-completed')?.addEventListener('change', this._onToggle.bind(this));
+    this.shadowRoot.querySelector('#checkbox-completed')?.addEventListener('change', this._onToggleCompleted.bind(this));
     this.shadowRoot?.querySelector('#button-delete')?.addEventListener('click', this._onConfirmDelete.bind(this));
     this.shadowRoot?.querySelector('#button-edit')?.addEventListener('click', this._onEdit.bind(this));
 
@@ -108,16 +107,21 @@ class Todo2Item extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.shadowRoot.querySelector('#checkbox-completed').removeEventListener('change', this._onToggle.bind(this));
+    this.shadowRoot.querySelector('#checkbox-completed').removeEventListener('change', this._onToggleCompleted.bind(this));
     this.shadowRoot.querySelector('#button-delete').removeEventListener('click', this._onConfirmDelete.bind(this));
     this.shadowRoot.querySelector('#button-edit').removeEventListener('click', this._onEdit.bind(this));
   }
 
-  _onToggle() {
-    this.dispatchEvent(new CustomEvent('toggle', {
+  _onToggleCompleted() {
+    this.dispatchEvent(new CustomEvent('toggle-todo-item', {
       bubbles: true,
       composed: true,
-      detail: "composed",
+      detail: {
+        id: this.getAttribute("id"),
+        completed: this._completed,
+        title: this._title,
+        description: this._description,  
+      },
     }));
   }
 
@@ -126,34 +130,34 @@ class Todo2Item extends HTMLElement {
     this.shadowRoot.querySelector('#editors-buttons').hidden = true;
     this.shadowRoot.querySelector('#confirm-delete').hidden = false;
 
-    this.shadowRoot.querySelector('#button-yes-delete').addEventListener('click', this._onDelete.bind(this));
-    this.shadowRoot.querySelector('#button-cancel-delete').addEventListener('click', this._onCancelDelete.bind(this));
+    this.shadowRoot.querySelector('#button-yes-delete').addEventListener('click', this._onDeleteTodoItem.bind(this));
+    this.shadowRoot.querySelector('#button-cancel-delete').addEventListener('click', this._onConfirmDelete_Cancel.bind(this));
   }
-
+  
+  _onConfirmDelete_Cancel() {
+    this._UiState = ""
+    this.shadowRoot.querySelector('#editors-buttons').hidden = false;
+    this.shadowRoot.querySelector('#confirm-delete').hidden = true;
+    
+    this._removeConfirmDeleteListeners();
+  }
+  
+  _onConfirmDelete_OK() {
+    this._UiState = ""
+    this.shadowRoot.querySelector('#editors-buttons').hidden = false;
+    this.shadowRoot.querySelector('#confirm-delete').hidden = true;
+    
+    this._removeConfirmDeleteListeners();
+    this._onDeleteTodoItem()
+  }
+  
   _removeConfirmDeleteListeners() {
-    this.shadowRoot.querySelector('#button-yes-delete').removeEventListener('click', this._onDelete.bind(this));
-    this.shadowRoot.querySelector('#button-cancel-delete').removeEventListener('click', this._onCancelDelete.bind(this));
+    this.shadowRoot.querySelector('#button-yes-delete').removeEventListener('click', this._onDeleteTodoItem.bind(this));
+    this.shadowRoot.querySelector('#button-cancel-delete').removeEventListener('click', this._onConfirmDelete_Cancel.bind(this));
   }
-
-  _onCancelDelete() {
-    this._UiState = ""
-    this.shadowRoot.querySelector('#editors-buttons').hidden = false;
-    this.shadowRoot.querySelector('#confirm-delete').hidden = true;
-
-    this._removeConfirmDeleteListeners();
-  }
-
-  _onOKDelete() {
-    this._UiState = ""
-    this.shadowRoot.querySelector('#editors-buttons').hidden = false;
-    this.shadowRoot.querySelector('#confirm-delete').hidden = true;
-
-    this._removeConfirmDeleteListeners();
-    this._onDelete()
-  }
-
-  _onDelete() {
-    this.dispatchEvent(new CustomEvent('delete', {
+  
+  _onDeleteTodoItem() {
+    this.dispatchEvent(new CustomEvent('delete-todo-item', {
       bubbles: true,
       composed: true,
       detail: "composed",
@@ -173,11 +177,11 @@ class Todo2Item extends HTMLElement {
     this.shadowRoot.querySelector('#editors-todo-description').value = this['_description'];
     this.shadowRoot.querySelector('#editors-todo-title').focus();
 
-    this.shadowRoot.querySelector('#button-editor-save').addEventListener('click', this._onSaveEdits.bind(this));
-    this.shadowRoot.querySelector('#button-editor-cancel').addEventListener('click', this._onCancelEdits.bind(this));
+    this.shadowRoot.querySelector('#button-editor-save').addEventListener('click', this._onEdit_Save.bind(this));
+    this.shadowRoot.querySelector('#button-editor-cancel').addEventListener('click', this._onEdit_Cancel.bind(this));
   }
 
-  _onSaveEdits() {
+  _onEdit_Save() {
     this._UiState = ""
     this.shadowRoot.querySelector('#checkbox-completed').hidden = false;
     this.shadowRoot.querySelector('#display-1').hidden = false;
@@ -190,7 +194,7 @@ class Todo2Item extends HTMLElement {
     this.title = this.shadowRoot.querySelector('#editors-todo-title').value;
     this.description = this.shadowRoot.querySelector('#editors-todo-description').value;
 
-    this.dispatchEvent(new CustomEvent('update_todo_item', {
+    this.dispatchEvent(new CustomEvent('update-todo-item', {
       bubbles: true,
       composed: true,
       detail: {
@@ -200,9 +204,11 @@ class Todo2Item extends HTMLElement {
         description: this.description,
       },
     }));
+
+    this._removeEditListeners();
   }
 
-  _onCancelEdits() {
+  _onEdit_Cancel() {
     this._UiState = ""
     this.shadowRoot.querySelector('#checkbox-completed').hidden = false;
     this.shadowRoot.querySelector('#display-1').hidden = false;
@@ -210,9 +216,16 @@ class Todo2Item extends HTMLElement {
     this.shadowRoot.querySelector('#editors-buttons').hidden = false;
     
     this.shadowRoot.querySelector('#editors').hidden = true;
+    
+    this._removeEditListeners();
   }
 
-  static observedAttributes = ["title", "description", "completed"];
+  _removeEditListeners() {
+    this.shadowRoot.querySelector('#button-editor-save').removeEventListener('click', this._onEdit_Save.bind(this));
+    this.shadowRoot.querySelector('#button-editor-cancel').removeEventListener('click', this._onEdit_Cancel.bind(this));
+  }
+
+  static observedAttributes = ["title", "description", "completed", "id"];
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue !== newValue) {

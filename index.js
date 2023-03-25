@@ -38,6 +38,13 @@
       detail: todo,
     });
     document.dispatchEvent(event);
+
+    // clear input fields
+    document.querySelector('#todo-title').value = '';
+    document.querySelector('#todo-description').value = '';
+
+    // focus on title input
+    document.querySelector('#todo-title').focus();
   });
 
   // listen for "enter" keypress on input
@@ -50,73 +57,55 @@
     }
   });
 
-  // Listen for the toggle event
-  document.addEventListener('toggle', (e) => {
-    const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
+  // // Listen for the toggle event
+  // document.addEventListener('toggle-todo-item', (e) => {
+  //   const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
 
-    let todoCompleted = todos[index]?.completed ?? false;
-    todos[index].completed = !todoCompleted;
-    render_todoList();
-  });
+  //   let todoCompleted = todos[index]?.completed ?? false;
+  //   todos[index].completed = !todoCompleted;
+  //   render_todoList();
+  // });
 
-  // Listen for the delete event
-  document.addEventListener('delete', (e) => {
-    const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
+  // // Listen for the delete event
+  // document.addEventListener('delete-todo-item', (e) => {
+  //   const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
     
-    todos.splice(index, 1);
-    render_todoList();
-  })
+  //   todos.splice(index, 1);
+  //   render_todoList();
+  // })
 
-  // Listen for the add event
-  document.addEventListener('add-todo-item', (e) => {
-    const todo = {
-      id: e.detail.id,
-      title: e.detail.title,
-      description: e.detail.description,
-    };
-    todos.push(todo);
-    render_todoList();
+  // // Listen for the save item event
+  // document.addEventListener('update_todo_item', (e) => {
+  //   const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
+  //   if(index != -1) {
+  //     todos[index].title = e.detail.title;
+  //     todos[index].description = e.detail.description;
+  //     todos[index].completed = e.detail.completed;
+  //     render_todoList();
+  //   }
+  // });
 
-    // clear input fields
-    document.querySelector('#todo-title').value = '';
-    document.querySelector('#todo-description').value = '';
-
-    // focus on title input
-    document.querySelector('#todo-title').focus();
-  });
-
-  // Listen for the save item event
-  document.addEventListener('update_todo_item', (e) => {
-    const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
-    if(index != -1) {
-      todos[index].title = e.detail.title;
-      todos[index].description = e.detail.description;
-      todos[index].completed = e.detail.completed;
-      render_todoList();
-    }
-  });
-
-  function render_todoList() {
-    // render all the todos in the todos array into a ul
-    const todoList = document.querySelector('#todo-list');
-    todoList.innerHTML = '';
-    todos.forEach((todo, index) => {
-      const todoItem = document.createElement('todo2-item');
-      todoItem.setAttribute('index', index);
-      todoItem.setAttribute('id', todo.id);
-      todoItem.setAttribute('title', todo.title);
-      todoItem.setAttribute('description', todo.description);
-      todoItem.setAttribute('completed', todo.completed);
-      todoItem.innerHTML = `
-        ${todo.title}
-        <div slot="description">
-          <p>${todo.description}</p>
-          <p>${todo.completed ? 'Completed' : 'Not Completed'}</p>
-        </div>
-      `;
-      todoList.appendChild(todoItem);
-    });
-  }
+  // function render_todoList() {
+  //   // render all the todos in the todos array into a ul
+  //   const todoList = document.querySelector('#todo-list');
+  //   todoList.innerHTML = '';
+  //   todos.forEach((todo, index) => {
+  //     const todoItem = document.createElement('todo2-item');
+  //     todoItem.setAttribute('index', index);
+  //     todoItem.setAttribute('id', todo.id);
+  //     todoItem.setAttribute('title', todo.title);
+  //     todoItem.setAttribute('description', todo.description);
+  //     todoItem.setAttribute('completed', todo.completed);
+  //     todoItem.innerHTML = `
+  //       ${todo.title}
+  //       <div slot="description">
+  //         <p>${todo.description}</p>
+  //         <p>${todo.completed ? 'Completed' : 'Not Completed'}</p>
+  //       </div>
+  //     `;
+  //     todoList.appendChild(todoItem);
+  //   });
+  // }
 
   function initTodos() {
     todos.push({
@@ -137,6 +126,12 @@
       description: 'Yet another real description',
       completed: false,
     })
+
+    document.dispatchEvent(new CustomEvent('set-todos', {
+      bubbles: true,
+      composed: true,
+      detail: todos
+    }));
   }
 
   initTodos();

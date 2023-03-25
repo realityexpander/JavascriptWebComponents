@@ -61,7 +61,7 @@ class JsonPlaceholder extends HTMLElement {
       <label id="display" class="item">
         <span id="loading">
             <span>Loading...</span>
-            <img id="loading" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" width="50px" height="50px" alt="loading"/>
+            <img id="loading" src="https://raw.githubusercontent.com/Codelessly/FlutterLoadingGIFs/master/packages/cupertino_activity_indicator.gif" width="30px" height="30px" alt="loading"/>
         </span>
 
         <span class="item__text">

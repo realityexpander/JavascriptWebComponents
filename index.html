@@ -5,32 +5,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script defer src="todo-item.js"></script>
+    <script defer type="module" src="todo2-list.js"></script>
     <script defer src="todo2-item.js"></script>
     <script defer src="jsonplaceholder-item.js"></script>
     <link rel="stylesheet" href="shadowStyle.css">
     <title>Document</title>
     <style>
-        h3 {
-          color: Red;
-        }        
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 0;
+        }    
     </style>
 </head>
 <body>
     <h1>WebComponents Todo List</h1>
-    <p>Add a todo:</p>
-
+    
     <div>
+      <p>Add a todo:</p>
       <input type="text" id="todo-title" placeholder="title"/>
       <input type="text" id="todo-description" placeholder="description"/>
       <button id="add-todo">Add Todo</button>
     </div>
     <br>
-    <div id="todo-list"></div>
+    <todo2-list todos='[{"title":"My First Todo","description":"The Description"},{"title":"My Second Todo","description":"The Description"}]'></todo2-list>
+    <br>
 
+    <h3>JSONPlaceholders</h3>
     <jsonplaceholder-item id="1" src="https://jsonplaceholder.typicode.com/todos/1"></jsonplaceholder-item>
     <jsonplaceholder-item id="2" src="https://jsonplaceholder.typicode.com/todos/2"></jsonplaceholder-item>
     <jsonplaceholder-item id="3" src="https://jsonplaceholder.typicode.com/todos/3"></jsonplaceholder-item>
     <jsonplaceholder-item id="4" src="https://jsonplaceholder.typicode.com/todos/4"></jsonplaceholder-item>
+    <br>
+
+    <div id="todo-list"></div>
+    <br>
 
 </body>
 
