@@ -3,19 +3,9 @@
   // import {TodoInput} from '/todo-input.js';
   import {v4 as uuidv4} from './node_modules/uuid/dist/esm-browser/index.js';
 
-
   const todoList = document.querySelector('#todo-list');
   const todoInput = document.querySelector('todo-input');
   const todos = [];
-
-  // const todo2Item = new Todo2Item();
-  // todo2Item.setAttribute('id', '12345');
-  // todo2Item.setAttribute('title', 'A Real Todo');
-  // todo2Item.setAttribute('description', 'A real description');
-  // todoList.appendChild(todo2Item);
-
-  // const todoInputItem = new TodoInput();
-  // todoInput.appendChild(todoInputItem);
 
   // setup add button listener
   const addButton = document.querySelector('#add-todo');
@@ -56,56 +46,6 @@
       addButton.click();
     }
   });
-
-  // // Listen for the toggle event
-  // document.addEventListener('toggle-todo-item', (e) => {
-  //   const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
-
-  //   let todoCompleted = todos[index]?.completed ?? false;
-  //   todos[index].completed = !todoCompleted;
-  //   render_todoList();
-  // });
-
-  // // Listen for the delete event
-  // document.addEventListener('delete-todo-item', (e) => {
-  //   const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
-    
-  //   todos.splice(index, 1);
-  //   render_todoList();
-  // })
-
-  // // Listen for the save item event
-  // document.addEventListener('update_todo_item', (e) => {
-  //   const index = todos.findIndex((todo) => todo.id === e.target.getAttribute("id"));
-  //   if(index != -1) {
-  //     todos[index].title = e.detail.title;
-  //     todos[index].description = e.detail.description;
-  //     todos[index].completed = e.detail.completed;
-  //     render_todoList();
-  //   }
-  // });
-
-  // function render_todoList() {
-  //   // render all the todos in the todos array into a ul
-  //   const todoList = document.querySelector('#todo-list');
-  //   todoList.innerHTML = '';
-  //   todos.forEach((todo, index) => {
-  //     const todoItem = document.createElement('todo2-item');
-  //     todoItem.setAttribute('index', index);
-  //     todoItem.setAttribute('id', todo.id);
-  //     todoItem.setAttribute('title', todo.title);
-  //     todoItem.setAttribute('description', todo.description);
-  //     todoItem.setAttribute('completed', todo.completed);
-  //     todoItem.innerHTML = `
-  //       ${todo.title}
-  //       <div slot="description">
-  //         <p>${todo.description}</p>
-  //         <p>${todo.completed ? 'Completed' : 'Not Completed'}</p>
-  //       </div>
-  //     `;
-  //     todoList.appendChild(todoItem);
-  //   });
-  // }
 
   function initTodos() {
     todos.push({
