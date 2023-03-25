@@ -76,19 +76,14 @@ class JsonPlaceholder extends HTMLElement {
     // Internal Object properties
     this._id = ""
     this._data = ""
-    this._state = ""  // "loaded", "loading", "error"
+    this._state = ""  // "loading", "loaded", "error"
   }
 
   connectedCallback() {
-    //this.shadowRoot.querySelector('#checkbox-completed')?.addEventListener('change', this._onToggle.bind(this));
-
     this.state = "loading"
-
-    //this._performFetch()
   }
 
   disconnectedCallback() {
-    //this.shadowRoot.querySelector('#checkbox-completed').removeEventListener('change', this._onToggle.bind(this));
   }
 
   _onConfirmDelete() {
