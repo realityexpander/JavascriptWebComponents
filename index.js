@@ -75,4 +75,3 @@
   }
 
   initTodos();
-  render_todoList();
