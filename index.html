@@ -4,23 +4,49 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    
     <script defer src="todo-item.js"></script>
     <script defer type="module" src="todo2-list.js"></script>
     <script defer src="todo2-item.js"></script>
     <script defer src="jsonplaceholder-item.js"></script>
+    <script defer src="date-picker.js"></script>
     <script type="module" src="my-counter.js"></script>
     <link rel="stylesheet" href="shadowStyle.css">
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"> -->
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /> -->
+    <link rel="stylesheet" href="material-theme.css">
+    
     <title>Document</title>
-    <style>
-        * {
-            font-family: Arial, Helvetica, sans-serif;
-            padding: 0;
-        }    
-    </style>
 </head>
 <body>
-    <h1>WebComponents Todo List</h1>
+
     
+    <md-icon id="open-drawer">menu</md-icon>
+    <md-navigation-drawer id="drawer" opened="true">
+      <div style="background: lightblue; width: 190px;">
+        <div style="text-align: end;">
+          <md-icon id="close-drawer">close</md-icon>
+        </div>
+        <div>
+          <p>hello</p>
+          <p>Some Stuff</p>
+        </div>
+        <div>
+          hello
+        </div>
+        <div>
+          <p>hello</p>
+          <p>Some Stuff</p>
+        </div>
+        <div>
+          hello
+        </div>
+      </div>
+    </md-navigation-drawer>
+    
+    <h1>WebComponents Todo List</h1>
+
     <div>
       <p>Add a todo:</p>
       <input type="text" id="todo-title" placeholder="title"/>
@@ -38,18 +64,42 @@
     <jsonplaceholder-item id="4" src="https://jsonplaceholder.typicode.com/todos/4"></jsonplaceholder-item>
     <br>
 
-    <div id="todo-list"></div>
+    <my-counter></my-counter>
     <br>
 
-    <my-counter></my-counter>
+    <date-picker position="right" format="MMMM DD (DDD), YYYY"></date-picker>
+    <br>
 
+    <label>
+      Material 3
+      <md-checkbox checked></md-checkbox>
+    </label>
+    <br>
+    <md-elevated-button label="Elevated"></md-elevated-button>
+    <md-outlined-button label="Back"></md-outlined-button>
+    <md-filled-button label="Next"></md-filled-button>
+    <md-icon style="--md-icon-size:48px">settings</md-icon>
+
+
+    <md-icon style="--md-icon-size:48px">
+      <!-- <svg viewBox="0 0 96 96"> -->
+      <svg>
+        <image href="./assets/images/settings_FILL0_wght400_GRAD0_opsz48.svg"
+          width="50"
+          height="50"
+      </svg>
+    </md-icon>
 </body>
 
-<script type="module" src="index.js"></script>
+<!-- <script type="module" src="index.js"></script> -->
+<script src="./bundle.js"></script>
 </html>
 
 
 <!--
+<div id="todo-list"></div>
+<br>
+
 <start-item></start-item>
 <start2-item>This is innerText</start2-item>
 <h3>More h3</h3>

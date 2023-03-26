@@ -1,0 +1,116 @@
+* {
+  /* box-sizing: border-box; */
+  --app-font:  system-ui, 'Open Sans', system-ui, sans-serif;
+  
+  /* Material Design */
+  --button-text-type: 500 1rem / 1.25rem var(--app-font)
+}
+
+/* font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48; 
+  */
+
+body {
+  margin: 0;
+  padding: 1rem;
+  font-family: var(--app-font);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #191C1C;
+  background-color: #FAFDFC;
+}
+
+:root {
+  font-family: var(--app-font);
+
+  --md-sys-color-primary: #006A6A;
+  --md-sys-color-primary-container: #6FF7F6;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-on-primary-container: #002020;
+  --md-sys-color-secondary: #4A6363;
+  --md-sys-color-secondary-container: #CCE8E7;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-on-secondary-container: #051F1F;
+  --md-sys-color-tertiary: #4B607C;
+  --md-sys-color-tertiary-container: #D3E4FF;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-on-tertiary-container: #041C35;
+  --md-sys-color-error: #BA1A1A;
+  --md-sys-color-error-container: #FFDAD6;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-on-error-container: #410002;
+  --md-sys-color-outline: #6F7979;
+  --md-sys-color-background: #FAFDFC;
+  --md-sys-color-on-background: #191C1C;
+  --md-sys-color-surface: #FAFDFC;
+  --md-sys-color-on-surface: #191C1C;
+  --md-sys-color-surface-variant: #DAE5E4;
+  --md-sys-color-on-surface-variant: #3F4948;
+  --md-sys-color-inverse-surface: #2D3131;
+  --md-sys-color-inverse-on-surface: #EFF1F0;
+  --md-sys-color-inverse-primary: #4CDADA;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-surface-tint: #006A6A;
+  --md-sys-color-outline-variant: #BEC9C8;
+  --md-sys-color-scrim: #000000;
+
+  /* Material Design */
+  --md-elevated-button-label-text-type: var(--button-text-type);
+  --md-outlined-button-label-text-type: var(--button-text-type);
+  --md-filled-button-label-text-type: var(--button-text-type);
+  --md-navigation-drawer-container-color: var(--md-sys-color-surface);
+
+  /* --md-icon-font-variation-settings: 
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;  */
+  /* --md-icon-font: 'Material Symbols Outlined'; */
+
+  
+}
+
+md-navigation-drawer {
+  height: 100%;
+  --md-navigation-drawer-container-width: 200px;
+  --md-navigation-drawer-container-color: var(--md-sys-color-primary-container);
+  --md-navigation-drawer-container-shape-start-end: 0;
+  --md-navigation-drawer-container-shape-end-end: 0;
+  overflow: auto;
+}
+
+.dark {
+  --md-sys-color-primary: #4CDADA;
+  --md-sys-color-primary-container: #004F4F;
+  --md-sys-color-on-primary: #003737;
+  --md-sys-color-on-primary-container: #6FF7F6;
+  --md-sys-color-secondary: #B0CCCB;
+  --md-sys-color-secondary-container: #324B4B;
+  --md-sys-color-on-secondary: #1B3534;
+  --md-sys-color-on-secondary-container: #CCE8E7;
+  --md-sys-color-tertiary: #B3C8E8;
+  --md-sys-color-tertiary-container: #334863;
+  --md-sys-color-on-tertiary: #1C314B;
+  --md-sys-color-on-tertiary-container: #D3E4FF;
+  --md-sys-color-error: #FFB4AB;
+  --md-sys-color-error-container: #93000A;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-on-error-container: #FFDAD6;
+  --md-sys-color-outline: #889392;
+  --md-sys-color-background: #191C1C;
+  --md-sys-color-on-background: #E0E3E2;
+  --md-sys-color-surface: #191C1C;
+  --md-sys-color-on-surface: #E0E3E2;
+  --md-sys-color-surface-variant: #3F4948;
+  --md-sys-color-on-surface-variant: #BEC9C8;
+  --md-sys-color-inverse-surface: #E0E3E2;
+  --md-sys-color-inverse-on-surface: #191C1C;
+  --md-sys-color-inverse-primary: #006A6A;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-surface-tint: #4CDADA;
+  --md-sys-color-outline-variant: #3F4948;
+  --md-sys-color-scrim: #000000;
+}

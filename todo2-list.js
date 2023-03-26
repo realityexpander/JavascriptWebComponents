@@ -1,4 +1,4 @@
-import {v4 as uuidv4} from './node_modules/uuid/dist/esm-browser/index.js';
+import { v4 as uuidv4 } from './node_modules/uuid/dist/esm-browser/index.js';
 
 class Todo2List extends HTMLElement {
 
@@ -61,7 +61,7 @@ class Todo2List extends HTMLElement {
       </style>
 
       <h4>Todo List</h4>
-        <slot></slot>
+      <slot></slot>
     `;
 
     shadowRoot.appendChild(template.content.cloneNode(true));
@@ -154,14 +154,14 @@ class Todo2List extends HTMLElement {
     return this._todos;
   }
   set todos(value) {
-    if(value == undefined) return
-    if(value.length == 0) return
+    if (value == undefined) return
+    if (value.length == 0) return
 
     // if value is a string, parse it
-    if(typeof value === 'string') {
+    if (typeof value === 'string') {
       this.setAttribute("todos", value); // must use a Json string  
       this._todos = this._getTodosFromJsonString(value); // must use a real value
-    } else if(typeof value === 'object') {
+    } else if (typeof value === 'object') {
       this._todos = value;
     } else {
       throw new Error('Invalid value type. Must be a Json string or an array.');
@@ -171,7 +171,7 @@ class Todo2List extends HTMLElement {
   }
 
   _getTodosFromJsonString(jsonString) {
-    let parsedValue = JSON.parse(jsonString) 
+    let parsedValue = JSON.parse(jsonString)
     let parsedTodos = parsedValue.map(value => {
       return {
         id: value.id || uuidv4(),
@@ -185,9 +185,9 @@ class Todo2List extends HTMLElement {
   }
 
   render() {
-    if(this._todos == undefined) return
-    if(this._todos.length == 0) return
-    
+    if (this._todos == undefined) return
+    if (this._todos.length == 0) return
+
     const list = this.shadowRoot.querySelector('slot');
     list.innerHTML = '';
     this._todos.forEach((todo, index) => {
@@ -201,16 +201,16 @@ class Todo2List extends HTMLElement {
         ${todo.title}
         <br>${todo.description}
         <div slot="description">
-          <p>${todo.completed ? 
-            'Completed'
-            : `
+          <p>${todo.completed ?
+          'Completed'
+          : `
               <img id="loading" 
                 src="https://raw.githubusercontent.com/Codelessly/FlutterLoadingGIFs/master/packages/cupertino_activity_indicator.gif" 
                 width="25px" 
                 height="25px" 
                 alt="loading"
               />` //'Not Completed' 
-            }</p>
+        }</p>
         </div>
       `;
       list.appendChild(todoItem);
