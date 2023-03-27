@@ -14,6 +14,10 @@ import '@material/web/button/elevated-button.js';
 import '@material/web/icon/icon.js';
 import '@material/web/navigationdrawer/navigation-drawer.js';
 
+import { MDCList } from "@material/list";
+const list = MDCList.attachTo(document.querySelector('.mdc-list'));
+list.wrapFocus = true;
+
 const todoList = document.querySelector('#todo-list');
 const todoInput = document.querySelector('todo-input');
 const todos = [];

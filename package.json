@@ -6,11 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -p @rollup/plugin-node-resolve index.js > bundle.js",
-    "watch": "rollup -p @rollup/plugin-node-resolve index.js -w --file bundle.js"
+    "watch": "rollup -p @rollup/plugin-node-resolve index.js -w --file bundle.js",
+    "watch2": "rollup -p @rollup/plugin-node-resolve index2.js -w --file bundle.js --environment NODE_ENV:development",
+    "sass": "sass -w index3.scss index3.css"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@material/drawer": "^14.0.0",
+    "@material/top-app-bar": "^14.0.0",
     "@material/web": "^1.0.0-pre.5",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@types/uuid": "^9.0.1",

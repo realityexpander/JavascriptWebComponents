@@ -1,3 +1,12 @@
+
+import { MDCDrawer } from "@material/drawer";
+//import { MDCTopAppBar } from "@material/top-app-bar";
+
+let state = {
+  name: '',
+  email: '',
+}
+
 //const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 
@@ -44,7 +53,7 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 const yourNameEl = document.querySelector('#ti-yourName');
 yourNameEl.addEventListener('input', (e) => {
   document.querySelector('#ti-text-area').textContent = e.target.value;
-  e.target.value;
+  state.name = e.target.value;
 });
 yourNameEl.addEventListener('focus', (e) => {
   document.querySelector('#hint-your-name').style['visibility'] = "hidden";
@@ -59,7 +68,7 @@ yourNameEl.addEventListener('blur', (e) => {
 const emailAddressEl = document.querySelector('#ti-email-address');
 emailAddressEl.addEventListener('input', (e) => {
   document.querySelector('#ti-text-area').textContent = e.target.value;
-  e.target.value;
+  state.email = e.target.value;
 
   if (e.target.value != '') {
     document.querySelector('#hint-email-address').style['visibility'] = "hidden";

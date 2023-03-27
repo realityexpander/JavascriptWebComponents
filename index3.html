@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="index3a.css" />
+
+  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+
+  <title>Document</title>
+</head>
+
+<body>
+  <aside class="mdc-drawer mdc-drawer--dismissible">
+    <div class="mdc-drawer__content">
+      <nav class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+          <span class="mdc-list-item__text">Inbox</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+          <span class="mdc-list-item__text">Outgoing</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+          <span class="mdc-list-item__text">Drafts</span>
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-app-content">
+    <header class="mdc-top-app-bar app-bar" id="app-bar">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
+          <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+        </section>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+          <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+            aria-label="Favorite">favorite</button>
+          <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+            aria-label="Search">search</button>
+          <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+            aria-label="Options">more_vert</button>
+        </section>
+      </div>
+    </header>
+
+    <!-- <header class="mdc-top-app-bar mdc-top-app-bar--short" id="app-bar">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
+          <span class="mdc-top-app-bar__title">Title</span>
+        </section>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+          <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+            aria-label="Bookmark this page">bookmark</button>
+        </section>
+      </div>
+    </header> -->
+
+    </main>
+
+    <main class="main-content" id="main-content">
+      <div class="mdc-top-app-bar--fixed-adjust">
+        <!-- <div class="mdc-top-app-bar--short-fixed-adjust"> -->
+        <br>
+        App Content
+        <br>
+        <button class="mdc-button mdc-button--outlined">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Button</span>
+        </button>
+        <button class="mdc-button mdc-button--raised">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Button</span>
+        </button>
+        <br>
+        <br>
+
+        <label class="mdc-text-field mdc-text-field--filled">
+          <span class="mdc-text-field__ripple"></span>
+          <span class="mdc-floating-label hint-font-size" id="hint-email-address">Email Address</span>
+          <input id="ti-email-address" class="mdc-text-field__input" type="email" aria-labelledby="my-label-id">
+          <span class="mdc-line-ripple"></span>
+        </label>
+        <br>
+        <br>
+
+        <label class="mdc-text-field mdc-text-field--outlined">
+          <span class="mdc-notched-outline">
+            <span class="mdc-notched-outline__leading"></span>
+            <span class="mdc-notched-outline__notch">
+              <span class="mdc-floating-label" id="hint-your-name">Your Name</span>
+            </span>
+            <span class="mdc-notched-outline__trailing"></span>
+          </span>
+          <input type="text" id="ti-yourName" class="mdc-text-field__input" aria-labelledby="my-label-id">
+        </label>
+        <br>
+        <br>
+
+        <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea mdc-text-field--no-label">
+          <span class="mdc-text-field__ripple"></span>
+          <span class="mdc-text-field__resizer">
+            <textarea id="ti-text-area" class="mdc-text-field__input" rows="2" cols="40" aria-label="Label"></textarea>
+          </span>
+          <span class="mdc-line-ripple"></span>
+        </label>
+        <br>
+        <br>
+
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia adipisci, quae accusamus sit repellat atque ipsum
+        ipsam nisi odio ad similique eligendi perspiciatis omnis doloremque corrupti corporis tempore at molestias!
+        <br>
+        <br>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia adipisci, quae accusamus sit repellat atque ipsum
+        ipsam nisi odio ad similique eligendi perspiciatis omnis doloremque corrupti corporis tempore at molestias!
+        <br>
+        <br>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia adipisci, quae accusamus sit repellat atque ipsum
+        ipsam nisi odio ad similique eligendi perspiciatis omnis doloremque corrupti corporis tempore at molestias!
+        <br>
+        <br>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia adipisci, quae accusamus sit repellat atque ipsum
+        ipsam nisi odio ad similique eligendi perspiciatis omnis doloremque corrupti corporis tempore at molestias!
+        <br>
+        <br>
+
+      </div>
+    </main>
+  </div>
+</body>
+
+<!-- <script type="module" src="index2.js"></script> -->
+<script type="module" src="./bundle.js"></script>
+
+</html>
