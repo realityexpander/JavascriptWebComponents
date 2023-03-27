@@ -14,10 +14,6 @@
   padding: 1rem;
 }
 
-.hint-font-size {
-  font-size: 0.8rem !important;
-}
-
 .mdc-drawer {
     border-color: rgba(0,0,0,.12);
     background-color: #fff;
