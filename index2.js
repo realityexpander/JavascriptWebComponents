@@ -1,5 +1,5 @@
 
-import { MDCDrawer } from "@material/drawer";
+// import { MDCDrawer } from "@material/drawer";
 //import { MDCTopAppBar } from "@material/top-app-bar";
 
 let state = {
@@ -82,5 +82,30 @@ emailAddressEl.addEventListener('input', (e) => {
 emailAddressEl.addEventListener('blur', (e) => {
   if (e.target.value == '') {
     document.querySelector('#hint-email-address').style['visibility'] = "visible";
+  }
+});
+
+const snackbar = mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar'));
+// Listen for send-item button click
+const sendItemButton = document.querySelector('#send-item');
+sendItemButton.addEventListener('click', (e) => {
+  snackbar.labelText = `Your message has been sent to ${state.name} at ${state.email}.`;
+  snackbar.actionButtonText = "Cancel";
+  snackbar.closeOnEscape = true;
+  snackbar.actionHandler = () => {
+    console.log('snackbar action clicked (msg from action handler)');
+  };
+  snackbar.open();
+});
+// Listen for snackbar closing & actionButton
+snackbar.listen('MDCSnackbar:closing', (e) => {
+  if (e.detail.reason == 'action') {
+    console.log('snackbar action button clicked');
+  }
+});
+// escape key closes snackbar
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    snackbar.close();
   }
 });

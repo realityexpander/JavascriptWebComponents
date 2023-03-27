@@ -1,3 +1,11 @@
+// import { MDCDrawer } from "@material/drawer";
+//import { MDCTopAppBar } from "@material/top-app-bar";
+
+let state = {
+  name: '',
+  email: '',
+};
+
 //const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 
@@ -44,7 +52,7 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 const yourNameEl = document.querySelector('#ti-yourName');
 yourNameEl.addEventListener('input', (e) => {
   document.querySelector('#ti-text-area').textContent = e.target.value;
-  e.target.value;
+  state.name = e.target.value;
 });
 yourNameEl.addEventListener('focus', (e) => {
   document.querySelector('#hint-your-name').style['visibility'] = "hidden";
@@ -59,7 +67,7 @@ yourNameEl.addEventListener('blur', (e) => {
 const emailAddressEl = document.querySelector('#ti-email-address');
 emailAddressEl.addEventListener('input', (e) => {
   document.querySelector('#ti-text-area').textContent = e.target.value;
-  e.target.value;
+  state.email = e.target.value;
 
   if (e.target.value != '') {
     document.querySelector('#hint-email-address').style['visibility'] = "hidden";
@@ -73,5 +81,30 @@ emailAddressEl.addEventListener('input', (e) => {
 emailAddressEl.addEventListener('blur', (e) => {
   if (e.target.value == '') {
     document.querySelector('#hint-email-address').style['visibility'] = "visible";
+  }
+});
+
+const snackbar = mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar'));
+// Listen for send-item button click
+const sendItemButton = document.querySelector('#send-item');
+sendItemButton.addEventListener('click', (e) => {
+  snackbar.labelText = `Your message has been sent to ${state.name} at ${state.email}.`;
+  snackbar.actionButtonText = "Cancel";
+  snackbar.closeOnEscape = true;
+  snackbar.actionHandler = () => {
+    console.log('snackbar action clicked (msg from action handler)');
+  };
+  snackbar.open();
+});
+// Listen for snackbar closing & actionButton
+snackbar.listen('MDCSnackbar:closing', (e) => {
+  if (e.detail.reason == 'action') {
+    console.log('snackbar action button clicked');
+  }
+});
+// escape key closes snackbar
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    snackbar.close();
   }
 });
