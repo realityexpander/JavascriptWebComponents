@@ -1224,7 +1224,7 @@
 }
 
 .demo-card__media.mdc-card__media--square {
-    width: 110px
+    /* width: 110px; */
 }
 
 .demo-basic-with-header .demo-card__secondary,.demo-basic-with-text-over-media .demo-card__secondary {

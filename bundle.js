@@ -104,10 +104,10 @@ const listEl = document.querySelector('.mdc-drawer .mdc-list');
 const mainContentEl = document.querySelector('.main-content');
 listEl.addEventListener('click', (event) => {
   // drawer.open = false;
-  mainContentEl.querySelector('input, button').focus();
+  mainContentEl.querySelector('input, button')?.focus();
 });
 document.body.addEventListener('MDCDrawer:closed', () => {
-  mainContentEl.querySelector('input, button').focus();
+  mainContentEl.querySelector('input, button')?.focus();
 });
 
 // listen for text change to yourName
@@ -147,8 +147,8 @@ emailAddressEl.addEventListener('blur', (e) => {
 });
 
 const snackbar = mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar'));
-// Listen for send-item button click
-const sendItemButton = document.querySelector('#send-item');
+// Listen for btn-send-item button click
+const sendItemButton = document.querySelector('#btn-send-item');
 sendItemButton.addEventListener('click', (e) => {
   snackbar.labelText = `Your message has been sent to ${state.name} at ${state.email}.`;
   snackbar.actionButtonText = "Cancel";
@@ -169,6 +169,19 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     snackbar.close();
   }
+});
+
+// Listen for btn-replace-html button click
+const replaceHtmlButton = document.querySelector('#btn-replace-html');
+replaceHtmlButton.addEventListener('click', (e) => {
+  fetch("./html-fragment/card.html").then((response) => {
+    return response.text();
+  }).then((html) => {
+    document.querySelector('#main-content').innerHTML = html;
+
+    // re-attach event listeners
+  });
+
 });
 
 ///////////////// todos //////////////////////
