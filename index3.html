@@ -9,6 +9,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="index3a.css" />
 
+  <script defer type="module" src="todo2-list.js"></script>
+  <script defer src="todo2-item.js"></script>
+
   <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
   <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
 
@@ -17,6 +20,10 @@
 
 <body>
   <aside class="mdc-drawer mdc-drawer--dismissible">
+    <div class="mdc-drawer__header">
+      <h3 class="mdc-drawer__title">Email</h3>
+      <h6 class="mdc-drawer__subtitle">chris@gmail.com</h6>
+    </div>
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
@@ -30,6 +37,30 @@
         <a class="mdc-list-item" href="#">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
           <span class="mdc-list-item__text">Drafts</span>
+        </a>
+        <hr class="mdc-list-divider">
+        <h6 class="mdc-list-group__subheader">Labels</h6>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+          <span class="mdc-list-item__text">Family</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+          <span class="mdc-list-item__text">Friends</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+          <span class="mdc-list-item__text">Notes</span>
+        </a>
+        <hr class="mdc-list-divider">
+        <h6 class="mdc-list-group__subheader">Preferences</h6>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+          <span class="mdc-list-item__text">Settings</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">help</i>
+          <span class="mdc-list-item__text">Help</span>
         </a>
       </nav>
     </div>
@@ -132,6 +163,19 @@
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia adipisci, quae accusamus sit repellat atque ipsum
         ipsam nisi odio ad similique eligendi perspiciatis omnis doloremque corrupti corporis tempore at molestias!
         <br>
+        <br>
+
+        <h1>WebComponents Todo List</h1>
+
+        <div>
+          <p>Add a todo:</p>
+          <input type="text" id="todo-title" placeholder="title" />
+          <input type="text" id="todo-description" placeholder="description" />
+          <button id="add-todo">Add Todo</button>
+        </div>
+        <br>
+        <todo2-list
+          todos='[{"title":"My First Todo","description":"The Description"},{"title":"My Second Todo","description":"The Description"}]'></todo2-list>
         <br>
 
         <div class="mdc-snackbar">
