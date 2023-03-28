@@ -42,7 +42,7 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 });
 
 /////////////////////////////////////////////////////////////
-// listen for text change to Email Address
+// listen for text changes to Email Address
 const emailAddressEl = document.querySelector('#ti-email-address');
 const emailAddress = mdc.textField.MDCTextField.attachTo(document.querySelector('.mdc-text-field--filled'));
 // emailAddressEl.addEventListener('input', (e) => {

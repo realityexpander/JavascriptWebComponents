@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title>Calendar Important Events</title>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="./node_modules/smart-webcomponents/source/styles/smart.default.css" />
+  <link rel="stylesheet" type="text/css" href="./node_modules/smart-webcomponents/source/styles/smart.default.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="./node_modules/smart-webcomponents/styles/demos.css" /> -->
+
+  <link rel="stylesheet" type="text/css" href="styles4.css" />
+</head>
+
+<body class="viewport">
+  <div class="demo-description">
+    Most popular Tennis Events are added to the Calendar as <b>importantDates</b>. Hover over a date in order to see
+    the Tooltip with the event description. Click on the calendar Button inside the Tooltip to edit the event.
+    Double clicking on an empty date(non-important date) will allow to add a new event(important date) to the
+    Calendar.
+  </div>
+  <smart-calendar id="calendar"></smart-calendar>
+
+  <smart-window id="eventWindow" modal footer-template="windowFooterTemplate">
+    <div class="window-content">
+      <div>
+        <label>Description</label>
+        <smart-multiline-text-box id="descriptionInput" auto-expand placeholder="Enter description">
+        </smart-multiline-text-box>
+      </div>
+      <div>
+        <label>Time period</label>
+        <smart-date-range-input id="dateRangeInput" placeholder="Enter date(s)" drop-down-button-position="right"
+          value-type="object">
+        </smart-date-range-input>
+      </div>
+    </div>
+  </smart-window>
+
+  <template id="headerTemplate">
+    <div class="calendar-header">
+      <div class="view-selection">
+        <smart-button id="month" class="primary">Month</smart-button>
+        <smart-button id="year">Year</smart-button>
+        <smart-button id="decade">Decade</smart-button>
+      </div>
+      <div class="year-selector">{{date}}</div>
+      <div class="navigation-buttons">
+        <smart-button id="previous" class="flat rounded">&#xe902;</smart-button>
+        <smart-button id="today" class="flat">Today</smart-button>
+        <smart-button id="next" class="flat rounded">&#xe903;</smart-button>
+      </div>
+    </div>
+  </template>
+
+  <template id="tooltipTemplate">
+    <div class="tooltip-content">
+      <smart-button class="event-window-button button-icon floating primary"></smart-button>
+      <span>{{day}}</span>
+    </div>
+  </template>
+
+  <template id="windowFooterTemplate">
+    <div class="window-footer-buttons">
+      <smart-button id="buttonDelete">Delete</smart-button>
+      <smart-button id="buttonCancel">Cancel</smart-button>
+      <smart-button id="buttonSave">Save</smart-button>
+    </div>
+  </template>
+
+  <!-- scripts -->
+  <script type="module" src="./node_modules/smart-webcomponents/source/modules/smart.calendar.js"></script>
+  <script type="module" src="./node_modules/smart-webcomponents/source/modules/smart.window.js"></script>
+  <script type="module" src="./node_modules/smart-webcomponents/source/modules/smart.daterangeinput.js"></script>
+  <script type="module" src="index4.js"></script>
+</body>
+
+</html>
