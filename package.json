@@ -11,8 +11,8 @@
     "watch5": "rollup -p @rollup/plugin-node-resolve app.js -w --file bundle.js --inlineDynamicImports --environment NODE_ENV:development",
     "sass": "sass -w index3.scss index3.css",
     
-    "run-wds": "npm run build-ktor-watch & web-dev-server --node-resolve --open --watch --app-index index.html",
-    "build-ktor": "rollup -c",
+    "run-wds": "rm dist/*.* & npm run build-ktor-watch & web-dev-server --node-resolve --open --watch --app-index index.html",
+    "build-ktor": "rm dist/*.*; rollup -c",
     "build-ktor-watch": "rollup -c -w"
   },
   "author": "",
