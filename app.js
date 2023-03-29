@@ -10,7 +10,7 @@ import './page_home';
 // import './page_login';
 
 
-const globalProp = "version-1.2.3";
+const globalProp = "version-1.2.3.3";
 
 class App extends Router(LitElement) {
   static get routes() {
@@ -71,20 +71,23 @@ class App extends Router(LitElement) {
     ];
   }
 
-  // <page-login></page-login>
   render() {
-    return html`
-      <app-header>
-        <h1 slot="left">... some title goes here ...</h1>
-        <nav slot="right">... some navigation goes here ...</nav>
-      </app-header - header >
-      <main>
+    return (localStorage.getItem('token') == null) ?
+      html`
           ${this.routeElement}
-      </main>
-      <app-footer>
-          ... some copyright goes here ...
-      </app-footer>
-    `;
+        `
+      : html`
+          <app-header>
+            <h1 slot="left">... some title goes here ...</h1>
+            <nav slot="right">... some navigation goes here ...</nav>
+          </app-header - header >
+          <main>
+              ${this.routeElement}
+          </main>
+          <app-footer>
+              ... some copyright goes here ...
+          </app-footer>
+        `;
   }
 }
 customElements.define('my-app', App);

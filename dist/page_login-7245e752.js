@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { s, x } from './app.js';
 
-class Login2 extends LitElement {
+class Login2 extends s {
 
   static get properties() {
     return {
@@ -20,7 +20,7 @@ class Login2 extends LitElement {
 
   render() {
     // If provided, the properties for type and day are taking from the path.
-    return html`
+    return x`
       <h1>Login</h1>
       <p>Please login</p>
       <p>Category: ${this.category}</p>

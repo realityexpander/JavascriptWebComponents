@@ -10,7 +10,10 @@
     "watch2": "rollup -p @rollup/plugin-node-resolve index2.js -w --file bundle.js --environment NODE_ENV:development",
     "watch5": "rollup -p @rollup/plugin-node-resolve app.js -w --file bundle.js --inlineDynamicImports --environment NODE_ENV:development",
     "sass": "sass -w index3.scss index3.css",
-    "run-wds":"web-dev-server --node-resolve --open --watch --app-index index.html"
+    
+    "run-wds": "npm run build-ktor-watch & web-dev-server --node-resolve --open --watch --app-index index.html",
+    "build-ktor": "rollup -c",
+    "build-ktor-watch": "rollup -c -w"
   },
   "author": "",
   "license": "ISC",
@@ -20,10 +23,11 @@
     "@material/drawer": "^14.0.0",
     "@material/top-app-bar": "^14.0.0",
     "@material/web": "^1.0.0-pre.5",
+    "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@types/uuid": "^9.0.1",
     "@web/dev-server": "^0.1.36",
-    "rollup": "^3.20.2",
+    "rollup": "^2.79.1",
     "simple-wc-router": "^2.3.4",
     "smart-webcomponents": "^15.0.11",
     "uuid": "^9.0.0"

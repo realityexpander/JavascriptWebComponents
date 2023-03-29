@@ -1,17 +1,15 @@
-'use strict';
-
 /**
  * @license
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const t$1=window,e$2=t$1.ShadowRoot&&(void 0===t$1.ShadyCSS||t$1.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,s$3=Symbol(),n$3=new WeakMap;let o$3 = class o{constructor(t,e,n){if(this._$cssResult$=!0,n!==s$3)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e;}get styleSheet(){let t=this.o;const s=this.t;if(e$2&&void 0===t){const e=void 0!==s&&1===s.length;e&&(t=n$3.get(s)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),e&&n$3.set(s,t));}return t}toString(){return this.cssText}};const r$2=t=>new o$3("string"==typeof t?t:t+"",void 0,s$3),S$1=(s,n)=>{e$2?s.adoptedStyleSheets=n.map((t=>t instanceof CSSStyleSheet?t:t.styleSheet)):n.forEach((e=>{const n=document.createElement("style"),o=t$1.litNonce;void 0!==o&&n.setAttribute("nonce",o),n.textContent=e.cssText,s.appendChild(n);}));},c$1=e$2?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const s of t.cssRules)e+=s.cssText;return r$2(e)})(t):t;
+const t$1=window,e$2=t$1.ShadowRoot&&(void 0===t$1.ShadyCSS||t$1.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,s$3=Symbol(),n$3=new WeakMap;class o$3{constructor(t,e,n){if(this._$cssResult$=!0,n!==s$3)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e;}get styleSheet(){let t=this.o;const s=this.t;if(e$2&&void 0===t){const e=void 0!==s&&1===s.length;e&&(t=n$3.get(s)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),e&&n$3.set(s,t));}return t}toString(){return this.cssText}}const r$2=t=>new o$3("string"==typeof t?t:t+"",void 0,s$3),S$1=(s,n)=>{e$2?s.adoptedStyleSheets=n.map((t=>t instanceof CSSStyleSheet?t:t.styleSheet)):n.forEach((e=>{const n=document.createElement("style"),o=t$1.litNonce;void 0!==o&&n.setAttribute("nonce",o),n.textContent=e.cssText,s.appendChild(n);}));},c$1=e$2?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const s of t.cssRules)e+=s.cssText;return r$2(e)})(t):t;
 
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */var s$2;const e$1=window,r$1=e$1.trustedTypes,h$1=r$1?r$1.emptyScript:"",o$2=e$1.reactiveElementPolyfillSupport,n$2={toAttribute(t,i){switch(i){case Boolean:t=t?h$1:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t);}return t},fromAttribute(t,i){let s=t;switch(i){case Boolean:s=null!==t;break;case Number:s=null===t?null:Number(t);break;case Object:case Array:try{s=JSON.parse(t);}catch(t){s=null;}}return s}},a$1=(t,i)=>i!==t&&(i==i||t==t),l$2={attribute:!0,type:String,converter:n$2,reflect:!1,hasChanged:a$1};let d$1 = class d extends HTMLElement{constructor(){super(),this._$Ei=new Map,this.isUpdatePending=!1,this.hasUpdated=!1,this._$El=null,this.u();}static addInitializer(t){var i;this.finalize(),(null!==(i=this.h)&&void 0!==i?i:this.h=[]).push(t);}static get observedAttributes(){this.finalize();const t=[];return this.elementProperties.forEach(((i,s)=>{const e=this._$Ep(s,i);void 0!==e&&(this._$Ev.set(e,s),t.push(e));})),t}static createProperty(t,i=l$2){if(i.state&&(i.attribute=!1),this.finalize(),this.elementProperties.set(t,i),!i.noAccessor&&!this.prototype.hasOwnProperty(t)){const s="symbol"==typeof t?Symbol():"__"+t,e=this.getPropertyDescriptor(t,s,i);void 0!==e&&Object.defineProperty(this.prototype,t,e);}}static getPropertyDescriptor(t,i,s){return {get(){return this[i]},set(e){const r=this[t];this[i]=e,this.requestUpdate(t,r,s);},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)||l$2}static finalize(){if(this.hasOwnProperty("finalized"))return !1;this.finalized=!0;const t=Object.getPrototypeOf(this);if(t.finalize(),void 0!==t.h&&(this.h=[...t.h]),this.elementProperties=new Map(t.elementProperties),this._$Ev=new Map,this.hasOwnProperty("properties")){const t=this.properties,i=[...Object.getOwnPropertyNames(t),...Object.getOwnPropertySymbols(t)];for(const s of i)this.createProperty(s,t[s]);}return this.elementStyles=this.finalizeStyles(this.styles),!0}static finalizeStyles(i){const s=[];if(Array.isArray(i)){const e=new Set(i.flat(1/0).reverse());for(const i of e)s.unshift(c$1(i));}else void 0!==i&&s.push(c$1(i));return s}static _$Ep(t,i){const s=i.attribute;return !1===s?void 0:"string"==typeof s?s:"string"==typeof t?t.toLowerCase():void 0}u(){var t;this._$E_=new Promise((t=>this.enableUpdating=t)),this._$AL=new Map,this._$Eg(),this.requestUpdate(),null===(t=this.constructor.h)||void 0===t||t.forEach((t=>t(this)));}addController(t){var i,s;(null!==(i=this._$ES)&&void 0!==i?i:this._$ES=[]).push(t),void 0!==this.renderRoot&&this.isConnected&&(null===(s=t.hostConnected)||void 0===s||s.call(t));}removeController(t){var i;null===(i=this._$ES)||void 0===i||i.splice(this._$ES.indexOf(t)>>>0,1);}_$Eg(){this.constructor.elementProperties.forEach(((t,i)=>{this.hasOwnProperty(i)&&(this._$Ei.set(i,this[i]),delete this[i]);}));}createRenderRoot(){var t;const s=null!==(t=this.shadowRoot)&&void 0!==t?t:this.attachShadow(this.constructor.shadowRootOptions);return S$1(s,this.constructor.elementStyles),s}connectedCallback(){var t;void 0===this.renderRoot&&(this.renderRoot=this.createRenderRoot()),this.enableUpdating(!0),null===(t=this._$ES)||void 0===t||t.forEach((t=>{var i;return null===(i=t.hostConnected)||void 0===i?void 0:i.call(t)}));}enableUpdating(t){}disconnectedCallback(){var t;null===(t=this._$ES)||void 0===t||t.forEach((t=>{var i;return null===(i=t.hostDisconnected)||void 0===i?void 0:i.call(t)}));}attributeChangedCallback(t,i,s){this._$AK(t,s);}_$EO(t,i,s=l$2){var e;const r=this.constructor._$Ep(t,s);if(void 0!==r&&!0===s.reflect){const h=(void 0!==(null===(e=s.converter)||void 0===e?void 0:e.toAttribute)?s.converter:n$2).toAttribute(i,s.type);this._$El=t,null==h?this.removeAttribute(r):this.setAttribute(r,h),this._$El=null;}}_$AK(t,i){var s;const e=this.constructor,r=e._$Ev.get(t);if(void 0!==r&&this._$El!==r){const t=e.getPropertyOptions(r),h="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==(null===(s=t.converter)||void 0===s?void 0:s.fromAttribute)?t.converter:n$2;this._$El=r,this[r]=h.fromAttribute(i,t.type),this._$El=null;}}requestUpdate(t,i,s){let e=!0;void 0!==t&&(((s=s||this.constructor.getPropertyOptions(t)).hasChanged||a$1)(this[t],i)?(this._$AL.has(t)||this._$AL.set(t,i),!0===s.reflect&&this._$El!==t&&(void 0===this._$EC&&(this._$EC=new Map),this._$EC.set(t,s))):e=!1),!this.isUpdatePending&&e&&(this._$E_=this._$Ej());}async _$Ej(){this.isUpdatePending=!0;try{await this._$E_;}catch(t){Promise.reject(t);}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){var t;if(!this.isUpdatePending)return;this.hasUpdated,this._$Ei&&(this._$Ei.forEach(((t,i)=>this[i]=t)),this._$Ei=void 0);let i=!1;const s=this._$AL;try{i=this.shouldUpdate(s),i?(this.willUpdate(s),null===(t=this._$ES)||void 0===t||t.forEach((t=>{var i;return null===(i=t.hostUpdate)||void 0===i?void 0:i.call(t)})),this.update(s)):this._$Ek();}catch(t){throw i=!1,this._$Ek(),t}i&&this._$AE(s);}willUpdate(t){}_$AE(t){var i;null===(i=this._$ES)||void 0===i||i.forEach((t=>{var i;return null===(i=t.hostUpdated)||void 0===i?void 0:i.call(t)})),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t);}_$Ek(){this._$AL=new Map,this.isUpdatePending=!1;}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$E_}shouldUpdate(t){return !0}update(t){void 0!==this._$EC&&(this._$EC.forEach(((t,i)=>this._$EO(i,this[i],t))),this._$EC=void 0),this._$Ek();}updated(t){}firstUpdated(t){}};d$1.finalized=!0,d$1.elementProperties=new Map,d$1.elementStyles=[],d$1.shadowRootOptions={mode:"open"},null==o$2||o$2({ReactiveElement:d$1}),(null!==(s$2=e$1.reactiveElementVersions)&&void 0!==s$2?s$2:e$1.reactiveElementVersions=[]).push("1.6.1");
+ */var s$2;const e$1=window,r$1=e$1.trustedTypes,h$1=r$1?r$1.emptyScript:"",o$2=e$1.reactiveElementPolyfillSupport,n$2={toAttribute(t,i){switch(i){case Boolean:t=t?h$1:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t);}return t},fromAttribute(t,i){let s=t;switch(i){case Boolean:s=null!==t;break;case Number:s=null===t?null:Number(t);break;case Object:case Array:try{s=JSON.parse(t);}catch(t){s=null;}}return s}},a$1=(t,i)=>i!==t&&(i==i||t==t),l$2={attribute:!0,type:String,converter:n$2,reflect:!1,hasChanged:a$1};class d$1 extends HTMLElement{constructor(){super(),this._$Ei=new Map,this.isUpdatePending=!1,this.hasUpdated=!1,this._$El=null,this.u();}static addInitializer(t){var i;this.finalize(),(null!==(i=this.h)&&void 0!==i?i:this.h=[]).push(t);}static get observedAttributes(){this.finalize();const t=[];return this.elementProperties.forEach(((i,s)=>{const e=this._$Ep(s,i);void 0!==e&&(this._$Ev.set(e,s),t.push(e));})),t}static createProperty(t,i=l$2){if(i.state&&(i.attribute=!1),this.finalize(),this.elementProperties.set(t,i),!i.noAccessor&&!this.prototype.hasOwnProperty(t)){const s="symbol"==typeof t?Symbol():"__"+t,e=this.getPropertyDescriptor(t,s,i);void 0!==e&&Object.defineProperty(this.prototype,t,e);}}static getPropertyDescriptor(t,i,s){return {get(){return this[i]},set(e){const r=this[t];this[i]=e,this.requestUpdate(t,r,s);},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)||l$2}static finalize(){if(this.hasOwnProperty("finalized"))return !1;this.finalized=!0;const t=Object.getPrototypeOf(this);if(t.finalize(),void 0!==t.h&&(this.h=[...t.h]),this.elementProperties=new Map(t.elementProperties),this._$Ev=new Map,this.hasOwnProperty("properties")){const t=this.properties,i=[...Object.getOwnPropertyNames(t),...Object.getOwnPropertySymbols(t)];for(const s of i)this.createProperty(s,t[s]);}return this.elementStyles=this.finalizeStyles(this.styles),!0}static finalizeStyles(i){const s=[];if(Array.isArray(i)){const e=new Set(i.flat(1/0).reverse());for(const i of e)s.unshift(c$1(i));}else void 0!==i&&s.push(c$1(i));return s}static _$Ep(t,i){const s=i.attribute;return !1===s?void 0:"string"==typeof s?s:"string"==typeof t?t.toLowerCase():void 0}u(){var t;this._$E_=new Promise((t=>this.enableUpdating=t)),this._$AL=new Map,this._$Eg(),this.requestUpdate(),null===(t=this.constructor.h)||void 0===t||t.forEach((t=>t(this)));}addController(t){var i,s;(null!==(i=this._$ES)&&void 0!==i?i:this._$ES=[]).push(t),void 0!==this.renderRoot&&this.isConnected&&(null===(s=t.hostConnected)||void 0===s||s.call(t));}removeController(t){var i;null===(i=this._$ES)||void 0===i||i.splice(this._$ES.indexOf(t)>>>0,1);}_$Eg(){this.constructor.elementProperties.forEach(((t,i)=>{this.hasOwnProperty(i)&&(this._$Ei.set(i,this[i]),delete this[i]);}));}createRenderRoot(){var t;const s=null!==(t=this.shadowRoot)&&void 0!==t?t:this.attachShadow(this.constructor.shadowRootOptions);return S$1(s,this.constructor.elementStyles),s}connectedCallback(){var t;void 0===this.renderRoot&&(this.renderRoot=this.createRenderRoot()),this.enableUpdating(!0),null===(t=this._$ES)||void 0===t||t.forEach((t=>{var i;return null===(i=t.hostConnected)||void 0===i?void 0:i.call(t)}));}enableUpdating(t){}disconnectedCallback(){var t;null===(t=this._$ES)||void 0===t||t.forEach((t=>{var i;return null===(i=t.hostDisconnected)||void 0===i?void 0:i.call(t)}));}attributeChangedCallback(t,i,s){this._$AK(t,s);}_$EO(t,i,s=l$2){var e;const r=this.constructor._$Ep(t,s);if(void 0!==r&&!0===s.reflect){const h=(void 0!==(null===(e=s.converter)||void 0===e?void 0:e.toAttribute)?s.converter:n$2).toAttribute(i,s.type);this._$El=t,null==h?this.removeAttribute(r):this.setAttribute(r,h),this._$El=null;}}_$AK(t,i){var s;const e=this.constructor,r=e._$Ev.get(t);if(void 0!==r&&this._$El!==r){const t=e.getPropertyOptions(r),h="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==(null===(s=t.converter)||void 0===s?void 0:s.fromAttribute)?t.converter:n$2;this._$El=r,this[r]=h.fromAttribute(i,t.type),this._$El=null;}}requestUpdate(t,i,s){let e=!0;void 0!==t&&(((s=s||this.constructor.getPropertyOptions(t)).hasChanged||a$1)(this[t],i)?(this._$AL.has(t)||this._$AL.set(t,i),!0===s.reflect&&this._$El!==t&&(void 0===this._$EC&&(this._$EC=new Map),this._$EC.set(t,s))):e=!1),!this.isUpdatePending&&e&&(this._$E_=this._$Ej());}async _$Ej(){this.isUpdatePending=!0;try{await this._$E_;}catch(t){Promise.reject(t);}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){var t;if(!this.isUpdatePending)return;this.hasUpdated,this._$Ei&&(this._$Ei.forEach(((t,i)=>this[i]=t)),this._$Ei=void 0);let i=!1;const s=this._$AL;try{i=this.shouldUpdate(s),i?(this.willUpdate(s),null===(t=this._$ES)||void 0===t||t.forEach((t=>{var i;return null===(i=t.hostUpdate)||void 0===i?void 0:i.call(t)})),this.update(s)):this._$Ek();}catch(t){throw i=!1,this._$Ek(),t}i&&this._$AE(s);}willUpdate(t){}_$AE(t){var i;null===(i=this._$ES)||void 0===i||i.forEach((t=>{var i;return null===(i=t.hostUpdated)||void 0===i?void 0:i.call(t)})),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t);}_$Ek(){this._$AL=new Map,this.isUpdatePending=!1;}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$E_}shouldUpdate(t){return !0}update(t){void 0!==this._$EC&&(this._$EC.forEach(((t,i)=>this._$EO(i,this[i],t))),this._$EC=void 0),this._$Ek();}updated(t){}firstUpdated(t){}}d$1.finalized=!0,d$1.elementProperties=new Map,d$1.elementStyles=[],d$1.shadowRootOptions={mode:"open"},null==o$2||o$2({ReactiveElement:d$1}),(null!==(s$2=e$1.reactiveElementVersions)&&void 0!==s$2?s$2:e$1.reactiveElementVersions=[]).push("1.6.1");
 
 /**
  * @license
@@ -193,7 +191,7 @@ customElements.define('page-home', Home);
 // import './page_login';
 
 
-const globalProp = "version-1.2.3";
+const globalProp = "version-1.2.3.3";
 
 class App extends Router(s) {
   static get routes() {
@@ -207,19 +205,19 @@ class App extends Router(s) {
       {
         path: "/stocks",
         component: "page-stocks",
-        import: () => Promise.resolve().then(function () { return page_stocks; })
+        import: () => import('./page_stocks-6eefd687.js')
       },
       // Using 'type' and 'day' variable.
       {
         path: "/stock/:type/:day",
         component: "page-stocks",
-        import: () => Promise.resolve().then(function () { return page_stocks; })
+        import: () => import('./page_stocks-6eefd687.js')
       },
       // Using 'stockId' and optionally 'againstRate' variable.
       {
         path: "/trade/:stockId/:?againstRate",
         component: "page-trade",
-        import: () => Promise.resolve().then(function () { return page_trade; })
+        import: () => import('./page_trade-b89520d2.js')
       },
       // Using 'category' variable.
       {
@@ -230,7 +228,7 @@ class App extends Router(s) {
               .someOtherGlobalProp=${globalProp}>
           </page-news>
         `,
-        import: () => Promise.resolve().then(function () { return page_news; })
+        import: () => import('./page_news-0e37a17d.js')
       },
       // Login page
       {
@@ -241,7 +239,7 @@ class App extends Router(s) {
             .category="hello">
           </page-login>
         `,
-        import: () => Promise.resolve().then(function () { return page_login; })
+        import: () => import('./page_login-7a97e212.js')
       },
       // Fallback for all unmatched routes.  
       {
@@ -255,364 +253,24 @@ class App extends Router(s) {
   }
 
   render() {
-    return x`
-      <app-header>
-        <h1 slot="left">... some title goes here ...</h1>
-        <nav slot="right">... some navigation goes here ...</nav>
-      </app-header - header >
-      <main>
+    return (localStorage.getItem('token') == null) ?
+      x`
           ${this.routeElement}
-      </main>
-      <app-footer>
-          ... some copyright goes here ...
-      </app-footer>
-    `;
+        `
+      : x`
+          <app-header>
+            <h1 slot="left">... some title goes here ...</h1>
+            <nav slot="right">... some navigation goes here ...</nav>
+          </app-header - header >
+          <main>
+              ${this.routeElement}
+          </main>
+          <app-footer>
+              ... some copyright goes here ...
+          </app-footer>
+        `;
   }
 }
 customElements.define('my-app', App);
 
-class Stocks extends s {
-
-  static get properties() {
-    return {
-      type: { type: String },
-      day: { type: String }
-    }
-  }
-
-  constructor() {
-    super();
-    this.type = undefined;
-    this.day = undefined;
-
-    // Honor trailing hash in URL
-    if (window.location.hash != '') {
-      // scroll to hash
-      setTimeout(() => {
-        const anchor = window.location.hash.split('#')[1];
-        const element = this.shadowRoot.getElementById(anchor);
-        if (element) {
-          element.scrollIntoView();
-        }
-      }, 100);
-
-    }
-  }
-
-  render() {
-    // If provided, the properties for type and day are taking from the path.
-    //const { type = 'NASDAC', day = 'monday' } = this.routeProps;
-    if (this.type === undefined) {
-      return x`
-        This is the page for stocks, no type or day provided.
-        <br>
-        
-        <a href="/">Home</a>
-        <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        6 <br>
-        7 <br>
-        8 <br>
-        9 <br>
-        10 <br>
-        11 <br>
-        12 <br>
-        13 <br>
-        14 <br>
-        15 <br>
-        16 <br>
-        17 <br>
-        18 <br>
-        19 <br>
-        20 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        6 <br>
-        7 <br>
-        8 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        6 <br>
-        7 <br>
-        8 <br>
-        9 <br>
-        10 <br>
-        11 <br>
-        12 <br>
-        13 <br>
-        14 <br>
-        15 <br>
-        16 <br>
-        17 <br>
-        18 <br>
-        19 <br>
-        20 <br>
-        4 <br>
-        5 <br>
-        6 <br>
-        7 <br>
-        8 <br>
-        9 <br>
-        10 <br>
-        11 <br>
-        12 <br>
-        13 <br>
-        14 <br>
-        15 <br>
-        16 <br>
-        17 <br>
-        18 <br>
-        19 <br>
-        20 <br>
-        <p id="3">Anchor 3</p>
-        9 <br>
-        10 <br>
-        11 <br>
-        12 <br>
-        13 <br>
-        14 <br>
-        15 <br>
-        16 <br>
-        17 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        6 <br>
-        7 <br>
-        8 <br>
-        9 <br>
-        10 <br>
-        11 <br>
-        12 <br>
-        13 <br>
-        14 <br>
-        15 <br>
-        16 <br>
-        17 <br>
-        18 <br>
-        19 <br>
-        20 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        6 <br>
-        7 <br>
-        8 <br>
-        9 <br>
-        10 <br>
-        11 <br>
-        12 <br>
-        13 <br>
-        14 <br>
-        15 <br>
-        16 <br>
-        17 <br>
-        18 <br>
-        19 <br>
-        20 <br>
-        18 <br>
-        19 <br>
-        20 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        6 <br>
-        7 <br>
-        8 <br>
-        9 <br>
-        10 <br>
-        11 <br>
-        12 <br>
-        13 <br>
-        14 <br>
-        15 <br>
-        16 <br>
-        17 <br>
-        18 <br>
-        19 <br>
-        20 <br>
-        <br>
-        <p id="1">Anchor 1</p>
-        <p id="2">Anchor 2</p>
-        <br>
-        `
-    }
-
-    return x`This is the page for ${this.type} on a ${this.day}`
-  }
-
-  firstUpdated() {
-    // console.log(this.type);
-    // console.log(this.day);
-  }
-
-  // tear down the component
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-  }
-}
-customElements.define('page-stocks', Stocks);
-
-var page_stocks = /*#__PURE__*/Object.freeze({
-  __proto__: null
-});
-
-class Trade extends s {
-  render() {
-    // If provided, the properties for type and day are taking from the path.
-    return x`
-      This is the page for trades ${this.stockId} 
-      ${this.againstRate == undefined ? 'No rate given' : 'against rate: ' + this.againstRate}
-    `
-  }
-}
-customElements.define('page-trade', Trade);
-
-var page_trade = /*#__PURE__*/Object.freeze({
-  __proto__: null
-});
-
-class News extends s {
-
-  static get properties() {
-    return {
-      category: { type: String },
-      someOtherGlobalProp: { type: String }
-    }
-  }
-
-  constructor() {
-    super();
-    this.category = '';
-    this.someOtherGlobalProp = '';
-  }
-
-  firstUpdated() {
-    console.log(this.category);
-    console.log(this.someOtherGlobalProp);
-  }
-
-  render() {
-    // If provided, the properties for type and day are taking from the path.
-    return x`
-    <h1>News</h1>
-      <p>This is the page for news.</p>
-      <p>Category: ${this.category}</p>
-      <p>Some other global prop: ${this.someOtherGlobalProp}</p>
-      `
-  }
-
-}
-customElements.define('page-news', News);
-
-var page_news = /*#__PURE__*/Object.freeze({
-  __proto__: null
-});
-
-class Login2 extends s {
-
-  static get properties() {
-    return {
-      category: { type: String },
-    }
-  }
-
-  constructor() {
-    super();
-    this.category = '';
-  }
-
-  firstUpdated() {
-    console.log(this.category);
-    this.setupListeners();
-  }
-
-  render() {
-    // If provided, the properties for type and day are taking from the path.
-    return x`
-      <h1>Login</h1>
-      <p>Please login</p>
-      <p>Category: ${this.category}</p>
-      <form action="" id="login-form">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" placeholder="Enter your Username..."><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" placeholder="Enter your Password..."><br><br>
-        <button type="submit">Submit</button> <!-- must use listeners for this button -->
-      </form>
-      <button @click=${this.login}>Login</button>
-      <br>
-      <a href="/">Home</a>
-      `
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeListeners();
-  }
-
-  setupListeners() {
-    this.shadowRoot.getElementById('login-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      this.login();
-    });
-  }
-
-  removeListeners() {
-    this.shadowRoot.getElementById('login-form').removeEventListener('submit', (e) => { });
-  }
-
-  login() {
-    if (this.shadowRoot.getElementById('username').value == 'admin' &&
-      this.shadowRoot.getElementById('password').value == 'admin'
-    ) {
-      localStorage.setItem('token', '1234567890');
-      window.location.href = '/';
-    } else {
-      alert('Wrong username or password');
-    }
-
-    // fetch('http://localhost:3000/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     username: 'admin',
-    //     password: 'admin'
-    //   })
-    // })
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     console.log('Success:', data);
-    //     localStorage.setItem('token', '1234567890');
-    //     window.location.href = '/';
-    //   })
-  }
-
-}
-customElements.define('page-login', Login2);
-
-var page_login = /*#__PURE__*/Object.freeze({
-  __proto__: null
-});
+export { s, x };
