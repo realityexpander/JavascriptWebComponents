@@ -168,6 +168,12 @@ const styles = i$1`
   font-weight: 400;
   src: url(https://fonts.gstatic.com/s/materialicons/v140/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
 }
+* {
+  font-family: system-ui, Roboto, sans-serif;
+  --mdc-typography-button-font-size: .75rem;
+  --mdc-outlined-button-container-height: 30px;
+}
+
 
 .material-icons {
   font-family: 'Material Icons';
@@ -222,6 +228,8 @@ const styles = i$1`
 `;
 
 class Home extends s {
+  static styles = styles;
+
   render() {
     // If provided, the properties for type and day are taking from the path.
     //const { type = 'NASDAC', day = 'monday' } = this.routeProps;
@@ -237,7 +245,19 @@ class Home extends s {
       <button @click=${() => window.location = '/stocks'}>Go to stocks</button>
       <br>
       <button @click=${() => this.logout()}>Log Out</button>
+
+      <button id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Send Item</span>
+      </button>
       `
+  }
+
+  firstUpdated() {
+    const buttons = this.shadowRoot.querySelectorAll('.mdc-button');
+    for (let i = 0, button; button = buttons[i]; i++) {
+      mdc.ripple.MDCRipple.attachTo(button);
+    }
   }
 
   logout() {
@@ -246,10 +266,6 @@ class Home extends s {
   }
 }
 customElements.define('page-home', Home);
-
-// import './page_stocks';
-// import './page_login';
-
 
 const globalProp = "version-1.2.3.3";
 
@@ -265,19 +281,19 @@ class App extends Router(s) {
       {
         path: "/stocks",
         component: "page-stocks",
-        import: () => import('./page_stocks-a7b960c3.js')
+        import: () => import('./page_stocks-0b57d8e5.js')
       },
       // Using 'type' and 'day' variable.
       {
         path: "/stock/:type/:day",
         component: "page-stocks",
-        import: () => import('./page_stocks-a7b960c3.js')
+        import: () => import('./page_stocks-0b57d8e5.js')
       },
       // Using 'stockId' and optionally 'againstRate' variable.
       {
         path: "/trade/:stockId/:?againstRate",
         component: "page-trade",
-        import: () => import('./page_trade-f4497484.js')
+        import: () => import('./page_trade-9b44e54e.js')
       },
       // Using 'category' variable, & is required.
       {
@@ -288,7 +304,7 @@ class App extends Router(s) {
               .someOtherGlobalProp=${globalProp}>
           </page-news>
         `,
-        import: () => import('./page_news-0140dc7f.js')
+        import: () => import('./page_news-cca85632.js')
       },
       // Login page
       {
@@ -299,7 +315,7 @@ class App extends Router(s) {
             .category="hello">
           </page-login>
         `,
-        import: () => import('./page_login-b08fc7bc.js')
+        import: () => import('./page_login-f096a954.js')
       },
       // Fallback for all unmatched routes.  
       {
@@ -308,6 +324,7 @@ class App extends Router(s) {
           <h2> 404 The requested page could not be found</h2>
           <br>
           requested location: <code>${window.location.href}</code> does not exist
+          <br>
           <br>
           <a href="/">Home</a>
         `
@@ -325,7 +342,7 @@ class App extends Router(s) {
       :
       x`
       <style>
-        ${this.app_style_css}
+        /*${this.app_style_css}*/
       </style>
       <body>
         ${this.app_drawer_html}
@@ -457,7 +474,7 @@ class App extends Router(s) {
   app_style_css = `
   /*
   * {
-    font-family: system-ui, Roboto,sans-serif;
+    font-family: system-ui, Roboto, sans-serif;
     font-size: 1rem;
     padding: 0;
     margin: 0;

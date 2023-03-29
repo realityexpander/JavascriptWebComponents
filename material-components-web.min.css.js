@@ -7,6 +7,12 @@ export const styles = css`
   font-weight: 400;
   src: url(https://fonts.gstatic.com/s/materialicons/v140/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
 }
+* {
+  font-family: system-ui, Roboto, sans-serif;
+  --mdc-typography-button-font-size: .75rem;
+  --mdc-outlined-button-container-height: 30px;
+}
+
 
 .material-icons {
   font-family: 'Material Icons';

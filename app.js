@@ -7,9 +7,6 @@ import { styles } from './material-components-web.min.css.js';
 // import './components';
 
 import './page_home';
-// import './page_stocks';
-// import './page_login';
-
 
 const globalProp = "version-1.2.3.3";
 
@@ -69,6 +66,7 @@ class App extends Router(LitElement) {
           <br>
           requested location: <code>${window.location.href}</code> does not exist
           <br>
+          <br>
           <a href="/">Home</a>
         `
       }
@@ -85,7 +83,7 @@ class App extends Router(LitElement) {
       :
       html`
       <style>
-        ${this.app_style_css}
+        /*${this.app_style_css}*/
       </style>
       <body>
         ${this.app_drawer_html}
@@ -217,7 +215,7 @@ class App extends Router(LitElement) {
   app_style_css = `
   /*
   * {
-    font-family: system-ui, Roboto,sans-serif;
+    font-family: system-ui, Roboto, sans-serif;
     font-size: 1rem;
     padding: 0;
     margin: 0;
