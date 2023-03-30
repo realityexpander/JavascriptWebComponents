@@ -50,9 +50,13 @@ const Router = superClass =>
     __handleNav(ev) {
       if (!this.constructor.routes) throw Errors.Router.NoRoutes;
 
+      // if the user is not logged in, redirect to login page
       let loginLocation = null;
-      if (localStorage.getItem('token') == null) {
-        loginLocation = '/login';
+      let isLoginLocationInPath = ev.target.location.pathname.split("/")[1] == 'login';
+      if (!isLoginLocationInPath) {
+        if (localStorage.getItem('token') == null) {
+          loginLocation = '/login/';
+        }
       }
 
       //const targetRoute = window.location.pathname; //ev.state.route;
