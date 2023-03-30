@@ -26,3 +26,6 @@ export default {
     nodeResolve(),
   ]
 };
+
+
+// "types": "dist/types.d.ts",

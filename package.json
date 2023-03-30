@@ -1,8 +1,12 @@
 {
   "name": "javascriptwebcomponents",
   "version": "1.0.0",
-  "description": "web components",
-  "main": "index.js",
+  "description": "web components app testing ground",
+  "source": "src/app.js",
+  "module": "dist/app.js",
+  "devDependencies": {
+    "parcel": "latest"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -p @rollup/plugin-node-resolve index.js > bundle.js",
@@ -12,7 +16,10 @@
     "sass": "sass -w index3.scss index3.css",
     "run-wds": "rm dist/*.*; npm run build-ktor-watch & web-dev-server --node-resolve --open --watch --app-index index.html",
     "build-ktor": "rm dist/*.*; rollup -c",
-    "build-ktor-watch": "rollup -c -w"
+    "build-ktor-watch": "rollup -c -w",
+    "wds": "web-dev-server --node-resolve --open --watch --app-index index.html",
+    "watch-parcel": "npx parcel watch",
+    "build-parcel": "npx parcel build"
   },
   "author": "",
   "license": "ISC",
@@ -24,8 +31,10 @@
     "@material/web": "^1.0.0-pre.5",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@swc/helpers": "^0.4.14",
     "@types/uuid": "^9.0.1",
     "@web/dev-server": "^0.1.36",
+    "lit": "^2.7.0",
     "parcel": "^2.8.3",
     "rollup": "^2.79.1",
     "simple-wc-router": "^2.3.4",
