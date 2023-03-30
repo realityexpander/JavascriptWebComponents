@@ -7,6 +7,7 @@
   "devDependencies": {
     "parcel": "latest"
   },
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -p @rollup/plugin-node-resolve index.js > bundle.js",
@@ -14,12 +15,14 @@
     "watch2": "rollup -p @rollup/plugin-node-resolve index2.js -w --file bundle.js --environment NODE_ENV:development",
     "watch5": "rollup -p @rollup/plugin-node-resolve app.js -w --file bundle.js --inlineDynamicImports --environment NODE_ENV:development",
     "sass": "sass -w index3.scss index3.css",
-    "run-wds": "rm dist/*.*; npm run build-ktor-watch & web-dev-server --node-resolve --open --watch --app-index index.html",
-    "build-ktor": "rm dist/*.*; rollup -c",
+    "run-wds": "rm -f dist/*.*; npm run build-ktor-watch & web-dev-server --node-resolve --open --watch --app-index index.html",
+    "build-ktor": "rm -f dist/*.*; rollup -c",
     "build-ktor-watch": "rollup -c -w",
     "wds": "web-dev-server --node-resolve --open --watch --app-index index.html",
-    "watch-parcel": "npx parcel watch",
-    "build-parcel": "npx parcel build"
+    "parcel-watch": "npx parcel watch",
+    "parcel-build": "npx parcel build",
+    "tsc-dev": "tsc --watch --preserveWatchOutput",
+    "start-dev": "rm -f dist/*.* && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"npx parcel watch\" \"wds --node-resolve --open --watch --app-index index.html\""
   },
   "author": "",
   "license": "ISC",
@@ -34,6 +37,7 @@
     "@swc/helpers": "^0.4.14",
     "@types/uuid": "^9.0.1",
     "@web/dev-server": "^0.1.36",
+    "concurrently": "^8.0.1",
     "lit": "^2.7.0",
     "parcel": "^2.8.3",
     "rollup": "^2.79.1",

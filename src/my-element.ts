@@ -37,11 +37,15 @@ export class MyElement extends LitElement {
   @property({type: Number})
   count = 0;
 
+  @property({type: String})
+  myString = 'Hello';
+
   override render() {
     return html`
       <h1>${this.sayHello(this.name)}!</h1>
       <button @click=${this._onClick} part="button">
         Click Count: ${this.count}
+        ${this.myString}
       </button>
       <slot></slot>
     `;
@@ -49,7 +53,21 @@ export class MyElement extends LitElement {
 
   private _onClick() {
     this.count++;
-    this.dispatchEvent(new CustomEvent('count-changed'));
+    this.myString = this.getRandomStringOf5Characters();
+    //this.dispatchEvent(event); // only dispatches inside this element
+    let event = new CustomEvent('count-changed', 
+      {
+        detail: {
+          count: this.count,
+          source: this,
+        },
+      }
+    );
+    document.dispatchEvent(event); // dispatches globally
+  }
+
+  private getRandomStringOf5Characters() {
+    return Math.random().toString(36).substring(2, 7);
   }
 
   /**

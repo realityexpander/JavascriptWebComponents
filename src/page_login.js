@@ -91,6 +91,13 @@ class Login extends LitElement {
       mdc.textField.MDCTextField.attachTo(textField);
     }
 
+    // listen for count-changed event
+    document.addEventListener('count-changed', (e) => {
+      let currentTime = new Date();
+      // set the time on the sending source element
+      e.detail.source.myString = 'changed' + currentTime;
+    });
+
   }
 
   // Is this needed? 
