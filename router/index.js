@@ -55,7 +55,7 @@ const Router = superClass =>
       let isLoginLocationInPath = ev.target.location.pathname.split("/")[1] == 'login';
       if (!isLoginLocationInPath) {
         if (localStorage.getItem('token') == null) {
-          loginLocation = '/login/';
+          loginLocation = '/login';
         }
       }
 

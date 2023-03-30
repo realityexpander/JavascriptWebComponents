@@ -36,7 +36,7 @@ class Home extends LitElement {
         </label>
         <br>
         <br>
-      <div>
+      </div>
       `
   }
 

@@ -122,7 +122,7 @@ const Router = superClass =>
       let isLoginLocationInPath = ev.target.location.pathname.split("/")[1] == 'login';
       if (!isLoginLocationInPath) {
         if (localStorage.getItem('token') == null) {
-          loginLocation = '/login/';
+          loginLocation = '/login';
         }
       }
 
@@ -273,7 +273,7 @@ class Home extends s {
         </label>
         <br>
         <br>
-      <div>
+      </div>
       `
   }
 
@@ -319,19 +319,19 @@ class App extends Router(s) {
       {
         path: "/stocks",
         component: "page-stocks",
-        import: () => import('./page_stocks-e102cabc.js')
+        import: () => import('./page_stocks-d98d917a.js')
       },
       // Using 'type' and 'day' variable.
       {
         path: "/stock/:type/:day",
         component: "page-stocks",
-        import: () => import('./page_stocks-e102cabc.js')
+        import: () => import('./page_stocks-d98d917a.js')
       },
       // Using 'stockId' and optionally 'againstRate' variable.
       {
         path: "/trade/:stockId/:?againstRate",
         component: "page-trade",
-        import: () => import('./page_trade-aa1a3ad5.js')
+        import: () => import('./page_trade-e9cc10c4.js')
       },
       // Using 'category' variable, & is required.
       {
@@ -342,19 +342,17 @@ class App extends Router(s) {
               .someOtherGlobalProp=${globalProp}>
           </page-news>
         `,
-        import: () => import('./page_news-191f7b20.js')
+        import: () => import('./page_news-79128fff.js')
       },
       // Login page
       {
         path: "/login/:?category",
-        //component: "page-login",
         render: routeProps => x`
-          ${console.log("PROPS=", routeProps)}
           <page-login
             .category=${routeProps.category}>
           </page-login>
         `,
-        import: () => import('./page_login-13466d4b.js')
+        import: () => import('./page_login-d0c79f91.js')
       },
       // Fallback for all unmatched routes.  
       {
@@ -15906,4 +15904,4 @@ class App extends Router(s) {
 }
 customElements.define('my-app', App);
 
-export { s, x };
+export { styles as a, s, x };

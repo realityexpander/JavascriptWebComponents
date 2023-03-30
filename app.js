@@ -50,9 +50,7 @@ class App extends Router(LitElement) {
       // Login page
       {
         path: "/login/:?category",
-        //component: "page-login",
         render: routeProps => html`
-          ${console.log("PROPS=", routeProps)}
           <page-login
             .category=${routeProps.category}>
           </page-login>
