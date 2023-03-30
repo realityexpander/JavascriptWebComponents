@@ -117,9 +117,13 @@ const Router = superClass =>
     __handleNav(ev) {
       if (!this.constructor.routes) throw Errors.Router.NoRoutes;
 
+      // if the user is not logged in, redirect to login page
       let loginLocation = null;
-      if (localStorage.getItem('token') == null) {
-        loginLocation = '/login';
+      let isLoginLocationInPath = ev.target.location.pathname.split("/")[1] == 'login';
+      if (!isLoginLocationInPath) {
+        if (localStorage.getItem('token') == null) {
+          loginLocation = '/login/';
+        }
       }
 
       //const targetRoute = window.location.pathname; //ev.state.route;
@@ -315,19 +319,19 @@ class App extends Router(s) {
       {
         path: "/stocks",
         component: "page-stocks",
-        import: () => import('./page_stocks-d6345cb7.js')
+        import: () => import('./page_stocks-e102cabc.js')
       },
       // Using 'type' and 'day' variable.
       {
         path: "/stock/:type/:day",
         component: "page-stocks",
-        import: () => import('./page_stocks-d6345cb7.js')
+        import: () => import('./page_stocks-e102cabc.js')
       },
       // Using 'stockId' and optionally 'againstRate' variable.
       {
         path: "/trade/:stockId/:?againstRate",
         component: "page-trade",
-        import: () => import('./page_trade-993ed80c.js')
+        import: () => import('./page_trade-aa1a3ad5.js')
       },
       // Using 'category' variable, & is required.
       {
@@ -338,18 +342,19 @@ class App extends Router(s) {
               .someOtherGlobalProp=${globalProp}>
           </page-news>
         `,
-        import: () => import('./page_news-9df678d3.js')
+        import: () => import('./page_news-191f7b20.js')
       },
       // Login page
       {
-        path: "/login",
+        path: "/login/:?category",
         //component: "page-login",
         render: routeProps => x`
+          ${console.log("PROPS=", routeProps)}
           <page-login
-            .category="hello">
+            .category=${routeProps.category}>
           </page-login>
         `,
-        import: () => import('./page_login-905b4e4d.js')
+        import: () => import('./page_login-13466d4b.js')
       },
       // Fallback for all unmatched routes.  
       {
@@ -369,7 +374,8 @@ class App extends Router(s) {
   static styles = styles;
 
   render() {
-    return (localStorage.getItem('token') == null) ?
+
+    return (!this.isLoggedIn()) ?
       x`
           ${this.routeElement}
         `
@@ -390,11 +396,17 @@ class App extends Router(s) {
     `;
   }
 
+  isLoggedIn() {
+    return localStorage.getItem('token') != null;
+  }
+
   firstUpdated() {
     this.setupListeners();
   }
 
   setupListeners() {
+    if (!this.isLoggedIn()) return;
+
     const drawer = mdc.drawer.MDCDrawer.attachTo(this.shadowRoot.querySelector('.mdc-drawer'));
     const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(this.shadowRoot.getElementById('app-bar'));
     topAppBar.setScrollTarget(this.shadowRoot.getElementById('main-content'));

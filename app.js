@@ -49,11 +49,12 @@ class App extends Router(LitElement) {
       },
       // Login page
       {
-        path: "/login",
+        path: "/login/:?category",
         //component: "page-login",
         render: routeProps => html`
+          ${console.log("PROPS=", routeProps)}
           <page-login
-            .category="hello">
+            .category=${routeProps.category}>
           </page-login>
         `,
         import: () => import("./page_login.js")
@@ -76,7 +77,8 @@ class App extends Router(LitElement) {
   static styles = styles;
 
   render() {
-    return (localStorage.getItem('token') == null) ?
+
+    return (!this.isLoggedIn()) ?
       html`
           ${this.routeElement}
         `
@@ -97,11 +99,17 @@ class App extends Router(LitElement) {
     `;
   }
 
+  isLoggedIn() {
+    return localStorage.getItem('token') != null;
+  }
+
   firstUpdated() {
     this.setupListeners();
   }
 
   setupListeners() {
+    if (!this.isLoggedIn()) return;
+
     const drawer = mdc.drawer.MDCDrawer.attachTo(this.shadowRoot.querySelector('.mdc-drawer'));
     const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(this.shadowRoot.getElementById('app-bar'));
     topAppBar.setScrollTarget(this.shadowRoot.getElementById('main-content'));
