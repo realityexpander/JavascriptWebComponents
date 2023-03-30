@@ -1,4 +1,5 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import typescript from '@rollup/plugin-typescript';
 
 // // rollup.config.mjs
 // // single bundle with inlined dynamic imports
@@ -15,7 +16,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 // rollup.config.mjs
 // separate dynamic imports
 export default {
-  input: 'app.js',
+  input: 'src/app.js',
   output: {
     dir: 'dist',
     format: 'es',
@@ -24,6 +25,7 @@ export default {
   preserveEntrySignatures: false,
   plugins: [
     nodeResolve(),
+    typescript()
   ]
 };
 

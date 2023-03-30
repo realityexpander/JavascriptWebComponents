@@ -35,7 +35,7 @@ export class MyElement extends LitElement {
    * The number of times the button has been clicked.
    */
   @property({type: Number})
-  count = 0;
+  count = 0; 
 
   @property({type: String})
   myString = 'Hello';
@@ -44,8 +44,10 @@ export class MyElement extends LitElement {
     return html`
       <h1>${this.sayHello(this.name)}!</h1>
       <button @click=${this._onClick} part="button">
+       
         Click Count: ${this.count}
         ${this.myString}
+        
       </button>
       <slot></slot>
     `;

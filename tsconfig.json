@@ -9,17 +9,18 @@
       "dom"
     ],
     "strict": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "outDir": "out-tsc",
+    "outDir": "dist",
     "sourceMap": true,
     "inlineSources": true,
     "rootDir": "./",
     "incremental": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
+    "useDefineForClassFields": false
   },
   "include": [
     "src/**/*.ts"

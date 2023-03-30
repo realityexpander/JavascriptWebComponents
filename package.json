@@ -4,6 +4,7 @@
   "description": "web components app testing ground",
   "source": "src/app.js",
   "module": "dist/app.js",
+  "type": "module",
   "devDependencies": {
     "parcel": "latest"
   },
@@ -22,7 +23,13 @@
     "parcel-watch": "npx parcel watch",
     "parcel-build": "npx parcel build",
     "tsc-dev": "tsc --watch --preserveWatchOutput",
-    "start-dev": "rm -f dist/*.* && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"npx parcel watch\" \"wds --node-resolve --open --watch --app-index index.html\""
+    "start-dev": "rm -f dist/*.* && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"npx parcel watch\" \"wds --node-resolve --open --watch --app-index index.html --esbuild-target auto\"",
+    "start-dev-tsc-wds": "concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds --open --watch\"",
+    "start-dev-rollup2": "rm -f dist/*.* && rollup -c -w --sourcemap",
+    "rollup-build": "rm -f dist/*.* && rollup -c",
+    "rollup-no-stop": "while :\n do\n rollup -c -w --sourcemap\n done\n",
+    "rollup-watch": "watch -d -n5 -t -c rollup -c -w --sourcemap",
+    "simple-wds": "wds --watch --app-index index.html --esbuild-target auto"
   },
   "author": "",
   "license": "ISC",
@@ -34,15 +41,18 @@
     "@material/web": "^1.0.0-pre.5",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-typescript": "^11.0.0",
     "@swc/helpers": "^0.4.14",
     "@types/uuid": "^9.0.1",
     "@web/dev-server": "^0.1.36",
+    "@web/dev-server-esbuild": "^0.3.5",
     "concurrently": "^8.0.1",
     "lit": "^2.7.0",
     "parcel": "^2.8.3",
     "rollup": "^2.79.1",
     "simple-wc-router": "^2.3.4",
     "smart-webcomponents": "^15.0.11",
+    "tslib": "^2.5.0",
     "typescript": "^5.0.2",
     "uuid": "^9.0.0"
   }

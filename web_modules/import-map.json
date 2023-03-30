@@ -1,0 +1,9 @@
+{
+  "imports": {
+    "@material/drawer": "./@material/drawer.js",
+    "@material/top-app-bar": "./@material/top-app-bar.js",
+    "@swc/helpers": "./@swc/helpers.js",
+    "simple-wc-router": "./simple-wc-router.js",
+    "uuid": "./uuid.js"
+  }
+}
