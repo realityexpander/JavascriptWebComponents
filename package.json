@@ -24,12 +24,12 @@
     "parcel-build": "npx parcel build",
     "tsc-dev": "tsc --watch --preserveWatchOutput",
     "start-dev": "rm -f dist/*.* && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"npx parcel watch\" \"wds --node-resolve --open --watch --app-index index.html --esbuild-target auto\"",
-    "start-dev-tsc-wds": "concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds --open --watch\"",
     "start-dev-rollup2": "rm -f dist/*.* && rollup -c -w --sourcemap",
     "rollup-build": "rm -f dist/*.* && rollup -c",
     "rollup-no-stop": "while :\n do\n rollup -c -w --sourcemap\n done\n",
-    "rollup-watch": "watch -d -n5 -t -c rollup -c -w --sourcemap",
-    "simple-wds": "wds --watch --app-index index.html --esbuild-target auto"
+    "simple-wds": "wds --watch --app-index index.html --esbuild-target auto",
+    "start-dev-tsc-wds-1": "concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds --open --watch\"",
+    "start-dev-rollup-2": "watch -d -n1 -t -c rollup -c -w --sourcemap"
   },
   "author": "",
   "license": "ISC",
