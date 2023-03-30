@@ -108,6 +108,8 @@ class App extends Router(LitElement) {
         const drawer = mdc.drawer.MDCDrawer.attachTo(this.shadowRoot.querySelector('.mdc-drawer'));
         const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(this.shadowRoot.getElementById('app-bar'));
         topAppBar.setScrollTarget(this.shadowRoot.getElementById('main-content'));
+
+        // Listen for any nav events, close drawer.
         topAppBar.listen('MDCTopAppBar:nav', () => {
             drawer.open = !drawer.open;
         });
@@ -119,10 +121,29 @@ class App extends Router(LitElement) {
             }
         });
 
+        // add ripple effect to buttons
         const buttons = this.shadowRoot.querySelectorAll('.mdc-button');
         for (let i = 0, button; button = buttons[i]; i++) {
             mdc.ripple.MDCRipple.attachTo(button);
         }
+
+        // listen for the drawer to open to add listeners for the close button
+        drawer.listen('MDCDrawer:opened', () => {
+            // add listener to close button
+            const closeButtons = this.shadowRoot.querySelector("#close-btn");
+            closeButtons.addEventListener('click', () => {
+                drawer.open = false;
+            });
+        });
+
+        // listen for the drawer to close to remove listeners for the close button
+        drawer.listen('MDCDrawer:closed', () => {
+            // remove listener to close button
+            const closeButtons = this.shadowRoot.querySelector("#close-btn");
+            closeButtons.removeEventListener('click', () => {
+                drawer.open = false;
+            });
+        });
     }
 
     removeListeners() {
@@ -133,7 +154,11 @@ class App extends Router(LitElement) {
     app_drawer_html = html`
     <aside class="mdc-drawer mdc-drawer--dismissible">
         <div class="mdc-drawer__header">
-            <h3 class="mdc-drawer__title">Email</h3>
+            <span style="display: flex; justify-content: space-between;">
+                <h3 class="mdc-drawer__title">The App Name</h3>
+                <i id="close-btn" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-hidden="true"
+                    style="padding: 12px 0px; text-align: center;">close</i>
+            </span>
             <h6 class="mdc-drawer__subtitle">chris@gmail.com</h6>
         </div>
         <div class="mdc-drawer__content">

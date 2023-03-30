@@ -84,7 +84,7 @@ const $03ec4abc0bcf087a$export$45fb31be1df9846f = (0, $lTUMm$css)`
 `;
 const $03ec4abc0bcf087a$export$9dd6ff9ea0189349 = (0, $lTUMm$css)`
   ${$03ec4abc0bcf087a$export$45fb31be1df9846f}
-  
+
   /* These are our custom styles, applied after the frameworks' CSS. */
   @font-face {
     font-family: 'Material Icons';
@@ -473,6 +473,7 @@ class $6651e1db73613369$var$App extends ($6651e1db73613369$var$_Router = (0, $c3
         const drawer = mdc.drawer.MDCDrawer.attachTo(this.shadowRoot.querySelector(".mdc-drawer"));
         const topAppBar1 = mdc.topAppBar.MDCTopAppBar.attachTo(this.shadowRoot.getElementById("app-bar"));
         topAppBar1.setScrollTarget(this.shadowRoot.getElementById("main-content"));
+        // Listen for any nav events, close drawer.
         topAppBar1.listen("MDCTopAppBar:nav", ()=>{
             drawer.open = !drawer.open;
         });
@@ -480,8 +481,25 @@ class $6651e1db73613369$var$App extends ($6651e1db73613369$var$_Router = (0, $c3
         document.addEventListener("keydown", (e)=>{
             if (e.key === "Escape") drawer.open = false;
         });
+        // add ripple effect to buttons
         const buttons = this.shadowRoot.querySelectorAll(".mdc-button");
         for(let i = 0, button; button = buttons[i]; i++)mdc.ripple.MDCRipple.attachTo(button);
+        // listen for the drawer to open to add listeners for the close button
+        drawer.listen("MDCDrawer:opened", ()=>{
+            // add listener to close button
+            const closeButtons = this.shadowRoot.querySelector("#close-btn");
+            closeButtons.addEventListener("click", ()=>{
+                drawer.open = false;
+            });
+        });
+        // listen for the drawer to close to remove listeners for the close button
+        drawer.listen("MDCDrawer:closed", ()=>{
+            // remove listener to close button
+            const closeButtons = this.shadowRoot.querySelector("#close-btn");
+            closeButtons.removeEventListener("click", ()=>{
+                drawer.open = false;
+            });
+        });
     }
     removeListeners() {
         topAppBar.unlisten("MDCTopAppBar:nav"); // todo - does this work? Need to know
@@ -492,7 +510,11 @@ class $6651e1db73613369$var$App extends ($6651e1db73613369$var$_Router = (0, $c3
         (0, $lTUMm$swchelperssrc_define_propertymjs)(this, "app_drawer_html", (0, $lTUMm$html)`
     <aside class="mdc-drawer mdc-drawer--dismissible">
         <div class="mdc-drawer__header">
-            <h3 class="mdc-drawer__title">Email</h3>
+            <span style="display: flex; justify-content: space-between;">
+                <h3 class="mdc-drawer__title">The App Name</h3>
+                <i id="close-btn" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-hidden="true"
+                    style="padding: 12px 0px; text-align: center;">close</i>
+            </span>
             <h6 class="mdc-drawer__subtitle">chris@gmail.com</h6>
         </div>
         <div class="mdc-drawer__content">

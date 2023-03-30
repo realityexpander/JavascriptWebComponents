@@ -40,7 +40,7 @@ export const _material_components_web_min_css = css`
 
 export const styles = css`
   ${_material_components_web_min_css}
-  
+
   /* These are our custom styles, applied after the frameworks' CSS. */
   @font-face {
     font-family: 'Material Icons';

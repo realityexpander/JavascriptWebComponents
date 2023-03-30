@@ -19,7 +19,6 @@ class Login extends LitElement {
   }
 
   firstUpdated() {
-    console.log(this.category);
     this.setupListeners();
   }
 
