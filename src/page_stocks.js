@@ -1,4 +1,5 @@
 import { LitElement, html } from 'lit';
+import { styles } from './material-components-web.min.css.js';
 
 class Stocks extends LitElement {
 
@@ -28,14 +29,17 @@ class Stocks extends LitElement {
     }
   }
 
+  static styles = styles;
+
   render() {
     // If provided, the properties for type and day are taking from the path.
     //const { type = 'NASDAC', day = 'monday' } = this.routeProps;
     if (this.type === undefined) {
       return html`
+      <div class="wrapper">
         This is the page for stocks, no type or day provided.
         <br>
-        
+      
         <a href="/">Home</a>
         <br>
         1 <br>
@@ -183,6 +187,7 @@ class Stocks extends LitElement {
         <p id="1">Anchor 1</p>
         <p id="2">Anchor 2</p>
         <br>
+      </div>
         `
     }
 

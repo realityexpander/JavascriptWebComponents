@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { styles } from './material-components-web.min.css.js';
-import { globalProp } from './app.js';
+import { globalProp } from './globalProp.js';
 
 class Home extends LitElement {
   static styles = styles;
@@ -11,11 +11,69 @@ class Home extends LitElement {
     console.log('Home constructor: appProp = ' + document.querySelector('app-root').appProp);
   }
 
+  // getTodos1() {
+  //   fetch('/api/todos', {
+  //     method: 'GET',
+  //     // headers: {
+  //     //   'Content-Type': 'application/json',
+  //     // },
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       const todoListEl = this.shadowRoot.querySelector('#todo-list');
+  //       todoListEl.innerHTML = '';
+  //       for (let i = 0; i < data.length; i++) {
+  //         const todoEl = document.createElement('div');
+  //         todoEl.innerHTML = `<div style="padding-left: 30px;">` +
+  //           `<p>• ${data[i].name}</p>` +
+  //           `<p>${data[i].status}</p>` +
+  //           `<p>${JSON.stringify(data[i].user)}</p>` +
+  //           `</div>`;
+  //         todoListEl.appendChild(todoEl);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // }
+
+  async getTodos() {
+    try {
+      const response = await fetch('/api/todos', {
+        method: 'GET',
+        // headers: {
+        //   'Content-Type': 'application/json',
+        // },
+      });
+      const data = await response.json();
+
+      const todoListEl = this.shadowRoot.querySelector('#todo-list');
+      todoListEl.innerHTML = '';
+      for (let i = 0; i < data.length; i++) {
+        const todoEl = document.createElement('div');
+        todoEl.innerHTML =
+          `
+          <div>
+            <p>${data[i].name}</p> 
+            <div style="padding-left: 30px;" 
+              <p>${data[i].status}</p> 
+              <p>${JSON.stringify(data[i].user)}</p> 
+            </div> 
+          </div>
+          `.trim();
+        todoListEl.appendChild(todoEl);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+
   render() {
     // If provided, the properties for type and day are taking from the path.
     //const { type = 'NASDAC', day = 'monday' } = this.routeProps;
     return html`
-      <div style="padding:10px;">
+      <div class="wrapper">
         This is the page for Home ${this.routeProps}
         <br>
         <a href="/">Home</a>
@@ -24,16 +82,17 @@ class Home extends LitElement {
         <a href="/news/tech">News</a>
       
         <br>
-        <button @click=${() => window.location = '/stocks'}>Go to stocks</button>
+        <button @click=${()=> window.location = '/stocks'}>Go to stocks</button>
         <br>
-        <button @click=${() => this.logout()}>Log Out</button>
+        <button @click=${()=> this.logout()}>Log Out</button>
         <br>
         <br>
-        <button id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
+        <button @click=${()=> this.getTodos()} id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
-          <span class="mdc-button__label">Send Item</span>
+          <span class="mdc-button__label">Get Todos</span>
         </button>
         <br>
+        <div id="todo-list"></div>
         <br>
         <label class="mdc-text-field mdc-text-field--filled">
           <span class="mdc-text-field__ripple"></span>
