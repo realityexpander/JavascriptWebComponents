@@ -9,6 +9,8 @@ class Home extends LitElement {
     super();
     console.log('Home constructor: globalProp = ' + globalProp);
     console.log('Home constructor: appProp = ' + document.querySelector('app-root').appProp);
+
+    this.menu = null;
   }
 
   // getTodos1() {
@@ -80,14 +82,19 @@ class Home extends LitElement {
         <a href="/stocks">Stocks</a>
         <a href="/trade/123">Trade</a>
         <a href="/news/tech">News</a>
-      
-        <br>
-        <button @click=${()=> window.location = '/stocks'}>Go to stocks</button>
-        <br>
-        <button @click=${()=> this.logout()}>Log Out</button>
         <br>
         <br>
-        <button @click=${()=> this.getTodos()} id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
+        <button @click=${() => window.location = '/stocks'}>Go to stocks</button>
+        <br>
+        <button @click=${() => this.logout()}>Log Out</button>
+        <br>
+        <button @click=${() => this.openLogoutMenu()} id="btn-logout" class="mdc-button mdc-button--outlined smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Log Out</span>
+        </button>
+        <br>
+        <br>
+        <button @click=${() => this.getTodos()} id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Get Todos</span>
         </button>
@@ -101,6 +108,18 @@ class Home extends LitElement {
           <span class="mdc-line-ripple"></span>
         </label>
         <br>
+        <div class="mdc-menu mdc-menu-surface" id="menu-logout">
+          <ul class="mdc-deprecated-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+            <li id="menu-item-logout-confirm" class="mdc-deprecated-list-item" role="menuitem">
+              <span class="mdc-deprecated-list-item__ripple"></span>
+              <span class="mdc-deprecated-list-item__text">Log Out</span>
+            </li>
+            <li id="menu-item-logout-cancel" class="mdc-deprecated-list-item" role="menuitem">
+              <span class="mdc-deprecated-list-item__ripple"></span>
+              <span class="mdc-deprecated-list-item__text">Cancel</span>
+            </li>
+          </ul>
+        </div>
         <br>
       </div>
       `
@@ -125,11 +144,31 @@ class Home extends LitElement {
       state.email = e.data;
     });
 
+    const menuEl = this.shadowRoot.querySelector('#menu-logout');
+    this.menu = new mdc.menu.MDCMenu(menuEl);
+    this.menu.setAnchorElement(this.shadowRoot.querySelector('#btn-logout'));
+    menuEl.addEventListener('MDCMenu:selected', this.handleSelected_Menu_Logout.bind(this));
+    menuEl.addEventListener('MDCMenuSurface:closed', this.handleCancel_Menu_Logout.bind(this));
   }
 
   logout() {
     localStorage.removeItem('token');
     window.location = '/';
+  }
+
+  openLogoutMenu() {
+    this.menu.open = true;
+  }
+
+  handleSelected_Menu_Logout(e) {
+    console.log('handleSelected_Menu_Logout', e.detail);
+    if (e.detail.item.id === 'menu-item-logout-confirm') {
+      this.logout();
+    }
+  }
+
+  handleCancel_Menu_Logout(e) {
+    console.log('handleCancel_Menu_Logout', e.detail);
   }
 }
 customElements.define('page-home', Home);

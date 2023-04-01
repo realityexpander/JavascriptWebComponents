@@ -40,6 +40,7 @@
     "@fooloomanzoo/datetime-picker": "^3.0.9",
     "@lit/reactive-element": "^1.6.1",
     "@material/drawer": "^14.0.0",
+    "@material/menu": "^14.0.0",
     "@material/top-app-bar": "^14.0.0",
     "@material/web": "^1.0.0-pre.5",
     "@rollup/plugin-commonjs": "^24.0.1",
