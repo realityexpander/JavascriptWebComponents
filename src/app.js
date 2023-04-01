@@ -8,14 +8,15 @@ import { styles } from './material-components-web.min.css.js';
 
 import './page_home';
 
-export const globalProp = "version-1.2.3.3";
+// export const globalProp = "version-1.2.3.3";
+import { globalProp } from './globalProp.js';
 
 class App extends Router(LitElement) {
 
     constructor() {
         super();
 
-        this.appProp = "appProp1";
+        this.appProp = "appProp2";
         console.log('App constructor: globalProp = ' + globalProp);
         console.log('App constructor: appProp = ' + this.appProp);
     }
