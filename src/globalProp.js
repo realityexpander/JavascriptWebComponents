@@ -1,0 +1,1 @@
+export const globalProp = "version-1.2.3.3";
