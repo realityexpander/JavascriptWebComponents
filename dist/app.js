@@ -442,7 +442,7 @@ class App extends Router(s) {
             {
                 path: "/trade/:stockId/:?againstRate",
                 component: "page-trade",
-                import: () => import('./page_trade-fc99992a.js')
+                import: () => import('./page_trade-c09c5733.js')
             },
             // Using 'category' variable, & is required.
             {
@@ -451,7 +451,7 @@ class App extends Router(s) {
         <page-news .category=${routeProps.category} .someOtherGlobalProp=${globalProp}>
         </page-news>
         `,
-                import: () => import('./page_news-584c31d6.js')
+                import: () => import('./page_news-28d46483.js')
             },
             // Login page
             {
