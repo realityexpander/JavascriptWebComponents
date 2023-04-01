@@ -49,6 +49,35 @@ export const styles = css`
     src: url(https://fonts.gstatic.com/s/materialicons/v140/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
   }
   
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-family: sans-serif;
+  }
+  
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  
+  h1, h2, h3, h4, h5, h6, p {
+    margin-top: 0;
+  }
+  
+  .wrapper {
+    --max-width: 960px;
+    --min-gap: 25px;
+    --side-gap: calc((100vw - min(var(--max-width), calc(100vw - (var(--min-gap) * 2)))) / 2);
+    padding-left: var(--side-gap);
+    padding-right: var(--side-gap);
+  }
+
   * {
     font-family: system-ui, Roboto, sans-serif;
     --mdc-typography-button-font-size: .75rem;
