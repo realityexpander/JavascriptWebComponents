@@ -84,17 +84,17 @@ class Home extends LitElement {
         <a href="/news/tech">News</a>
         <br>
         <br>
-        <button @click=${() => window.location = '/stocks'}>Go to stocks</button>
+        <button @click=${()=> window.location = '/stocks'}>Go to stocks</button>
         <br>
-        <button @click=${() => this.logout()}>Log Out</button>
+        <button @click=${()=> this.logout()}>Log Out</button>
         <br>
-        <button @click=${() => this.openLogoutMenu()} id="btn-logout" class="mdc-button mdc-button--outlined smaller-text">
+        <button @click=${()=> this.openLogoutMenu()} id="btn-logout" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Log Out</span>
         </button>
         <br>
         <br>
-        <button @click=${() => this.getTodos()} id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
+        <button @click=${()=> this.getTodos()} id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Get Todos</span>
         </button>
@@ -108,7 +108,9 @@ class Home extends LitElement {
           <span class="mdc-line-ripple"></span>
         </label>
         <br>
-        <div class="mdc-menu mdc-menu-surface" id="menu-logout">
+        <br>
+      
+        <div class="mdc-menu-surface--anchor mdc-menu mdc-menu-surface" id="menu-logout">
           <ul class="mdc-deprecated-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
             <li id="menu-item-logout-confirm" class="mdc-deprecated-list-item" role="menuitem">
               <span class="mdc-deprecated-list-item__ripple"></span>
@@ -120,7 +122,6 @@ class Home extends LitElement {
             </li>
           </ul>
         </div>
-        <br>
       </div>
       `
   }
@@ -147,6 +148,7 @@ class Home extends LitElement {
     const menuEl = this.shadowRoot.querySelector('#menu-logout');
     this.menu = new mdc.menu.MDCMenu(menuEl);
     this.menu.setAnchorElement(this.shadowRoot.querySelector('#btn-logout'));
+    this.menu.setFixedPosition(true);
     menuEl.addEventListener('MDCMenu:selected', this.handleSelected_Menu_Logout.bind(this));
     menuEl.addEventListener('MDCMenuSurface:closed', this.handleCancel_Menu_Logout.bind(this));
   }
@@ -162,6 +164,9 @@ class Home extends LitElement {
 
   handleSelected_Menu_Logout(e) {
     console.log('handleSelected_Menu_Logout', e.detail);
+
+    let menuItemElement = this.menu.getOptionByIndex(e.detail.index).textContent;
+
     if (e.detail.item.id === 'menu-item-logout-confirm') {
       this.logout();
     }
