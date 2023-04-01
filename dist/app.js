@@ -241,6 +241,12 @@ const styles = i$1`
 class Home extends s {
   static styles = styles;
 
+  constructor() {
+    super();
+    console.log('Home constructor: globalProp = ' + globalProp);
+    console.log('Home constructor: appProp = ' + document.querySelector('app-root').appProp);
+  }
+
   render() {
     // If provided, the properties for type and day are taking from the path.
     //const { type = 'NASDAC', day = 'monday' } = this.routeProps;
@@ -254,9 +260,9 @@ class Home extends s {
         <a href="/news/tech">News</a>
       
         <br>
-        <button @click=${()=> window.location = '/stocks'}>Go to stocks</button>
+        <button @click=${() => window.location = '/stocks'}>Go to stocks</button>
         <br>
-        <button @click=${()=> this.logout()}>Log Out</button>
+        <button @click=${() => this.logout()}>Log Out</button>
         <br>
         <br>
         <button id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
@@ -308,6 +314,23 @@ customElements.define('page-home', Home);
 const globalProp = "version-1.2.3.3";
 
 class App extends Router(s) {
+
+    constructor() {
+        super();
+
+        this.appProp = "appProp1";
+        console.log('App constructor: globalProp = ' + globalProp);
+        console.log('App constructor: appProp = ' + this.appProp);
+    }
+
+    // Not yet implemented
+    start() {
+        setInterval(() => {
+            this.requestUpdate();
+        }, 1000);
+
+    }
+
     static get routes() {
         return [
             // Root path
@@ -319,19 +342,19 @@ class App extends Router(s) {
             {
                 path: "/stocks",
                 component: "page-stocks",
-                import: () => import('./page_stocks-282e357d.js')
+                import: () => import('./page_stocks-be7b7546.js')
             },
             // Using 'type' and 'day' variable.
             {
                 path: "/stock/:type/:day",
                 component: "page-stocks",
-                import: () => import('./page_stocks-282e357d.js')
+                import: () => import('./page_stocks-be7b7546.js')
             },
             // Using 'stockId' and optionally 'againstRate' variable.
             {
                 path: "/trade/:stockId/:?againstRate",
                 component: "page-trade",
-                import: () => import('./page_trade-64acecf3.js')
+                import: () => import('./page_trade-521c2879.js')
             },
             // Using 'category' variable, & is required.
             {
@@ -340,7 +363,7 @@ class App extends Router(s) {
         <page-news .category=${routeProps.category} .someOtherGlobalProp=${globalProp}>
         </page-news>
         `,
-                import: () => import('./page_news-4dc8c88f.js')
+                import: () => import('./page_news-aa17a7b6.js')
             },
             // Login page
             {
@@ -349,7 +372,7 @@ class App extends Router(s) {
         <page-login .category=${routeProps.category}>
         </page-login>
         `,
-                import: () => import('./page_login-0de3569d.js')
+                import: () => import('./page_login-f4642457.js')
             },
             // Fallback for all unmatched routes.  
             {
@@ -15924,7 +15947,7 @@ class App extends Router(s) {
 
 
 }
-customElements.define('my-app', App);
+customElements.define('app-root', App);
 
 export { styles as a, i$1 as i, s, x };
 //# sourceMappingURL=app.js.map

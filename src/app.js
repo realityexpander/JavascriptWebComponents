@@ -8,9 +8,26 @@ import { styles } from './material-components-web.min.css.js';
 
 import './page_home';
 
-const globalProp = "version-1.2.3.3";
+export const globalProp = "version-1.2.3.3";
 
 class App extends Router(LitElement) {
+
+    constructor() {
+        super();
+
+        this.appProp = "appProp1";
+        console.log('App constructor: globalProp = ' + globalProp);
+        console.log('App constructor: appProp = ' + this.appProp);
+    }
+
+    // Not yet implemented
+    start() {
+        let id = setInterval(() => {
+            this.requestUpdate();
+        }, 1000);
+
+    }
+
     static get routes() {
         return [
             // Root path
@@ -15627,4 +15644,4 @@ class App extends Router(LitElement) {
 
 
 }
-customElements.define('my-app', App);
+customElements.define('app-root', App);

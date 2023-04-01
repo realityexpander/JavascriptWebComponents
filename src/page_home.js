@@ -1,8 +1,15 @@
 import { LitElement, html } from 'lit';
 import { styles } from './material-components-web.min.css.js';
+import { globalProp } from './app.js';
 
 class Home extends LitElement {
   static styles = styles;
+
+  constructor() {
+    super();
+    console.log('Home constructor: globalProp = ' + globalProp);
+    console.log('Home constructor: appProp = ' + document.querySelector('app-root').appProp);
+  }
 
   render() {
     // If provided, the properties for type and day are taking from the path.
@@ -17,9 +24,9 @@ class Home extends LitElement {
         <a href="/news/tech">News</a>
       
         <br>
-        <button @click=${()=> window.location = '/stocks'}>Go to stocks</button>
+        <button @click=${() => window.location = '/stocks'}>Go to stocks</button>
         <br>
-        <button @click=${()=> this.logout()}>Log Out</button>
+        <button @click=${() => this.logout()}>Log Out</button>
         <br>
         <br>
         <button id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
