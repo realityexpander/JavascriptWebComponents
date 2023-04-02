@@ -16,7 +16,7 @@ class App extends Router(LitElement) {
     constructor() {
         super();
 
-        this.appProp = "appProp2";
+        this.appProp = "appProp1";
         console.log('App constructor: globalProp = ' + globalProp);
         console.log('App constructor: appProp = ' + this.appProp);
     }
@@ -41,6 +41,11 @@ class App extends Router(LitElement) {
                 path: "/stocks",
                 component: "page-stocks",
                 import: () => import("./page_stocks.js")
+            },
+            {
+                path: "/files",
+                component: "page-files",
+                import: () => import("./page_files.js")
             },
             // Using 'type' and 'day' variable.
             {

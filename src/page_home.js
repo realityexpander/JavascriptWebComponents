@@ -84,17 +84,25 @@ class Home extends LitElement {
         <a href="/news/tech">News</a>
         <br>
         <br>
-        <button @click=${()=> window.location = '/stocks'}>Go to stocks</button>
+        <button @click=${() => window.location = '/stocks'}>Go to stocks</button>
         <br>
-        <button @click=${()=> this.logout()}>Log Out</button>
         <br>
-        <button @click=${()=> this.openLogoutMenu()} id="btn-logout" class="mdc-button mdc-button--outlined smaller-text">
+        <button @click=${() => window.location = '/files'} id="btn-navt-to-files" class="mdc-button mdc-button--outlined
+          smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Manage Files</span>
+        </button>
+        <br>
+        <br>
+        <button @click=${() => this.logout()}>Log Out</button>
+        <br>
+        <button @click=${() => this.openLogoutMenu()} id="btn-logout" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Log Out</span>
         </button>
         <br>
         <br>
-        <button @click=${()=> this.getTodos()} id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
+        <button @click=${() => this.getTodos()} id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Get Todos</span>
         </button>
