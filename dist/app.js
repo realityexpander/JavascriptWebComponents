@@ -487,7 +487,7 @@ class App extends Router(s) {
             {
                 path: "/files",
                 component: "page-files",
-                import: () => import('./page_files-661c8695.js')
+                import: () => import('./page_files-cabff097.js')
             },
             // Using 'type' and 'day' variable.
             {
