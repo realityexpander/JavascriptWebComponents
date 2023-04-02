@@ -12,7 +12,8 @@ class Files extends LitElement {
   static get properties() {
     return {
       category: { type: String },
-      someOtherGlobalProp: { type: String }
+      someOtherGlobalProp: { type: String },
+      files: { type: Array }
     }
   }
 
@@ -24,6 +25,7 @@ class Files extends LitElement {
     this.someOtherGlobalProp = '';
   }
 
+
   firstUpdated() {
     this.shadowRoot.getElementById('inputFile').addEventListener('change', this.filesPicked.bind(this));
 
@@ -31,18 +33,38 @@ class Files extends LitElement {
     this.shadowRoot.getElementById('btnPick').addEventListener('click', this.askForFiles.bind(this));
     this.shadowRoot.getElementById('btnInfo').addEventListener('click', this.showFileInfo.bind(this));
 
-    this.shadowRoot.getElementById('btnUpload').addEventListener('click', this.uploadFiles.bind(this));
+    this.shadowRoot.getElementById('btnUpload').addEventListener('click', this.uploadFilesToServer.bind(this));
 
-    this.injectAllIncludesTags();
+    //this.loadAllIncludeTags();
+    this.updateUploadedFilesList();
 
     this.shadowRoot.getElementById('btnDownloadFile').addEventListener('click', this.createBlob.bind(this));
   }
 
-  injectAllIncludesTags() {
-    // Replace the "include" tags with the contents of the 'src' url
+  updateUploadedFilesList() {
+    const fileListEl = this.shadowRoot.getElementById('uploadedFiles');
+
+    fetch('http://localhost:3000/uploads')
+      .then(res => res.json())
+      .then(data => {
+        fileListEl.innerHTML = '';
+        data.forEach(file => {
+          fileListEl.insertAdjacentHTML('beforeend', `<li><a href="${file.link}" target="_blank">${file.name}</a></li>`);
+        });
+      })
+      .catch(e => {
+        console.log(e);
+        fileListEl.innerHTML = `<p>ERROR: ${e}</p>`;
+      });
+  }
+
+
+  // Replace the "include" tags with the fetched reults of the 'src' url on the tag
+  loadAllIncludeTags() {
     const includes = this.shadowRoot.querySelectorAll('include');
     Array.from(includes).forEach(i => {
       let filePath = i.getAttribute('src');
+      i.innerHTML = `<p>Loading ${filePath}...</p>`;
       fetch(filePath)
         .then(file =>
           file.text()
@@ -54,13 +76,13 @@ class Files extends LitElement {
         .catch(e => {
           console.log(e);
           i.innerHTML = `<p>ERROR: ${e}</p>`;
-          //i.insertAdjacentHTML('afterend', `<p>ERROR: ${e}</p>`); // if there is an error, show it
+          //i.insertAdjacentHTML('afterend', `<p>ERROR: ${e}</p>`); // show cumulative errors
         });
     });
   }
 
+  // Called any time one or more files are picked in the file picker dialog
   filesPicked(ev) {
-    //any time one or more files are picked in the file picker dialog
     let input = ev.target;
     let files = input.files;
     console.log({ files });
@@ -84,8 +106,8 @@ class Files extends LitElement {
     control.click();
   }
 
-  uploadFiles(ev) {
-    //upload the files to the server
+
+  uploadFilesToServer(ev) {
     ev.preventDefault();
     let files = this.shadowRoot.getElementById('inputFile').files;
     let fileCount = files.length;
@@ -133,6 +155,7 @@ class Files extends LitElement {
         .then(json => {
           console.log(json);
           this.addMessageToOutput('success', JSON.stringify(json));
+          this.updateUploadedFilesList();
         }).catch((e) => {
           console.warn(e);
           this.addMessageToOutput('error', e.message);
@@ -221,7 +244,7 @@ class Files extends LitElement {
     a.href = url;
     a.download = f.name;
     a.textContent = `Download ${f.name}`;
-    this.shadowRoot.querySelector('#fileToDownload').append(a);
+    this.shadowRoot.querySelector('#uploadedFiles').append(a);
   }
 
   render() {
@@ -289,9 +312,12 @@ class Files extends LitElement {
         <p><button id="btnInfo">Show File Info</button></p>
         <p><button id="btnUpload">Upload Files</button></p>
         <p><button id="btnDownloadFile">Download File</button></p>
-        <div id="fileToDownload"></div>
-
-        <include src="http://localhost:3000/uploads">Loading...</include>
+        <br>
+        <br>
+        <p>Uploaded files:</p>
+        <ul id="uploadedFiles"></ul>
+        
+        <!-- <include src="http://localhost:3000/uploads">Loading...</include> -->
         <br>
         <br>
         <ul id="output"></ul>
