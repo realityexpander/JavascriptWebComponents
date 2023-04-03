@@ -123,14 +123,42 @@ class Login extends LitElement {
   }
 
   login() {
-    if (this.shadowRoot.getElementById('email').value == 'a@b.c' &&
-      this.shadowRoot.getElementById('password').value == 'admin'
-    ) {
-      localStorage.setItem('token', '1234567890');
-      window.location.href = '/';
-    } else {
-      alert('Wrong email or password');
-    }
+    let email = this.shadowRoot.getElementById('email').value;
+    let password = this.shadowRoot.getElementById('password').value;
+
+    fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error != undefined) {
+          alert('Wrong email or password' + data.error);
+          return;
+        }
+
+        console.log('Success:', data.token);
+        localStorage.setItem('token', data.token);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+    // if (this.shadowRoot.getElementById('email').value == 'a@b.c' &&
+    //   this.shadowRoot.getElementById('password').value == 'admin'
+    // ) {
+    //   localStorage.setItem('token', '1234567890');
+    //   window.location.href = '/';
+    // } else {
+    //   alert('Wrong email or password');
+    // }
 
     // fetch('http://localhost:3000/login', {
     //   method: 'POST',

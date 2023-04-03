@@ -112,8 +112,8 @@ class Files extends LitElement {
     let files = this.shadowRoot.getElementById('inputFile').files;
     let fileCount = files.length;
     if (fileCount > 0) {
-      //let url = 'https://jsonplaceholder.typicode.com/users';
-      let url = 'http://localhost:3000/upload';
+      // let url = 'http://localhost:3000/upload'; // node server
+      let url = "/api/upload-image" // ktor server
       // let h = new Headers();
       // h.append('content-type', files[0].type); // must be added manually for a single file
       // h.append('content-length', files[0].size); // must be added manually for a single file
@@ -154,6 +154,19 @@ class Files extends LitElement {
         })
         .then(json => {
           console.log(json);
+          // response: {
+          //   "todo": {
+          //      "id": String,
+          //      "name": String,
+          //      "status": "pending" | "complete",
+          //      "user": { 
+          //         "name": String
+          //         "files": [url, url, url]
+          //      },
+          //   },
+          //   "uploadedFiles": [url, url, url],
+          // }
+
           this.addMessageToOutput('success', JSON.stringify(json));
           this.updateUploadedFilesList();
         }).catch((e) => {
@@ -320,6 +333,7 @@ class Files extends LitElement {
         <!-- <include src="http://localhost:3000/uploads">Loading...</include> -->
         <br>
         <br>
+        <p> Output log:</p>
         <ul id="output"></ul>
       </main>
     </div>

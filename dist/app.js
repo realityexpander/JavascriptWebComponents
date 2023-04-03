@@ -487,7 +487,7 @@ class App extends Router(s) {
             {
                 path: "/files",
                 component: "page-files",
-                import: () => import('./page_files-4016835c.js')
+                import: () => import('./page_files-7daf3004.js')
             },
             // Using 'type' and 'day' variable.
             {
@@ -517,7 +517,7 @@ class App extends Router(s) {
         <page-login .category=${routeProps.category}>
         </page-login>
         `,
-                import: () => import('./page_login-cb428a9e.js')
+                import: () => import('./page_login-17885cb7.js')
             },
             // Fallback for all unmatched routes.  
             {
