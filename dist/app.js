@@ -351,24 +351,37 @@ class Home extends s {
         <a href="/news/tech">News</a>
         <br>
         <br>
+
         <button @click=${() => window.location = '/stocks'}>Go to stocks</button>
         <br>
         <br>
-        <button @click=${() => window.location = '/files'} id="btn-navt-to-files" class="mdc-button mdc-button--outlined
+
+        <button @click=${() => window.location = '/files'} id="btn-nav-to-files" class="mdc-button mdc-button--outlined
           smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Manage Files</span>
         </button>
         <br>
         <br>
+
+        <button @click=${() => window.location = '/tabsandwindows'} id="btn-nav-to-tabsandwindows" class="mdc-button mdc-button--outlined
+          smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Tabs and Windows</span>
+        </button>
+        <br>
+        <br>
+
         <button @click=${() => this.logout()}>Log Out</button>
         <br>
+
         <button @click=${() => this.openLogoutMenu()} id="btn-logout" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Log Out</span>
         </button>
         <br>
         <br>
+
         <button @click=${() => this.getTodos()} id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Get Todos</span>
@@ -376,6 +389,7 @@ class Home extends s {
         <br>
         <div id="todo-list"></div>
         <br>
+
         <label class="mdc-text-field mdc-text-field--filled">
           <span class="mdc-text-field__ripple"></span>
           <span class="mdc-floating-label" id="hint-email-address">Email Address</span>
@@ -496,6 +510,11 @@ class App extends Router(s) {
                 component: "page-files",
                 import: () => import('./page_files-7daf3004.js')
             },
+            {
+                path: "/tabsandwindows",
+                component: "page-tabsandwindows",
+                import: () => import('./page_tabsandwindows-a5107dc5.js')
+            },
             // Using 'type' and 'day' variable.
             {
                 path: "/stock/:type/:day",
@@ -524,7 +543,7 @@ class App extends Router(s) {
         <page-login .category=${routeProps.category}>
         </page-login>
         `,
-                import: () => import('./page_login-bdebdc80.js')
+                import: () => import('./page_login-0eaf6090.js')
             },
             // Fallback for all unmatched routes.  
             {
@@ -544,26 +563,25 @@ class App extends Router(s) {
     static styles = styles;
 
     render() {
-
         return (!this.isLoggedIn()) ?
             x`
-        ${this.routeElement}
-        `
+            ${this.routeElement}
+            `
             :
             x`
-      <style>
-        /*${this.app_style_css}*/
-      </style>
-      <body>
-        ${this.app_drawer_html}
-        ${this.app_content_begin_html}
-        ${this.app_header_html}
-        ${this.app_main_content_begin_html}
-        ${this.routeElement}
-        ${this.app_main_content_end_html}
-        ${this.app_content_end_html}
-      </body>
-    `;
+        <style>
+            /*${this.app_style_css}*/
+        </style>
+        <body>
+            ${this.app_drawer_html}
+            ${this.app_content_begin_html}
+            ${this.app_header_html}
+            ${this.app_main_content_begin_html}
+            ${this.routeElement}
+            ${this.app_main_content_end_html}
+            ${this.app_content_end_html}
+        </body>
+        `;
     }
 
     isLoggedIn() {
@@ -630,6 +648,7 @@ class App extends Router(s) {
             window.__is_app_logout_defined = true;
             document.addEventListener('logout', (e) => {
                 console.log('logout');
+                let token = localStorage.getItem('token');
                 localStorage.removeItem('token');
                 window.location.href = '/';
 
@@ -639,7 +658,7 @@ class App extends Router(s) {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        token: localStorage.getItem('token')
+                        token
                     })
                 })
                     .then(response => response.json())

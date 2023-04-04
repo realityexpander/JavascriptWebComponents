@@ -25,57 +25,59 @@ class Login extends LitElement {
   render() {
     // If provided, the properties for type and day are taking from the path.
     return html`
-      <h1>Login</h1>
-      <p>Please login</p>
-      <p>Category: ${this.category}</p>
-      <form action="" id="login-form">
-      
-        <label for="email" class="mdc-text-field mdc-text-field--filled">
-          <span class="mdc-text-field__ripple"></span>
-          <span class="mdc-floating-label" id="hint-email-address">Email Address</span>
-          <input id="email" type="email" class="mdc-text-field__input" aria-labelledby="my-label-id">
-          <span class="mdc-line-ripple"></span>
-        </label>
+      <div class="wrapper">
+        <h1>Login</h1>
+        <p>Please login</p>
+        <p>Category: ${this.category}</p>
+        <form action="" id="login-form">
+        
+          <label for="email" class="mdc-text-field mdc-text-field--filled">
+            <span class="mdc-text-field__ripple"></span>
+            <span class="mdc-floating-label" id="hint-email-address">Email Address</span>
+            <input id="email" type="email" class="mdc-text-field__input" aria-labelledby="my-label-id">
+            <span class="mdc-line-ripple"></span>
+          </label>
+          <br>
+          <br>
+        
+          <label for="password" class="mdc-text-field mdc-text-field--filled">
+            <span class="mdc-text-field__ripple"></span>
+            <span class="mdc-floating-label" id="hint-email-address">Password</span>
+            <input id="password" type="password" class="mdc-text-field__input" aria-labelledby="my-label-id">
+            <span class="mdc-line-ripple"></span>
+          </label>
+          <br>
+          <br>
+          <!-- <button type="submit">Submit</button> must use listeners for this button -->
+          <button type="submit" id="btn-submit" class="mdc-button mdc-button--outlined smaller-text">
+            <div class="mdc-button__ripple"></div>
+            <span class="mdc-button__label">Submit</span>
+          </button>
+        </form>
+        <br>
+
+        <p hidden id="error-message"></p>
         <br>
         <br>
-      
-        <label for="password" class="mdc-text-field mdc-text-field--filled">
-          <span class="mdc-text-field__ripple"></span>
-          <span class="mdc-floating-label" id="hint-email-address">Password</span>
-          <input id="password" type="password" class="mdc-text-field__input" aria-labelledby="my-label-id">
-          <span class="mdc-line-ripple"></span>
-        </label>
-        <br>
-        <br>
-        <!-- <button type="submit">Submit</button> must use listeners for this button -->
-        <button type="submit" id="btn-submit" class="mdc-button mdc-button--outlined smaller-text">
+
+        <button @click=${this.submitLogin} id="btn-login" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
-          <span class="mdc-button__label">Submit</span>
+          <span class="mdc-button__label">Login</span>
         </button>
-      </form>
-      <br>
+        <br>
+        <br>
 
-      <p hidden id="error-message"></p>
-      <br>
-      <br>
-
-      <button @click=${this.submitLogin} id="btn-login" class="mdc-button mdc-button--outlined smaller-text">
-        <div class="mdc-button__ripple"></div>
-        <span class="mdc-button__label">Login</span>
-      </button>
-      <br>
-      <br>
-
-      <button @click=${this.register} id="btn-signup" class="mdc-button mdc-button--outlined smaller-text">
-        <div class="mdc-button__ripple"></div>
-        <span class="mdc-button__label">Signup</span>
-      </button>
-      <br>
-      <br>
-      
-      <my-element></my-element>
-      
-      <br>
+        <button @click=${this.register} id="btn-signup" class="mdc-button mdc-button--outlined smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Signup</span>
+        </button>
+        <br>
+        <br>
+        
+        <my-element></my-element>
+        
+        <br>
+      </div>
       `
   }
 

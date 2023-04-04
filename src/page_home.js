@@ -84,24 +84,37 @@ class Home extends LitElement {
         <a href="/news/tech">News</a>
         <br>
         <br>
+
         <button @click=${() => window.location = '/stocks'}>Go to stocks</button>
         <br>
         <br>
-        <button @click=${() => window.location = '/files'} id="btn-navt-to-files" class="mdc-button mdc-button--outlined
+
+        <button @click=${() => window.location = '/files'} id="btn-nav-to-files" class="mdc-button mdc-button--outlined
           smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Manage Files</span>
         </button>
         <br>
         <br>
+
+        <button @click=${() => window.location = '/tabsandwindows'} id="btn-nav-to-tabsandwindows" class="mdc-button mdc-button--outlined
+          smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Tabs and Windows</span>
+        </button>
+        <br>
+        <br>
+
         <button @click=${() => this.logout()}>Log Out</button>
         <br>
+
         <button @click=${() => this.openLogoutMenu()} id="btn-logout" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Log Out</span>
         </button>
         <br>
         <br>
+
         <button @click=${() => this.getTodos()} id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Get Todos</span>
@@ -109,6 +122,7 @@ class Home extends LitElement {
         <br>
         <div id="todo-list"></div>
         <br>
+
         <label class="mdc-text-field mdc-text-field--filled">
           <span class="mdc-text-field__ripple"></span>
           <span class="mdc-floating-label" id="hint-email-address">Email Address</span>

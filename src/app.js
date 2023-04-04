@@ -47,6 +47,11 @@ class App extends Router(LitElement) {
                 component: "page-files",
                 import: () => import("./page_files.js")
             },
+            {
+                path: "/tabsandwindows",
+                component: "page-tabsandwindows",
+                import: () => import("./page_tabsandwindows.js")
+            },
             // Using 'type' and 'day' variable.
             {
                 path: "/stock/:type/:day",
@@ -95,26 +100,25 @@ class App extends Router(LitElement) {
     static styles = styles;
 
     render() {
-
         return (!this.isLoggedIn()) ?
             html`
-        ${this.routeElement}
-        `
+            ${this.routeElement}
+            `
             :
             html`
-      <style>
-        /*${this.app_style_css}*/
-      </style>
-      <body>
-        ${this.app_drawer_html}
-        ${this.app_content_begin_html}
-        ${this.app_header_html}
-        ${this.app_main_content_begin_html}
-        ${this.routeElement}
-        ${this.app_main_content_end_html}
-        ${this.app_content_end_html}
-      </body>
-    `;
+        <style>
+            /*${this.app_style_css}*/
+        </style>
+        <body>
+            ${this.app_drawer_html}
+            ${this.app_content_begin_html}
+            ${this.app_header_html}
+            ${this.app_main_content_begin_html}
+            ${this.routeElement}
+            ${this.app_main_content_end_html}
+            ${this.app_content_end_html}
+        </body>
+        `;
     }
 
     isLoggedIn() {
@@ -181,6 +185,7 @@ class App extends Router(LitElement) {
             window.__is_app_logout_defined = true;
             document.addEventListener('logout', (e) => {
                 console.log('logout');
+                let token = localStorage.getItem('token');
                 localStorage.removeItem('token');
                 window.location.href = '/';
 
@@ -190,7 +195,7 @@ class App extends Router(LitElement) {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        token: localStorage.getItem('token')
+                        token
                     })
                 })
                     .then(response => response.json())
