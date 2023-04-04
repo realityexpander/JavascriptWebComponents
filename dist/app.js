@@ -429,8 +429,15 @@ class Home extends s {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    window.location = '/';
+    // send logout message
+    this.dispatchEvent(new CustomEvent('logout', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        message: 'logout'
+      }
+    }));
+
   }
 
   openLogoutMenu() {
@@ -517,7 +524,7 @@ class App extends Router(s) {
         <page-login .category=${routeProps.category}>
         </page-login>
         `,
-                import: () => import('./page_login-17885cb7.js')
+                import: () => import('./page_login-bdebdc80.js')
             },
             // Fallback for all unmatched routes.  
             {
@@ -609,11 +616,41 @@ class App extends Router(s) {
                 drawer.open = false;
             });
         });
+
+        this.setupLogoutListener();
     }
 
     removeListeners() {
         topAppBar.unlisten('MDCTopAppBar:nav'); // todo - does this work? Need to know
         this.shadowRoot.removeEventListener('keydown');
+    }
+
+    setupLogoutListener() {
+        if (window.__is_app_logout_defined == undefined) {
+            window.__is_app_logout_defined = true;
+            document.addEventListener('logout', (e) => {
+                console.log('logout');
+                localStorage.removeItem('token');
+                window.location.href = '/';
+
+                fetch('/api/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token: localStorage.getItem('token')
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Successfully logged out:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            });
+        }
     }
 
     app_drawer_html = x`

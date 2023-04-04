@@ -162,8 +162,15 @@ class Home extends LitElement {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    window.location = '/';
+    // send logout message
+    this.dispatchEvent(new CustomEvent('logout', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        message: 'logout'
+      }
+    }));
+
   }
 
   openLogoutMenu() {

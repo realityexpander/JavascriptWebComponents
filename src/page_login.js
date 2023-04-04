@@ -47,19 +47,31 @@ class Login extends LitElement {
         </label>
         <br>
         <br>
-      
         <!-- <button type="submit">Submit</button> must use listeners for this button -->
         <button type="submit" id="btn-submit" class="mdc-button mdc-button--outlined smaller-text">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Submit</span>
         </button>
       </form>
-      
       <br>
+
+      <p hidden id="error-message"></p>
+      <br>
+      <br>
+
       <button @click=${this.submitLogin} id="btn-login" class="mdc-button mdc-button--outlined smaller-text">
         <div class="mdc-button__ripple"></div>
         <span class="mdc-button__label">Login</span>
       </button>
+      <br>
+      <br>
+
+      <button @click=${this.register} id="btn-signup" class="mdc-button mdc-button--outlined smaller-text">
+        <div class="mdc-button__ripple"></div>
+        <span class="mdc-button__label">Signup</span>
+      </button>
+      <br>
+      <br>
       
       <my-element></my-element>
       
@@ -139,6 +151,37 @@ class Login extends LitElement {
       .then(response => response.json())
       .then(data => {
         if (data.error != undefined) {
+          alert('Wrong email or password: ' + data.error);
+          return;
+        }
+
+        console.log('Success:', data.token);
+        localStorage.setItem('token', data.token);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        this.showErrorMessage('Error: ' + error);
+      });
+  }
+
+  register() {
+    let email = this.shadowRoot.getElementById('email').value;
+    let password = this.shadowRoot.getElementById('password').value;
+
+    fetch('/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error != undefined) {
           alert('Wrong email or password' + data.error);
           return;
         }
@@ -149,33 +192,14 @@ class Login extends LitElement {
       })
       .catch((error) => {
         console.error('Error:', error);
+        this.showErrorMessage('Error: ' + error);
       });
+  }
 
-    // if (this.shadowRoot.getElementById('email').value == 'a@b.c' &&
-    //   this.shadowRoot.getElementById('password').value == 'admin'
-    // ) {
-    //   localStorage.setItem('token', '1234567890');
-    //   window.location.href = '/';
-    // } else {
-    //   alert('Wrong email or password');
-    // }
-
-    // fetch('http://localhost:3000/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     email: 'admin',
-    //     password: 'admin'
-    //   })
-    // })
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     console.log('Success:', data);
-    //     localStorage.setItem('token', '1234567890');
-    //     window.location.href = '/';
-    //   })
+  showErrorMessage(message) {
+    let control = this.shadowRoot.getElementById('error-message');
+    control.hidden = false;
+    control.innerText = message;
   }
 
 }
