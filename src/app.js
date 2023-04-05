@@ -57,6 +57,11 @@ class App extends Router(LitElement) {
                 component: "page-broadcast-message",
                 import: () => import("./page_broadcast_message.js")
             },
+            {
+                path: "/web-worker",
+                component: "page-web-worker",
+                import: () => import("./page_web_worker.js")
+            },
             // Using 'type' and 'day' variable.
             {
                 path: "/stock/:type/:day",

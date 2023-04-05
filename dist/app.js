@@ -380,6 +380,14 @@ class Home extends s {
         <br>
         <br>
 
+        <button @click=${() => window.location = '/web-worker'} id="btn-nav-to-web-worker" class="mdc-button mdc-button--outlined
+          smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Web Worker</span>
+        </button>
+        <br>
+        <br>
+
         <button @click=${() => this.logout()}>Log Out</button>
         <br>
 
@@ -527,6 +535,11 @@ class App extends Router(s) {
                 path: "/broadcast-message",
                 component: "page-broadcast-message",
                 import: () => import('./page_broadcast_message-2fafc3ba.js')
+            },
+            {
+                path: "/web-worker",
+                component: "page-web-worker",
+                import: () => import('./page_web_worker-9c179c4d.js')
             },
             // Using 'type' and 'day' variable.
             {
