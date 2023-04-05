@@ -36,11 +36,11 @@
 <script type="module" src="./dist/app.js"></script>
 
 <script>
-  // create the broadcast channel for this window
-  var windowBroadcastChannel = new window.BroadcastChannel("wkrp");
-  // broadcastChannel.onmessage = (ev) => { console.log(ev) };
-  windowBroadcastChannel.addEventListener('message', (ev) => { console.log(ev) });
-  windowBroadcastChannel.postMessage({ message: 'Hello from the other in index.html' });
+  // // create the broadcast channel for this window
+  // var windowBroadcastChannel = new window.BroadcastChannel("wkrp");
+  // // broadcastChannel.onmessage = (ev) => { console.log(ev) };
+  // windowBroadcastChannel.addEventListener('message', (ev) => { console.log(ev) });
+  // windowBroadcastChannel.postMessage({ message: 'Hello from the other in index.html' });
 </script>
 
 </html>
