@@ -372,6 +372,14 @@ class Home extends s {
         <br>
         <br>
 
+        <button @click=${() => window.location = '/broadcast-message'} id="btn-nav-to-tabsandwindows" class="mdc-button mdc-button--outlined
+          smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Broadcast Messages</span>
+        </button>
+        <br>
+        <br>
+
         <button @click=${() => this.logout()}>Log Out</button>
         <br>
 
@@ -514,6 +522,11 @@ class App extends Router(s) {
                 path: "/tabsandwindows",
                 component: "page-tabsandwindows",
                 import: () => import('./page_tabsandwindows-a5107dc5.js')
+            },
+            {
+                path: "/broadcast-message",
+                component: "page-broadcast-message",
+                import: () => import('./page_broadcast_message-2fafc3ba.js')
             },
             // Using 'type' and 'day' variable.
             {

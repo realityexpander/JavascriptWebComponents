@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BroadcastChannel</title>
+  <!-- <link rel="stylesheet" href="./dist/.css" /> -->
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: inherit;
+      font-weight: inherit;
+    }
+
+    html {
+      font-size: 20px;
+      font-family: sans-serif;
+      font-weight: 300;
+    }
+
+    input {
+      width: 40ch;
+    }
+  </style>
+  <script defer src="./broadcast.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1>BroadcastChannel API</h1>
+    <h2>Between Windows, Tabs, Frames, Workers &amp; ServiceWorkers</h2>
+  </header>
+  <main>
+    <section class="actions">
+      <button id="btnOpen">Open a New Tab</button><br />
+      <input type="text" id="txtMessage" />
+      <button id="btnSend">Send Message</button>
+    </section>
+    <!-- messages go here -->
+    <section id="messages"></section>
+  </main>
+</body>
+
+</html>

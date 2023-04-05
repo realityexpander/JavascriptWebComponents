@@ -105,6 +105,14 @@ class Home extends LitElement {
         <br>
         <br>
 
+        <button @click=${() => window.location = '/broadcast-message'} id="btn-nav-to-tabsandwindows" class="mdc-button mdc-button--outlined
+          smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Broadcast Messages</span>
+        </button>
+        <br>
+        <br>
+
         <button @click=${() => this.logout()}>Log Out</button>
         <br>
 

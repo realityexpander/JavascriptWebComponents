@@ -8,8 +8,8 @@
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link defer rel="stylesheet"
-    href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
-  <script defer src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    href="https://unpkg.com/material-components-web@14.0.0/dist/material-components-web.min.css">
+  <script defer src="https://unpkg.com/material-components-web@14.0.0/dist/material-components-web.min.js"></script>
 
   <link rel="stylesheet" href="/index3a.css" />
 
@@ -34,5 +34,13 @@
 <!-- <script type="module" src="app.js"></script> -->
 
 <script type="module" src="./dist/app.js"></script>
+
+<script>
+  // create the broadcast channel for this window
+  var windowBroadcastChannel = new window.BroadcastChannel("wkrp");
+  // broadcastChannel.onmessage = (ev) => { console.log(ev) };
+  windowBroadcastChannel.addEventListener('message', (ev) => { console.log(ev) });
+  windowBroadcastChannel.postMessage({ message: 'Hello from the other in index.html' });
+</script>
 
 </html>
