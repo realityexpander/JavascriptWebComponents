@@ -30,7 +30,7 @@
     "simple-wds": "wds --watch --app-index index.html --esbuild-target auto",
     "start-dev-tsc-wds-1": "concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds --open --watch --app-index index.html\"",
     "start-dev-rollup-2": "watch -d -n1 -t -c rollup -c -w --sourcemap",
-    "serve-ngrok": "ngrok http http://localhost:8000",
+    "serve-ngrok": "ngrok http http://localhost:8081",
     "serve-ngrok-oauth": "ngrok http http://localhost:8000 --oauth=google --oauth-allow-email=realityexpander@gmail.com",
     "serve-ngrok-basicauth": "ngrok http http://localhost:8000 --basic-auth user:password"
   },

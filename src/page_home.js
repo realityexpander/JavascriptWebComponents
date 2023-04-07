@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { styles } from './material-components-web.min.css.js';
-import { globalProp } from './globalProp.js';
+import { globalProp, appConfig } from './globalProp.js';
 
 class Home extends LitElement {
   static styles = styles;
@@ -40,21 +40,31 @@ class Home extends LitElement {
   // }
 
   async getTodos() {
-    try {
-      const response = await fetch('/api/todos', {
-        method: 'GET',
-        // headers: {
-        //   'Content-Type': 'application/json',
-        // },
-      });
-      const data = await response.json();
 
-      const todoListEl = this.shadowRoot.querySelector('#todo-list');
-      todoListEl.innerHTML = '';
-      for (let i = 0; i < data.length; i++) {
-        const todoEl = document.createElement('div');
-        todoEl.innerHTML =
-          `
+    const response = await fetch('/api/todos', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + appConfig.getAuthenticationToken(),
+      },
+    })
+      .then(response => {
+        if (response.ok == false) {
+          throw new Error(repsonse.statusText);
+        }
+        return response.json()
+      })
+      .then(data => {
+        if (data == undefined || data == null) {
+          throw new Error('No data or data is malformed');
+        }
+
+        const todoListEl = this.shadowRoot.querySelector('#todo-list');
+        todoListEl.innerHTML = '';
+        for (let i = 0; i < data.length; i++) {
+          const todoEl = document.createElement('div');
+          todoEl.innerHTML =
+            `
           <div>
             <p>${data[i].name}</p> 
             <div style="padding-left: 30px;" 
@@ -63,11 +73,12 @@ class Home extends LitElement {
             </div> 
           </div>
           `.trim();
-        todoListEl.appendChild(todoEl);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+          todoListEl.appendChild(todoEl);
+        }
+      })
+      .catch((error) => {
+        console.error('getTodos Error:', error);
+      });
   }
 
 

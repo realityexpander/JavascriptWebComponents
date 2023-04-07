@@ -2,6 +2,7 @@ import { LitElement, html } from 'lit';
 //import { Router, RouteMixin } from 'simple-wc-router';
 import { Router, RouteMixin } from '../router/index.js';
 import { styles } from './material-components-web.min.css.js';
+import { v4 as uuidv4 } from 'uuid';
 
 // import './pages/page_home';
 // import './components';
@@ -9,7 +10,7 @@ import { styles } from './material-components-web.min.css.js';
 import './page_home';
 
 // export const globalProp = "version-1.2.3.3";
-import { globalProp } from './globalProp.js';
+import { globalProp, appConfig } from './globalProp.js';
 
 class App extends Router(LitElement) {
 
@@ -19,6 +20,11 @@ class App extends Router(LitElement) {
         this.appProp = "appProp1";
         console.log('App constructor: globalProp = ' + globalProp);
         console.log('App constructor: appProp = ' + this.appProp);
+
+        // Configure the application
+        this.calculateClientIpAddress().then((ip) => {
+            appConfig.setClientIpAddress(ip);
+        });
     }
 
     // Not yet implemented
@@ -132,7 +138,7 @@ class App extends Router(LitElement) {
     }
 
     isLoggedIn() {
-        return localStorage.getItem('token') != null;
+        return appConfig.getAuthenticationToken() != null;
     }
 
     firstUpdated() {
@@ -195,10 +201,15 @@ class App extends Router(LitElement) {
             window.__is_app_logout_defined = true;
             document.addEventListener('logout', (e) => {
                 console.log('logout');
-                let token = localStorage.getItem('token');
-                localStorage.removeItem('token');
-                window.location.href = '/';
 
+                let token = appConfig.getAuthenticationToken();
+                appConfig.removeAuthenticationToken();
+
+                // Clear the cookies
+                document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                document.cookie = 'clientIpAddress=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+                // Inform backend of logout
                 fetch('/api/logout', {
                     method: 'POST',
                     headers: {
@@ -214,9 +225,29 @@ class App extends Router(LitElement) {
                     })
                     .catch((error) => {
                         console.error('Error:', error);
-                    });
+                    })
+                    .finally(() => {
+                        window.location.href = '/'
+                    })
             });
         }
+    }
+
+    // todo - put in utils.js
+    async calculateClientIpAddress() {
+        if (appConfig.getClientIpAddress() != null) return appConfig.getClientIpAddress(); // already generated
+
+        let clientIpAddress = appConfig.getClientIpAddress() ?? uuidv4(); // default to a UUID
+
+        // Attempt to replace the UUID with the client's IP address
+        await fetch("https://api.ipify.org?format=json")
+            .then(response => response.json())
+            .then(data => {
+                clientIpAddress = data.ip;
+            })
+            .catch(err => console.log("getClientIpAddress Error: " + err))
+
+        return clientIpAddress;
     }
 
     app_drawer_html = html`

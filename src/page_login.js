@@ -3,6 +3,8 @@ import { styles } from './material-components-web.min.css.js';
 
 import './my-element.ts'
 
+import { appConfig } from './globalProp.js';
+
 class Login extends LitElement {
 
   static styles = styles;
@@ -136,9 +138,12 @@ class Login extends LitElement {
     this.shadowRoot.getElementById('btn-submit').click();
   }
 
-  login() {
+  async login() {
     let email = this.shadowRoot.getElementById('email').value;
     let password = this.shadowRoot.getElementById('password').value;
+    let clientIpAddress = appConfig.getClientIpAddress();
+
+    console.log("hello")
 
     fetch('/api/login', {
       method: 'POST',
@@ -146,8 +151,9 @@ class Login extends LitElement {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: email,
-        password: password
+        email,
+        password,
+        clientIpAddress
       })
     })
       .then(response => response.json())
@@ -156,9 +162,10 @@ class Login extends LitElement {
           alert('Wrong email or password: ' + data.error);
           return;
         }
+        appConfig.setAuthenticationToken(data.token);
+        this.setCookies(data.token);
 
-        console.log('Success:', data.token);
-        localStorage.setItem('token', data.token);
+        // redirect to the home page
         window.location.href = '/';
       })
       .catch((error) => {
@@ -167,9 +174,10 @@ class Login extends LitElement {
       });
   }
 
-  register() {
+  async register() {
     let email = this.shadowRoot.getElementById('email').value;
     let password = this.shadowRoot.getElementById('password').value;
+    let clientIpAddress = appConfig.getClientIpAddress();
 
     fetch('/api/register', {
       method: 'POST',
@@ -177,8 +185,9 @@ class Login extends LitElement {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: email,
-        password: password
+        email,
+        password,
+        clientIpAddress
       })
     })
       .then(response => response.json())
@@ -188,14 +197,28 @@ class Login extends LitElement {
           return;
         }
 
-        console.log('Success:', data.token);
-        localStorage.setItem('token', data.token);
+        // Save the token
+        appConfig.setAuthenticationToken(data.token);
+        this.setCookies(data.token);
+
+        // navigate to the home page
         window.location.href = '/';
       })
       .catch((error) => {
         console.error('Error:', error);
         this.showErrorMessage('Error: ' + error);
       });
+  }
+
+  setCookies(token) {
+    // set cookies for the token and clientIpAddress
+    document.cookie = 'authenticationToken=' + token + ";SameSite=Strict;Secure";
+    document.cookie = 'clientIpAddress=' + appConfig.getClientIpAddress() + ";SameSite=Strict;Secure";
+  }
+
+  clearCookies() {
+    document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'clientIpAddress=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
 
   showErrorMessage(message) {

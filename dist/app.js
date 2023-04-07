@@ -267,7 +267,101 @@ const styles = i$1`
   }
 `;
 
+// Unique ID creation requires a high quality random # generator. In the browser we therefore
+// require the crypto API and do not support built-in fallback to lower quality random number
+// generators (like Math.random()).
+let getRandomValues;
+const rnds8 = new Uint8Array(16);
+function rng() {
+  // lazy load so that environments that need to polyfill have a chance to do so
+  if (!getRandomValues) {
+    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
+    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+
+    if (!getRandomValues) {
+      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+    }
+  }
+
+  return getRandomValues(rnds8);
+}
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+
+const byteToHex = [];
+
+for (let i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).slice(1));
+}
+
+function unsafeStringify(arr, offset = 0) {
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
+}
+
+const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var native = {
+  randomUUID
+};
+
+function v4(options, buf, offset) {
+  if (native.randomUUID && !buf && !options) {
+    return native.randomUUID();
+  }
+
+  options = options || {};
+  const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (let i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return unsafeStringify(rnds);
+}
+
 const globalProp = "version-1.2.3.3";
+
+const appConfig = {
+  setClientIpAddress: (ipAddress) => localStorage.setItem('clientIpAddress', ipAddress),
+  getClientIpAddress: () => localStorage.getItem('clientIpAddress'),
+  setAuthenticationToken: (token) => localStorage.setItem('token', token),
+  getAuthenticationToken: () => localStorage.getItem('token'),
+  removeAuthenticationToken: () => localStorage.removeItem('token'),
+};
+
+const endpointConfig = {
+  database: {
+    host: 'localhost',
+    port: 3000,
+  },
+  server: {
+    host: 'localhost',
+    port: 8081,
+  },
+  getUrl: function (host, port) {
+    return `http://${host}:${port}`;
+  },
+  getDatabaseUrl: function () {
+    return endpointConfig.getUrl(endpointConfig.database.host, endpointConfig.database.port)
+  },
+  getServerUrl: function () {
+    return endpointConfig.getUrl(endpointConfig.server.host, endpointConfig.server.port)
+  }
+
+};
 
 class Home extends s {
   static styles = styles;
@@ -307,21 +401,31 @@ class Home extends s {
   // }
 
   async getTodos() {
-    try {
-      const response = await fetch('/api/todos', {
-        method: 'GET',
-        // headers: {
-        //   'Content-Type': 'application/json',
-        // },
-      });
-      const data = await response.json();
 
-      const todoListEl = this.shadowRoot.querySelector('#todo-list');
-      todoListEl.innerHTML = '';
-      for (let i = 0; i < data.length; i++) {
-        const todoEl = document.createElement('div');
-        todoEl.innerHTML =
-          `
+    await fetch('/api/todos', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + appConfig.getAuthenticationToken(),
+      },
+    })
+      .then(response => {
+        if (response.ok == false) {
+          throw new Error(repsonse.statusText);
+        }
+        return response.json()
+      })
+      .then(data => {
+        if (data == undefined || data == null) {
+          throw new Error('No data or data is malformed');
+        }
+
+        const todoListEl = this.shadowRoot.querySelector('#todo-list');
+        todoListEl.innerHTML = '';
+        for (let i = 0; i < data.length; i++) {
+          const todoEl = document.createElement('div');
+          todoEl.innerHTML =
+            `
           <div>
             <p>${data[i].name}</p> 
             <div style="padding-left: 30px;" 
@@ -330,11 +434,12 @@ class Home extends s {
             </div> 
           </div>
           `.trim();
-        todoListEl.appendChild(todoEl);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+          todoListEl.appendChild(todoEl);
+        }
+      })
+      .catch((error) => {
+        console.error('getTodos Error:', error);
+      });
   }
 
 
@@ -498,6 +603,11 @@ class App extends Router(s) {
         this.appProp = "appProp1";
         console.log('App constructor: globalProp = ' + globalProp);
         console.log('App constructor: appProp = ' + this.appProp);
+
+        // Configure the application
+        this.calculateClientIpAddress().then((ip) => {
+            appConfig.setClientIpAddress(ip);
+        });
     }
 
     // Not yet implemented
@@ -524,7 +634,7 @@ class App extends Router(s) {
             {
                 path: "/files",
                 component: "page-files",
-                import: () => import('./page_files-7daf3004.js')
+                import: () => import('./page_files-4116467f.js')
             },
             {
                 path: "/tabsandwindows",
@@ -539,7 +649,7 @@ class App extends Router(s) {
             {
                 path: "/web-worker",
                 component: "page-web-worker",
-                import: () => import('./page_web_worker-9c179c4d.js')
+                import: () => import('./page_web_worker-1d914877.js')
             },
             // Using 'type' and 'day' variable.
             {
@@ -569,7 +679,7 @@ class App extends Router(s) {
         <page-login .category=${routeProps.category}>
         </page-login>
         `,
-                import: () => import('./page_login-0eaf6090.js')
+                import: () => import('./page_login-1030900e.js')
             },
             // Fallback for all unmatched routes.  
             {
@@ -611,7 +721,7 @@ class App extends Router(s) {
     }
 
     isLoggedIn() {
-        return localStorage.getItem('token') != null;
+        return appConfig.getAuthenticationToken() != null;
     }
 
     firstUpdated() {
@@ -674,10 +784,15 @@ class App extends Router(s) {
             window.__is_app_logout_defined = true;
             document.addEventListener('logout', (e) => {
                 console.log('logout');
-                let token = localStorage.getItem('token');
-                localStorage.removeItem('token');
-                window.location.href = '/';
 
+                let token = appConfig.getAuthenticationToken();
+                appConfig.removeAuthenticationToken();
+
+                // Clear the cookies
+                document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                document.cookie = 'clientIpAddress=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+                // Inform backend of logout
                 fetch('/api/logout', {
                     method: 'POST',
                     headers: {
@@ -693,9 +808,29 @@ class App extends Router(s) {
                     })
                     .catch((error) => {
                         console.error('Error:', error);
+                    })
+                    .finally(() => {
+                        window.location.href = '/';
                     });
             });
         }
+    }
+
+    // todo - put in utils.js
+    async calculateClientIpAddress() {
+        if (appConfig.getClientIpAddress() != null) return appConfig.getClientIpAddress(); // already generated
+
+        let clientIpAddress = appConfig.getClientIpAddress() ?? v4(); // default to a UUID
+
+        // Attempt to replace the UUID with the client's IP address
+        await fetch("https://api.ipify.org?format=json")
+            .then(response => response.json())
+            .then(data => {
+                clientIpAddress = data.ip;
+            })
+            .catch(err => console.log("getClientIpAddress Error: " + err));
+
+        return clientIpAddress;
     }
 
     app_drawer_html = x`
@@ -16176,5 +16311,5 @@ class App extends Router(s) {
 }
 customElements.define('app-root', App);
 
-export { styles as a, i$1 as i, s, x };
+export { styles as a, appConfig as b, endpointConfig as e, i$1 as i, s, x };
 //# sourceMappingURL=app.js.map

@@ -7,6 +7,8 @@ import { styles } from './material-components-web.min.css.js';
 // https://gist.github.com/prof3ssorSt3v3/1ba5a0f01e5cb45d0d2f81b17036bc27
 // https://gist.github.com/prof3ssorSt3v3/da1e00072c995cf657a33fef3ad63b74
 
+import { endpointConfig } from './globalProp.js';
+
 class Files extends LitElement {
 
   static get properties() {
@@ -24,7 +26,6 @@ class Files extends LitElement {
     this.category = '';
     this.someOtherGlobalProp = '';
   }
-
 
   firstUpdated() {
     this.shadowRoot.getElementById('inputFile').addEventListener('change', this.filesPicked.bind(this));
@@ -44,7 +45,7 @@ class Files extends LitElement {
   updateUploadedFilesList() {
     const fileListEl = this.shadowRoot.getElementById('uploadedFiles');
 
-    fetch('http://localhost:3000/uploads')
+    fetch(endpointConfig.getDatabaseUrl() + '/uploads')
       .then(res => res.json())
       .then(data => {
         fileListEl.innerHTML = '';

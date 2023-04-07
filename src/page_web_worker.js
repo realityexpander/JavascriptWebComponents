@@ -19,6 +19,8 @@ class WebWorker extends LitElement {
         <br>
         <br>
 
+        <p>Calculations are are run in the web worker, and the results are sent back to the main thread.</p>
+        <p>Calculations are not interruptable, and run to completion unless the worker is terminated.</p>
         <button id="btnCalculate">Run Calculation</button>
         <br>
         <br>
