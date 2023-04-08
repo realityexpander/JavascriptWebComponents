@@ -70,13 +70,32 @@ export const styles = css`
     margin-top: 0;
   }
   
+  /* font size adapts to the size of the site */
+  .responsive-font-size {
+    font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [minimum viewport width]) / ([maximum viewport width] - [minimum viewport width])));
+    font-size: clamp(min, viewport-width-unit, max); /* alternative */
+  }
+  
+  .frosted-glass-container {
+      background-color: rgba(255, 255, 255, .15);
+      backdrop-filter: blur(5px);
+  }
+
   .wrapper {
+    /*
     --max-width: 960px;
     --min-gap: 25px;
     --side-gap: calc((100vw - min(var(--max-width), calc(100vw - (var(--min-gap) * 2)))) / 2);
     padding-left: var(--side-gap);
     padding-right: var(--side-gap);
+    */
+    padding: 15px calc((100vw - min(900px, calc(100vw - 50px))) / 2); 
   }
+  /* alternative to the above:
+  main {
+    padding: 15px calc((100vw - min(900px, calc(100vw - 50px))) / 2);
+  }
+  */
 
   * {
     font-family: system-ui, Roboto, sans-serif;
@@ -99,5 +118,10 @@ export const styles = css`
     direction: ltr;
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* Adjust size of notch to solve label clipping problem on mdc-text-fields*/
+  .mdc-text-field label.mdc-floating-label {
+    padding-right: 20px;
   }
 `

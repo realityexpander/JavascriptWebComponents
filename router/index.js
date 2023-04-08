@@ -50,20 +50,29 @@ const Router = superClass =>
     __handleNav(ev) {
       if (!this.constructor.routes) throw Errors.Router.NoRoutes;
 
-      // if the user is not logged in, redirect to login page
-      let loginLocation = null;
-      let isLoginLocationInPath = ev.target.location.pathname.split("/")[1] == 'login';
-      if (!isLoginLocationInPath) {
-        if (localStorage.getItem('token') == null) {
-          loginLocation = '/login';
-        }
-      }
+      // let overrideNavLocation = null;
+      // let isLoginLocationInPath = ev.target.location.pathname.split("/")[1] == 'login';
+      // let isPasswordResetInPath = ev.target.location.pathname.split("/")[1] == 'password-reset';
+      // if (!isLoginLocationInPath) {
+      //   if (localStorage.getItem('token') == null) {
+      //     overrideNavLocation = '/login';
+      //   }
+      // }
 
       //const targetRoute = window.location.pathname; //ev.state.route;
-      const targetRoute = loginLocation || ev.target.location.pathname; //ev.state.route;
+      // const targetRoute = overrideNavLocation || ev.target.location.pathname; //ev.state.route;
+      const targetRoute = ev.target.location.pathname; //ev.state.route;
       const targetRouteWithHash = ev.target.location.pathname + ev.target.location.hash;
+
       const match = matcher(this.constructor.routes, targetRoute);
       if (match) {
+        // Check if location is secured
+        if (match.route.secure) {
+          if (localStorage.getItem('token') == null) { // If not logged in
+            this.navigate('/login'); // Redirect to login
+          }
+        }
+
         this.route = match.route;
         this.route.path = this.route.path + ev.target.location.hash;
         this.routeProps = match.props;

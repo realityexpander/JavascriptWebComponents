@@ -3,7 +3,7 @@ import { styles } from './material-components-web.min.css.js';
 
 import './my-element.ts'
 
-import { appConfig } from './globalProp.js';
+import { authConfig } from './globalProp.js';
 
 class Login extends LitElement {
 
@@ -141,9 +141,7 @@ class Login extends LitElement {
   async login() {
     let email = this.shadowRoot.getElementById('email').value;
     let password = this.shadowRoot.getElementById('password').value;
-    let clientIpAddress = appConfig.getClientIpAddress();
-
-    console.log("hello")
+    let clientIpAddress = authConfig.getClientIpAddress();
 
     fetch('/api/login', {
       method: 'POST',
@@ -156,14 +154,18 @@ class Login extends LitElement {
         clientIpAddress
       })
     })
-      .then(response => response.json())
-      .then(data => {
-        if (data.error != undefined) {
-          alert('Wrong email or password: ' + data.error);
-          return;
+      .then(response => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json()
+      })
+      .then(authData => {
+
+        if (authData.error != undefined) {
+          alert('Wrong email or password: ' + authData.error);
+          throw new Error(authData.error);
         }
-        appConfig.setAuthenticationToken(data.token);
-        this.setCookies(data.token);
+
+        this.saveAuthenticationInfo(authData);
 
         // redirect to the home page
         window.location.href = '/';
@@ -177,7 +179,7 @@ class Login extends LitElement {
   async register() {
     let email = this.shadowRoot.getElementById('email').value;
     let password = this.shadowRoot.getElementById('password').value;
-    let clientIpAddress = appConfig.getClientIpAddress();
+    let clientIpAddress = authConfig.getClientIpAddress();
 
     fetch('/api/register', {
       method: 'POST',
@@ -190,16 +192,17 @@ class Login extends LitElement {
         clientIpAddress
       })
     })
-      .then(response => response.json())
-      .then(data => {
-        if (data.error != undefined) {
-          alert('Wrong email or password' + data.error);
-          return;
+      .then(response => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json()
+      })
+      .then(authData => {
+        if (authData.error != undefined) {
+          alert('Wrong email or password' + authData.error);
+          throw new Error(authData.error);
         }
 
-        // Save the token
-        appConfig.setAuthenticationToken(data.token);
-        this.setCookies(data.token);
+        this.saveAuthenticationInfo(authData);
 
         // navigate to the home page
         window.location.href = '/';
@@ -210,15 +213,11 @@ class Login extends LitElement {
       });
   }
 
-  setCookies(token) {
-    // set cookies for the token and clientIpAddress
-    document.cookie = 'authenticationToken=' + token + ";SameSite=Strict;Secure";
-    document.cookie = 'clientIpAddress=' + appConfig.getClientIpAddress() + ";SameSite=Strict;Secure";
-  }
-
-  clearCookies() {
-    document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    document.cookie = 'clientIpAddress=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  saveAuthenticationInfo({ token, jwtToken, clientIpAddress }) {
+    authConfig.setClientIpAddress(clientIpAddress);
+    authConfig.setAuthenticationToken(token);
+    authConfig.setAuthenticationJWT(jwtToken);
+    authConfig.setCookies(token);
   }
 
   showErrorMessage(message) {

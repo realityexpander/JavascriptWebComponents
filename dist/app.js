@@ -117,20 +117,29 @@ const Router = superClass =>
     __handleNav(ev) {
       if (!this.constructor.routes) throw Errors.Router.NoRoutes;
 
-      // if the user is not logged in, redirect to login page
-      let loginLocation = null;
-      let isLoginLocationInPath = ev.target.location.pathname.split("/")[1] == 'login';
-      if (!isLoginLocationInPath) {
-        if (localStorage.getItem('token') == null) {
-          loginLocation = '/login';
-        }
-      }
+      // let overrideNavLocation = null;
+      // let isLoginLocationInPath = ev.target.location.pathname.split("/")[1] == 'login';
+      // let isPasswordResetInPath = ev.target.location.pathname.split("/")[1] == 'password-reset';
+      // if (!isLoginLocationInPath) {
+      //   if (localStorage.getItem('token') == null) {
+      //     overrideNavLocation = '/login';
+      //   }
+      // }
 
       //const targetRoute = window.location.pathname; //ev.state.route;
-      const targetRoute = loginLocation || ev.target.location.pathname; //ev.state.route;
+      // const targetRoute = overrideNavLocation || ev.target.location.pathname; //ev.state.route;
+      const targetRoute = ev.target.location.pathname; //ev.state.route;
       const targetRouteWithHash = ev.target.location.pathname + ev.target.location.hash;
+
       const match = matcher(this.constructor.routes, targetRoute);
       if (match) {
+        // Check if location is secured
+        if (match.route.secure) {
+          if (localStorage.getItem('token') == null) { // If not logged in
+            this.navigate('/login'); // Redirect to login
+          }
+        }
+
         this.route = match.route;
         this.route.path = this.route.path + ev.target.location.hash;
         this.routeProps = match.props;
@@ -235,13 +244,32 @@ const styles = i$1`
     margin-top: 0;
   }
   
+  /* font size adapts to the size of the site */
+  .responsive-font-size {
+    font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [minimum viewport width]) / ([maximum viewport width] - [minimum viewport width])));
+    font-size: clamp(min, viewport-width-unit, max); /* alternative */
+  }
+  
+  .frosted-glass-container {
+      background-color: rgba(255, 255, 255, .15);
+      backdrop-filter: blur(5px);
+  }
+
   .wrapper {
+    /*
     --max-width: 960px;
     --min-gap: 25px;
     --side-gap: calc((100vw - min(var(--max-width), calc(100vw - (var(--min-gap) * 2)))) / 2);
     padding-left: var(--side-gap);
     padding-right: var(--side-gap);
+    */
+    padding: 15px calc((100vw - min(900px, calc(100vw - 50px))) / 2); 
   }
+  /* alternative to the above:
+  main {
+    padding: 15px calc((100vw - min(900px, calc(100vw - 50px))) / 2);
+  }
+  */
 
   * {
     font-family: system-ui, Roboto, sans-serif;
@@ -264,6 +292,11 @@ const styles = i$1`
     direction: ltr;
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* Adjust size of notch to solve label clipping problem on mdc-text-fields*/
+  .mdc-text-field label.mdc-floating-label {
+    padding-right: 20px;
   }
 `;
 
@@ -334,12 +367,61 @@ function v4(options, buf, offset) {
 
 const globalProp = "version-1.2.3.3";
 
-const appConfig = {
+const authConfig = {
   setClientIpAddress: (ipAddress) => localStorage.setItem('clientIpAddress', ipAddress),
   getClientIpAddress: () => localStorage.getItem('clientIpAddress'),
   setAuthenticationToken: (token) => localStorage.setItem('token', token),
   getAuthenticationToken: () => localStorage.getItem('token'),
   removeAuthenticationToken: () => localStorage.removeItem('token'),
+  getAuthenticationJWT: () => localStorage.getItem('jwt'),
+  setAuthenticationJWT: (jwt) => localStorage.setItem('jwt', jwt),
+  removeAuthenticationJWTToken: () => localStorage.removeItem('jwt'),
+  setupLogoutListener: () => {
+    if (window.__is_app_logout_defined == undefined) {
+      window.__is_app_logout_defined = true;
+      document.addEventListener('logout', (e) => {
+        authConfig.logout();
+      });
+    }
+  },
+  logout: () => {
+    console.log('logout initiated...');
+
+    let token = authConfig.getAuthenticationToken();
+    authConfig.removeAuthenticationToken();
+    authConfig.removeAuthenticationJWTToken();
+    authConfig.clearCookies();
+
+    // Inform backend of logout
+    fetch('/api/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Successfully logged out:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        window.location.href = '/';
+      });
+  },
+  setCookies: (token) => {
+    // set cookies for the token and clientIpAddress
+    document.cookie = 'authenticationToken=' + token + ";SameSite=Strict;Secure";
+    document.cookie = 'clientIpAddress=' + authConfig.getClientIpAddress() + ";SameSite=Strict;Secure";
+  },
+  clearCookies: () => {
+    document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'clientIpAddress=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  }
 };
 
 const endpointConfig = {
@@ -374,44 +456,18 @@ class Home extends s {
     this.menu = null;
   }
 
-  // getTodos1() {
-  //   fetch('/api/todos', {
-  //     method: 'GET',
-  //     // headers: {
-  //     //   'Content-Type': 'application/json',
-  //     // },
-  //   })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       const todoListEl = this.shadowRoot.querySelector('#todo-list');
-  //       todoListEl.innerHTML = '';
-  //       for (let i = 0; i < data.length; i++) {
-  //         const todoEl = document.createElement('div');
-  //         todoEl.innerHTML = `<div style="padding-left: 30px;">` +
-  //           `<p>• ${data[i].name}</p>` +
-  //           `<p>${data[i].status}</p>` +
-  //           `<p>${JSON.stringify(data[i].user)}</p>` +
-  //           `</div>`;
-  //         todoListEl.appendChild(todoEl);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error:', error);
-  //     });
-  // }
-
   async getTodos() {
 
     await fetch('/api/todos', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + appConfig.getAuthenticationToken(),
+        'Authorization': 'Bearer ' + authConfig.getAuthenticationToken(),
       },
     })
       .then(response => {
         if (response.ok == false) {
-          throw new Error(repsonse.statusText);
+          throw new Error(response.statusText);
         }
         return response.json()
       })
@@ -442,6 +498,33 @@ class Home extends s {
       });
   }
 
+  async getJwtProtectedEndpoint() {
+
+    const outputEl = this.shadowRoot.querySelector('#jwt-protected-endpoint');
+
+    await fetch('/api/hello', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authConfig.getAuthenticationJWT(),
+      },
+    })
+      .then(response => {
+        if (response.ok == false) throw new Error(response.statusText);
+
+        return response.json()
+      })
+      .then(data => {
+        if (data == undefined || data == null) {
+          throw new Error('No data or data is malformed');
+        }
+        outputEl.innerHTML = JSON.stringify(data);
+      })
+      .catch((error) => {
+        console.error('getJwtProtectedEndpoint Error:', error);
+        outputEl.innerHTML = error;
+      });
+  }
 
   render() {
     // If provided, the properties for type and day are taking from the path.
@@ -493,6 +576,24 @@ class Home extends s {
         <br>
         <br>
 
+        <button @click=${() => this.getJwtProtectedEndpoint()} id="btn-get-jwt-protected-endpoint" class="mdc-button mdc-button--outlined
+          smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Get JWT Protected Endpoint</span>
+        </button>
+        <br>
+        <div id="jwt-protected-endpoint"></div>
+        <br>
+        <br>
+
+        <button @click=${() => this.getTodos()} id="btn-get-todos" class="mdc-button mdc-button--outlined smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Get Todos</span>
+        </button>
+        <br>
+        <div id="todo-list"></div>
+        <br>
+
         <button @click=${() => this.logout()}>Log Out</button>
         <br>
 
@@ -501,14 +602,6 @@ class Home extends s {
           <span class="mdc-button__label">Log Out</span>
         </button>
         <br>
-        <br>
-
-        <button @click=${() => this.getTodos()} id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
-          <div class="mdc-button__ripple"></div>
-          <span class="mdc-button__label">Get Todos</span>
-        </button>
-        <br>
-        <div id="todo-list"></div>
         <br>
 
         <label class="mdc-text-field mdc-text-field--filled">
@@ -606,7 +699,7 @@ class App extends Router(s) {
 
         // Configure the application
         this.calculateClientIpAddress().then((ip) => {
-            appConfig.setClientIpAddress(ip);
+            authConfig.setClientIpAddress(ip);
         });
     }
 
@@ -618,50 +711,64 @@ class App extends Router(s) {
 
     }
 
-    static get routes() {
+    static get routes() { // overrides Router.routes
         return [
             // Root path
             {
                 path: "/",
                 component: "page-home",
-                //import: () => import("./page_home.js") // its already imported
+                //import: () => import("./page_home.js") // its already imported,
+                secured: true
             },
             {
                 path: "/stocks",
                 component: "page-stocks",
-                import: () => import('./page_stocks-499a85b0.js')
+                import: () => import('./page_stocks-499a85b0.js'),
+                secured: true
             },
             {
                 path: "/files",
                 component: "page-files",
-                import: () => import('./page_files-4116467f.js')
+                import: () => import('./page_files-4116467f.js'),
+                secured: true
             },
             {
                 path: "/tabsandwindows",
                 component: "page-tabsandwindows",
-                import: () => import('./page_tabsandwindows-a5107dc5.js')
+                import: () => import('./page_tabsandwindows-a5107dc5.js'),
+                secured: true
             },
             {
                 path: "/broadcast-message",
                 component: "page-broadcast-message",
-                import: () => import('./page_broadcast_message-2fafc3ba.js')
+                import: () => import('./page_broadcast_message-2fafc3ba.js'),
+                secured: true
             },
             {
                 path: "/web-worker",
                 component: "page-web-worker",
-                import: () => import('./page_web_worker-1d914877.js')
+                import: () => import('./page_web_worker-1d914877.js'),
+                secured: true
+            },
+            {
+                path: "/reset-password/:passwordResetToken",
+                component: "page-reset-password",
+                import: () => import('./page_reset_password-572b7483.js'),
+                secured: false
             },
             // Using 'type' and 'day' variable.
             {
                 path: "/stock/:type/:day",
                 component: "page-stocks",
-                import: () => import('./page_stocks-499a85b0.js')
+                import: () => import('./page_stocks-499a85b0.js'),
+                secured: true
             },
             // Using 'stockId' and optionally 'againstRate' variable.
             {
                 path: "/trade/:stockId/:?againstRate",
                 component: "page-trade",
-                import: () => import('./page_trade-c09c5733.js')
+                import: () => import('./page_trade-c09c5733.js'),
+                secured: true
             },
             // Using 'category' variable, & is required.
             {
@@ -670,7 +777,8 @@ class App extends Router(s) {
         <page-news .category=${routeProps.category} .someOtherGlobalProp=${globalProp}>
         </page-news>
         `,
-                import: () => import('./page_news-28d46483.js')
+                import: () => import('./page_news-fd264e7d.js'),
+                secured: true
             },
             // Login page
             {
@@ -679,7 +787,8 @@ class App extends Router(s) {
         <page-login .category=${routeProps.category}>
         </page-login>
         `,
-                import: () => import('./page_login-1030900e.js')
+                import: () => import('./page_login-4b4cca33.js'),
+                secured: false
             },
             // Fallback for all unmatched routes.  
             {
@@ -721,7 +830,7 @@ class App extends Router(s) {
     }
 
     isLoggedIn() {
-        return appConfig.getAuthenticationToken() != null;
+        return authConfig.getAuthenticationToken() != null;
     }
 
     firstUpdated() {
@@ -771,7 +880,7 @@ class App extends Router(s) {
             });
         });
 
-        this.setupLogoutListener();
+        authConfig.setupLogoutListener();
     }
 
     removeListeners() {
@@ -779,48 +888,11 @@ class App extends Router(s) {
         this.shadowRoot.removeEventListener('keydown');
     }
 
-    setupLogoutListener() {
-        if (window.__is_app_logout_defined == undefined) {
-            window.__is_app_logout_defined = true;
-            document.addEventListener('logout', (e) => {
-                console.log('logout');
-
-                let token = appConfig.getAuthenticationToken();
-                appConfig.removeAuthenticationToken();
-
-                // Clear the cookies
-                document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                document.cookie = 'clientIpAddress=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-
-                // Inform backend of logout
-                fetch('/api/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        token
-                    })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Successfully logged out:', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    })
-                    .finally(() => {
-                        window.location.href = '/';
-                    });
-            });
-        }
-    }
-
     // todo - put in utils.js
     async calculateClientIpAddress() {
-        if (appConfig.getClientIpAddress() != null) return appConfig.getClientIpAddress(); // already generated
+        if (authConfig.getClientIpAddress() != null) return authConfig.getClientIpAddress(); // already generated
 
-        let clientIpAddress = appConfig.getClientIpAddress() ?? v4(); // default to a UUID
+        let clientIpAddress = authConfig.getClientIpAddress() ?? v4(); // default to a UUID
 
         // Attempt to replace the UUID with the client's IP address
         await fetch("https://api.ipify.org?format=json")
@@ -16311,5 +16383,5 @@ class App extends Router(s) {
 }
 customElements.define('app-root', App);
 
-export { styles as a, appConfig as b, endpointConfig as e, i$1 as i, s, x };
+export { styles as a, authConfig as b, endpointConfig as e, i$1 as i, s, x };
 //# sourceMappingURL=app.js.map

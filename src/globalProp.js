@@ -1,11 +1,66 @@
 export const globalProp = "version-1.2.3.3";
 
-export const appConfig = {
+export const authConfig = {
   setClientIpAddress: (ipAddress) => localStorage.setItem('clientIpAddress', ipAddress),
   getClientIpAddress: () => localStorage.getItem('clientIpAddress'),
   setAuthenticationToken: (token) => localStorage.setItem('token', token),
   getAuthenticationToken: () => localStorage.getItem('token'),
   removeAuthenticationToken: () => localStorage.removeItem('token'),
+  getAuthenticationJWT: () => localStorage.getItem('jwt'),
+  setAuthenticationJWT: (jwt) => localStorage.setItem('jwt', jwt),
+  removeAuthenticationJWTToken: () => localStorage.removeItem('jwt'),
+  setupLogoutListener: () => {
+    if (window.__is_app_logout_defined == undefined) {
+      window.__is_app_logout_defined = true;
+      document.addEventListener('logout', (e) => {
+        authConfig.logout();
+      });
+    }
+  },
+  logout: () => {
+    console.log('logout initiated...');
+
+    let token = authConfig.getAuthenticationToken();
+    authConfig.removeAuthenticationToken();
+    authConfig.removeAuthenticationJWTToken();
+    authConfig.clearCookies();
+
+    // Inform backend of logout
+    fetch('/api/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Successfully logged out:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        window.location.href = '/'
+      });
+  },
+  setCookies: (token) => {
+    // set cookies for the token and clientIpAddress
+    document.cookie = 'authenticationToken=' + token + ";SameSite=Strict;Secure";
+    document.cookie = 'clientIpAddress=' + authConfig.getClientIpAddress() + ";SameSite=Strict;Secure";
+  },
+  clearCookies: () => {
+    document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'clientIpAddress=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  }
+}
+
+export const user = {
+  id: "",
+  username: "",
+  email: "",
 }
 
 export const endpointConfig = {

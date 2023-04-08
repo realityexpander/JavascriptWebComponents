@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import './page_home';
 
 // export const globalProp = "version-1.2.3.3";
-import { globalProp, appConfig } from './globalProp.js';
+import { globalProp, authConfig } from './globalProp.js';
 
 class App extends Router(LitElement) {
 
@@ -23,7 +23,7 @@ class App extends Router(LitElement) {
 
         // Configure the application
         this.calculateClientIpAddress().then((ip) => {
-            appConfig.setClientIpAddress(ip);
+            authConfig.setClientIpAddress(ip);
         });
     }
 
@@ -35,50 +35,64 @@ class App extends Router(LitElement) {
 
     }
 
-    static get routes() {
+    static get routes() { // overrides Router.routes
         return [
             // Root path
             {
                 path: "/",
                 component: "page-home",
-                //import: () => import("./page_home.js") // its already imported
+                //import: () => import("./page_home.js") // its already imported,
+                secured: true
             },
             {
                 path: "/stocks",
                 component: "page-stocks",
-                import: () => import("./page_stocks.js")
+                import: () => import("./page_stocks.js"),
+                secured: true
             },
             {
                 path: "/files",
                 component: "page-files",
-                import: () => import("./page_files.js")
+                import: () => import("./page_files.js"),
+                secured: true
             },
             {
                 path: "/tabsandwindows",
                 component: "page-tabsandwindows",
-                import: () => import("./page_tabsandwindows.js")
+                import: () => import("./page_tabsandwindows.js"),
+                secured: true
             },
             {
                 path: "/broadcast-message",
                 component: "page-broadcast-message",
-                import: () => import("./page_broadcast_message.js")
+                import: () => import("./page_broadcast_message.js"),
+                secured: true
             },
             {
                 path: "/web-worker",
                 component: "page-web-worker",
-                import: () => import("./page_web_worker.js")
+                import: () => import("./page_web_worker.js"),
+                secured: true
+            },
+            {
+                path: "/reset-password/:passwordResetToken",
+                component: "page-reset-password",
+                import: () => import("./page_reset_password.js"),
+                secured: false
             },
             // Using 'type' and 'day' variable.
             {
                 path: "/stock/:type/:day",
                 component: "page-stocks",
-                import: () => import("./page_stocks.js")
+                import: () => import("./page_stocks.js"),
+                secured: true
             },
             // Using 'stockId' and optionally 'againstRate' variable.
             {
                 path: "/trade/:stockId/:?againstRate",
                 component: "page-trade",
-                import: () => import("./page_trade.js")
+                import: () => import("./page_trade.js"),
+                secured: true
             },
             // Using 'category' variable, & is required.
             {
@@ -87,7 +101,8 @@ class App extends Router(LitElement) {
         <page-news .category=${routeProps.category} .someOtherGlobalProp=${globalProp}>
         </page-news>
         `,
-                import: () => import("./page_news.js")
+                import: () => import("./page_news.js"),
+                secured: true
             },
             // Login page
             {
@@ -96,7 +111,8 @@ class App extends Router(LitElement) {
         <page-login .category=${routeProps.category}>
         </page-login>
         `,
-                import: () => import("./page_login.js")
+                import: () => import("./page_login.js"),
+                secured: false
             },
             // Fallback for all unmatched routes.  
             {
@@ -138,7 +154,7 @@ class App extends Router(LitElement) {
     }
 
     isLoggedIn() {
-        return appConfig.getAuthenticationToken() != null;
+        return authConfig.getAuthenticationToken() != null;
     }
 
     firstUpdated() {
@@ -188,7 +204,7 @@ class App extends Router(LitElement) {
             });
         });
 
-        this.setupLogoutListener();
+        authConfig.setupLogoutListener();
     }
 
     removeListeners() {
@@ -196,48 +212,11 @@ class App extends Router(LitElement) {
         this.shadowRoot.removeEventListener('keydown');
     }
 
-    setupLogoutListener() {
-        if (window.__is_app_logout_defined == undefined) {
-            window.__is_app_logout_defined = true;
-            document.addEventListener('logout', (e) => {
-                console.log('logout');
-
-                let token = appConfig.getAuthenticationToken();
-                appConfig.removeAuthenticationToken();
-
-                // Clear the cookies
-                document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                document.cookie = 'clientIpAddress=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-
-                // Inform backend of logout
-                fetch('/api/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        token
-                    })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Successfully logged out:', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    })
-                    .finally(() => {
-                        window.location.href = '/'
-                    })
-            });
-        }
-    }
-
     // todo - put in utils.js
     async calculateClientIpAddress() {
-        if (appConfig.getClientIpAddress() != null) return appConfig.getClientIpAddress(); // already generated
+        if (authConfig.getClientIpAddress() != null) return authConfig.getClientIpAddress(); // already generated
 
-        let clientIpAddress = appConfig.getClientIpAddress() ?? uuidv4(); // default to a UUID
+        let clientIpAddress = authConfig.getClientIpAddress() ?? uuidv4(); // default to a UUID
 
         // Attempt to replace the UUID with the client's IP address
         await fetch("https://api.ipify.org?format=json")

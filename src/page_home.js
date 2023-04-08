@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { styles } from './material-components-web.min.css.js';
-import { globalProp, appConfig } from './globalProp.js';
+import { globalProp, authConfig } from './globalProp.js';
 
 class Home extends LitElement {
   static styles = styles;
@@ -13,44 +13,18 @@ class Home extends LitElement {
     this.menu = null;
   }
 
-  // getTodos1() {
-  //   fetch('/api/todos', {
-  //     method: 'GET',
-  //     // headers: {
-  //     //   'Content-Type': 'application/json',
-  //     // },
-  //   })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       const todoListEl = this.shadowRoot.querySelector('#todo-list');
-  //       todoListEl.innerHTML = '';
-  //       for (let i = 0; i < data.length; i++) {
-  //         const todoEl = document.createElement('div');
-  //         todoEl.innerHTML = `<div style="padding-left: 30px;">` +
-  //           `<p>• ${data[i].name}</p>` +
-  //           `<p>${data[i].status}</p>` +
-  //           `<p>${JSON.stringify(data[i].user)}</p>` +
-  //           `</div>`;
-  //         todoListEl.appendChild(todoEl);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error:', error);
-  //     });
-  // }
-
   async getTodos() {
 
     const response = await fetch('/api/todos', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + appConfig.getAuthenticationToken(),
+        'Authorization': 'Bearer ' + authConfig.getAuthenticationToken(),
       },
     })
       .then(response => {
         if (response.ok == false) {
-          throw new Error(repsonse.statusText);
+          throw new Error(response.statusText);
         }
         return response.json()
       })
@@ -81,6 +55,33 @@ class Home extends LitElement {
       });
   }
 
+  async getJwtProtectedEndpoint() {
+
+    const outputEl = this.shadowRoot.querySelector('#jwt-protected-endpoint');
+
+    const response = await fetch('/api/hello', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authConfig.getAuthenticationJWT(),
+      },
+    })
+      .then(response => {
+        if (response.ok == false) throw new Error(response.statusText);
+
+        return response.json()
+      })
+      .then(data => {
+        if (data == undefined || data == null) {
+          throw new Error('No data or data is malformed');
+        }
+        outputEl.innerHTML = JSON.stringify(data);
+      })
+      .catch((error) => {
+        console.error('getJwtProtectedEndpoint Error:', error);
+        outputEl.innerHTML = error;
+      });
+  }
 
   render() {
     // If provided, the properties for type and day are taking from the path.
@@ -132,6 +133,24 @@ class Home extends LitElement {
         <br>
         <br>
 
+        <button @click=${() => this.getJwtProtectedEndpoint()} id="btn-get-jwt-protected-endpoint" class="mdc-button mdc-button--outlined
+          smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Get JWT Protected Endpoint</span>
+        </button>
+        <br>
+        <div id="jwt-protected-endpoint"></div>
+        <br>
+        <br>
+
+        <button @click=${() => this.getTodos()} id="btn-get-todos" class="mdc-button mdc-button--outlined smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Get Todos</span>
+        </button>
+        <br>
+        <div id="todo-list"></div>
+        <br>
+
         <button @click=${() => this.logout()}>Log Out</button>
         <br>
 
@@ -140,14 +159,6 @@ class Home extends LitElement {
           <span class="mdc-button__label">Log Out</span>
         </button>
         <br>
-        <br>
-
-        <button @click=${() => this.getTodos()} id="btn-send-item" class="mdc-button mdc-button--outlined smaller-text">
-          <div class="mdc-button__ripple"></div>
-          <span class="mdc-button__label">Get Todos</span>
-        </button>
-        <br>
-        <div id="todo-list"></div>
         <br>
 
         <label class="mdc-text-field mdc-text-field--filled">
