@@ -25,7 +25,7 @@ class Login extends LitElement {
   }
 
   render() {
-    // If provided, the properties for type and day are taking from the path.
+    // If provided, the properties for type and day are taken from the path.
     return html`
       <div class="wrapper">
         <h1>Login</h1>
