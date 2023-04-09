@@ -179,7 +179,7 @@ class Login extends LitElement {
       window.location.href = '/';
     }).catch((error) => {
       console.error('Error:', error);
-      this.showErrorMessage('Error: ' + error);
+      this.showErrorMessage(error);
     });
   }
 
@@ -216,7 +216,7 @@ class Login extends LitElement {
       window.location.href = '/';
     }).catch((error) => {
       console.error('Error:', error);
-      this.showErrorMessage('Error: ' + error);
+      this.showErrorMessage(error);
     });
   }
 

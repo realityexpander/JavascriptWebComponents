@@ -14,8 +14,9 @@ class ResetPassword extends LitElement {
     }
   }
 
+  // only needed for attributes, and only for non-page components.
   // static get observedAttributes() {
-  //   return ['isPasswordVisible'];
+  //   return ['isPasswordVisible']; 
   // }
 
   //static styles = styles;
@@ -26,10 +27,10 @@ class ResetPassword extends LitElement {
     this.isPasswordVisible = false;
   }
 
+  // only needed for attributes, and only for non-page components.
   // get isPasswordVisible() {
   //   return this.getAttribute('isPasswordVisible');
   // }
-
   // set isPasswordVisible(value) {
   //   this._isPasswordVisible = value;
   //   this.render();
@@ -127,7 +128,10 @@ class ResetPassword extends LitElement {
         </div>
         <br>
         <br>
-        <h5>Password format: 8 characters minimum, 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character</h5>
+        <h5>
+          Password format: 8 characters minimum, 1 uppercase letter, 1 lowercase letter, 1 number 
+          <p>1 special character: (!@#$%^&*()_+\-=\[\]{};':"|,.\/?)</p>
+        </h5>
         <br>
 
         <br><br>
@@ -213,6 +217,7 @@ class ResetPassword extends LitElement {
       })
       .catch((error) => {
         console.error('Error:', error);
+        alert("Error sending password reset email. Please try again. " + error);
       });
   }
 

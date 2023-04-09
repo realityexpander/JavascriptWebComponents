@@ -736,31 +736,31 @@ class App extends Router(s) {
             {
                 path: "/stocks",
                 component: "page-stocks",
-                import: () => import('./page_stocks-c040d8d8.js'),
+                import: () => import('./page_stocks-b6464671.js'),
                 secured: true
             },
             {
                 path: "/files",
                 component: "page-files",
-                import: () => import('./page_files-4d11f7fb.js'),
+                import: () => import('./page_files-5e681039.js'),
                 secured: true
             },
             {
                 path: "/tabsandwindows",
                 component: "page-tabsandwindows",
-                import: () => import('./page_tabsandwindows-691725d6.js'),
+                import: () => import('./page_tabsandwindows-4eccbbe3.js'),
                 secured: true
             },
             {
                 path: "/broadcast-message",
                 component: "page-broadcast-message",
-                import: () => import('./page_broadcast_message-1278dd01.js'),
+                import: () => import('./page_broadcast_message-8057443b.js'),
                 secured: true
             },
             {
                 path: "/web-worker",
                 component: "page-web-worker",
-                import: () => import('./page_web_worker-1142b977.js'),
+                import: () => import('./page_web_worker-2223461d.js'),
                 secured: true
             },
             {
@@ -770,7 +770,7 @@ class App extends Router(s) {
                     <page-reset-password .passwordResetToken=${routeProps.passwordResetToken}>
                     </page-reset-password>
                 `,
-                import: () => import('./page_reset_password-f452f7a3.js'),
+                import: () => import('./page_reset_password-9bc2ef2f.js'),
                 secured: false,
                 publicOnly: false
             },
@@ -778,14 +778,14 @@ class App extends Router(s) {
             {
                 path: "/stock/:type/:day",
                 component: "page-stocks",
-                import: () => import('./page_stocks-c040d8d8.js'),
+                import: () => import('./page_stocks-b6464671.js'),
                 secured: true
             },
             // Using 'stockId' and optionally 'againstRate' variable.
             {
                 path: "/trade/:stockId/:?againstRate",
                 component: "page-trade",
-                import: () => import('./page_trade-fb5d1f4f.js'),
+                import: () => import('./page_trade-33e0186c.js'),
                 secured: true
             },
             // Using 'category' variable, & is required.
@@ -796,7 +796,7 @@ class App extends Router(s) {
                     <page-news .category=${routeProps.category} .someOtherGlobalProp=${globalProp}>
                     </page-news>
                 `,
-                import: () => import('./page_news-b426f972.js'),
+                import: () => import('./page_news-872e926e.js'),
                 secured: true
             },
             // Login page
@@ -806,7 +806,7 @@ class App extends Router(s) {
                     <page-login .category=${routeProps.category}>
                     </page-login>
                 `,
-                import: () => import('./page_login-c2c7ae47.js'),
+                import: () => import('./page_login-fabe27c6.js'),
                 secured: false,
                 publicOnly: true
             },
