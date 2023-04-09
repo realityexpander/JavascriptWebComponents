@@ -66,10 +66,12 @@ const Router = superClass =>
 
       const match = matcher(this.constructor.routes, targetRoute);
       if (match) {
+
         // Check if location is secured
-        if (match.route.secure) {
-          if (localStorage.getItem('token') == null) { // If not logged in
-            this.navigate('/login'); // Redirect to login
+        if (match.route.secured) {
+          if (localStorage.getItem('token') == null) { // If not logged in...
+            window.location.href = '/login'; // ...then Redirect to login.
+            return
           }
         }
 

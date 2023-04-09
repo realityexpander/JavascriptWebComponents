@@ -5,7 +5,7 @@ class ResetPassword extends LitElement {
 
   static get properties() {
     return {
-      //passwordResetToken: { type: String },
+      passwordResetToken: { type: String },
       isPasswordVisible: { type: Boolean }
     }
   }
@@ -148,15 +148,70 @@ class ResetPassword extends LitElement {
   }
 
   resetPassword() {
-    console.log('reset password');
+    // get new password
+    const newPassword = this.shadowRoot.getElementById('text-new-password').value;
+    const confirmPassword = this.shadowRoot.getElementById('text-confirm-password').value;
+
+    // Check if blank
+    if (newPassword === "" || confirmPassword === "") {
+      alert("Please enter a password & confirm password.");
+      return;
+    }
+
+    // Check if password is at least 8 characters
+    if (newPassword.length < 8) {
+      alert("Password must be at least 8 characters.");
+      return;
+    }
+
+    // Check if passwords match
+    if (newPassword !== confirmPassword) {
+      // Show error message
+      alert("Passwords do not match");
+      return;
+    }
 
     // Confirm Reset Password with an option dialog
     if (window.confirm("Are you sure you want to reset your password?")) {
-      // Post new password to BE
-      // Redirect to login page
+      const url = `${window.location.origin}/api/reset-password`;
+      const data = {
+        passwordResetToken: this.passwordResetToken,
+        newPassword: newPassword
+      };
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(res => {
+          // Get the error Body (JSON)
+          if (!res.ok) return res.json().then(data => { throw new Error(res.statusText + ":" + data.error) })
+
+          return res.json()
+        }).then(data => {
+          //console.log('Success:', data);
+
+          if (data.success) {
+            // Show success message
+            alert("Password reset successful. Please login with your new password.");
+
+            // Redirect to login page
+            window.location.href = "/login";
+
+          } else {
+            // Show error message
+            alert(`Password reset failed. Please try again.`);
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          alert(`Password reset failed. Please try again. ${error}`);
+        });
+
     }
-
-
   }
 
 }

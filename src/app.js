@@ -75,8 +75,12 @@ class App extends Router(LitElement) {
                 secured: true
             },
             {
-                path: "/reset-password/:passwordResetToken",
-                component: "page-reset-password",
+                path: "/reset-password/:?passwordResetToken",
+                // component: "page-reset-password", // note: automatically extracts the passwordResetToken from the path
+                render: routeProps => html`
+                    <page-reset-password .passwordResetToken=${routeProps.passwordResetToken}>
+                    </page-reset-password>
+                `,
                 import: () => import("./page_reset_password.js"),
                 secured: false
             },
@@ -97,10 +101,11 @@ class App extends Router(LitElement) {
             // Using 'category' variable, & is required.
             {
                 path: "/news/:category",
+                // component: "page-news",
                 render: routeProps => html`
-        <page-news .category=${routeProps.category} .someOtherGlobalProp=${globalProp}>
-        </page-news>
-        `,
+                    <page-news .category=${routeProps.category} .someOtherGlobalProp=${globalProp}>
+                    </page-news>
+                `,
                 import: () => import("./page_news.js"),
                 secured: true
             },
@@ -108,9 +113,9 @@ class App extends Router(LitElement) {
             {
                 path: "/login/:?category",
                 render: routeProps => html`
-        <page-login .category=${routeProps.category}>
-        </page-login>
-        `,
+                    <page-login .category=${routeProps.category}>
+                    </page-login>
+                `,
                 import: () => import("./page_login.js"),
                 secured: false
             },
@@ -132,7 +137,8 @@ class App extends Router(LitElement) {
     static styles = styles;
 
     render() {
-        return (!this.isLoggedIn()) ?
+        return (
+            !this.isLoggedIn()) ?
             html`
             ${this.routeElement}
             `
