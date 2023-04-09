@@ -145,11 +145,9 @@ class ResetPassword extends LitElement {
       return enterNewPasswordPageHtml;
   }
 
-
   firstUpdated() {
     this.setupListeners();
   }
-
 
   setupListeners() {
     // add ripple effect to buttons
@@ -218,7 +216,6 @@ class ResetPassword extends LitElement {
         console.error('Error:', error);
       });
   }
-
 
   resetPassword() {
     // get new password
