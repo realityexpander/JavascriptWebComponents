@@ -82,7 +82,8 @@ class App extends Router(LitElement) {
                     </page-reset-password>
                 `,
                 import: () => import("./page_reset_password.js"),
-                secured: false
+                secured: false,
+                publicOnly: false
             },
             // Using 'type' and 'day' variable.
             {
@@ -117,19 +118,20 @@ class App extends Router(LitElement) {
                     </page-login>
                 `,
                 import: () => import("./page_login.js"),
-                secured: false
+                secured: false,
+                publicOnly: true
             },
             // Fallback for all unmatched routes.  
             {
                 path: "*",
                 render: () => html`
-        <h2> 404 The requested page could not be found</h2>
-        <br>
-        requested location: <code>${window.location.href}</code> does not exist
-        <br>
-        <br>
-        <a href="/">Home</a>
-        `
+                <h2> 404 The requested page could not be found</h2>
+                <br>
+                requested location: <code>${window.location.href}</code> does not exist
+                <br>
+                <br>
+                <a href="/">Home</a>
+                `
             }
         ];
     }
@@ -282,6 +284,10 @@ class App extends Router(LitElement) {
                 <a class="mdc-list-item" href="#">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
                     <span class="mdc-list-item__text">Settings</span>
+                </a>
+                <a class="mdc-list-item" href="/reset-password">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">lock_reset</i>
+                    <span class="mdc-list-item__text">Reset Password</span>
                 </a>
                 <a class="mdc-list-item" href="#">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">help</i>

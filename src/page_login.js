@@ -21,6 +21,13 @@ class Login extends LitElement {
   }
 
   firstUpdated() {
+
+    // // force back to home page if already logged in // todo fix in router
+    // if (authConfig.isLoggedIn()) {
+    //   window.location.href = '/';
+    //   return;
+    // }
+
     this.setupListeners();
   }
 
@@ -83,7 +90,7 @@ class Login extends LitElement {
         <br>
         <br>
         
-        <my-element></my-element>
+        <!-- <my-element></my-element> -->
         
         <br>
       </div>

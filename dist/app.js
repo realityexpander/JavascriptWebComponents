@@ -142,6 +142,14 @@ const Router = superClass =>
           }
         }
 
+        // Check if location is public-only (like login)
+        if (match.route.publicOnly) {
+          if (localStorage.getItem('token') != null) { // If logged in...
+            window.location.href = '/'; // ...then Redirect to home.
+            return
+          }
+        }
+
         this.route = match.route;
         this.route.path = this.route.path + ev.target.location.hash;
         this.routeProps = match.props;
@@ -423,6 +431,9 @@ const authConfig = {
   clearCookies: () => {
     document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     document.cookie = 'clientIpAddress=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  },
+  isLoggedIn: () => {
+    return authConfig.getAuthenticationToken() != null;
   }
 };
 
@@ -725,31 +736,31 @@ class App extends Router(s) {
             {
                 path: "/stocks",
                 component: "page-stocks",
-                import: () => import('./page_stocks-ee4360c9.js'),
+                import: () => import('./page_stocks-51536e49.js'),
                 secured: true
             },
             {
                 path: "/files",
                 component: "page-files",
-                import: () => import('./page_files-ac91b46a.js'),
+                import: () => import('./page_files-58117839.js'),
                 secured: true
             },
             {
                 path: "/tabsandwindows",
                 component: "page-tabsandwindows",
-                import: () => import('./page_tabsandwindows-9fd4d222.js'),
+                import: () => import('./page_tabsandwindows-1c59bd7b.js'),
                 secured: true
             },
             {
                 path: "/broadcast-message",
                 component: "page-broadcast-message",
-                import: () => import('./page_broadcast_message-4eabd6b0.js'),
+                import: () => import('./page_broadcast_message-6f60bf25.js'),
                 secured: true
             },
             {
                 path: "/web-worker",
                 component: "page-web-worker",
-                import: () => import('./page_web_worker-4e631948.js'),
+                import: () => import('./page_web_worker-06f3cc1d.js'),
                 secured: true
             },
             {
@@ -759,21 +770,22 @@ class App extends Router(s) {
                     <page-reset-password .passwordResetToken=${routeProps.passwordResetToken}>
                     </page-reset-password>
                 `,
-                import: () => import('./page_reset_password-11c3c180.js'),
-                secured: false
+                import: () => import('./page_reset_password-f712f21d.js'),
+                secured: false,
+                publicOnly: false
             },
             // Using 'type' and 'day' variable.
             {
                 path: "/stock/:type/:day",
                 component: "page-stocks",
-                import: () => import('./page_stocks-ee4360c9.js'),
+                import: () => import('./page_stocks-51536e49.js'),
                 secured: true
             },
             // Using 'stockId' and optionally 'againstRate' variable.
             {
                 path: "/trade/:stockId/:?againstRate",
                 component: "page-trade",
-                import: () => import('./page_trade-8be8d02a.js'),
+                import: () => import('./page_trade-1acb81bd.js'),
                 secured: true
             },
             // Using 'category' variable, & is required.
@@ -784,7 +796,7 @@ class App extends Router(s) {
                     <page-news .category=${routeProps.category} .someOtherGlobalProp=${globalProp}>
                     </page-news>
                 `,
-                import: () => import('./page_news-4201307d.js'),
+                import: () => import('./page_news-6ff5f03a.js'),
                 secured: true
             },
             // Login page
@@ -794,20 +806,21 @@ class App extends Router(s) {
                     <page-login .category=${routeProps.category}>
                     </page-login>
                 `,
-                import: () => import('./page_login-8f424830.js'),
-                secured: false
+                import: () => import('./page_login-2494d301.js'),
+                secured: false,
+                publicOnly: true
             },
             // Fallback for all unmatched routes.  
             {
                 path: "*",
                 render: () => x`
-        <h2> 404 The requested page could not be found</h2>
-        <br>
-        requested location: <code>${window.location.href}</code> does not exist
-        <br>
-        <br>
-        <a href="/">Home</a>
-        `
+                <h2> 404 The requested page could not be found</h2>
+                <br>
+                requested location: <code>${window.location.href}</code> does not exist
+                <br>
+                <br>
+                <a href="/">Home</a>
+                `
             }
         ];
     }
@@ -960,6 +973,10 @@ class App extends Router(s) {
                 <a class="mdc-list-item" href="#">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
                     <span class="mdc-list-item__text">Settings</span>
+                </a>
+                <a class="mdc-list-item" href="/reset-password">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">lock_reset</i>
+                    <span class="mdc-list-item__text">Reset Password</span>
                 </a>
                 <a class="mdc-list-item" href="#">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">help</i>

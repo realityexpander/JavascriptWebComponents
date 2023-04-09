@@ -192,7 +192,6 @@ class ResetPassword extends LitElement {
 
     // Send Password Reset Email
     const url = `${window.location.origin}/api/send-password-reset-email?emailAddress=${emailAddress}`;
-
     fetch(url, {
       method: 'GET',
       headers: {
@@ -248,6 +247,9 @@ class ResetPassword extends LitElement {
         passwordResetToken: this.passwordResetToken,
         newPassword: newPassword
       };
+
+      // Make sure the field visibility is set to hidden
+      this.isPasswordVisible = false;
 
       fetch(url, {
         method: 'POST',

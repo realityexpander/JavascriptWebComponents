@@ -75,6 +75,14 @@ const Router = superClass =>
           }
         }
 
+        // Check if location is public-only (like login)
+        if (match.route.publicOnly) {
+          if (localStorage.getItem('token') != null) { // If logged in...
+            window.location.href = '/'; // ...then Redirect to home.
+            return
+          }
+        }
+
         this.route = match.route;
         this.route.path = this.route.path + ev.target.location.hash;
         this.routeProps = match.props;

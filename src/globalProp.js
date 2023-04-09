@@ -54,6 +54,9 @@ export const authConfig = {
   clearCookies: () => {
     document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     document.cookie = 'clientIpAddress=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  },
+  isLoggedIn: () => {
+    return authConfig.getAuthenticationToken() != null;
   }
 }
 

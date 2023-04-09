@@ -48,6 +48,8 @@ class Files extends LitElement {
     fetch(endpointConfig.getDatabaseUrl() + '/uploads')
       .then(res => res.json())
       .then(data => {
+        if (!data) throw new Error('No data');
+
         fileListEl.innerHTML = '';
         data.forEach(file => {
           fileListEl.insertAdjacentHTML('beforeend', `<li><a href="${file.link}" target="_blank">${file.name}</a></li>`);
