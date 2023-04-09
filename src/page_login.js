@@ -75,6 +75,13 @@ class Login extends LitElement {
         </button>
         <br>
         <br>
+
+        <button @click=${this.resetPassword} id="btn-reset-password" class="mdc-button mdc-button--outlined smaller-text">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Forgot Password</span>
+        </button>
+        <br>
+        <br>
         
         <my-element></my-element>
         
@@ -153,27 +160,27 @@ class Login extends LitElement {
         password,
         clientIpAddress
       })
-    })
-      .then(response => {
-        if (!response.ok) throw new Error(response.statusText);
-        return response.json()
-      })
-      .then(authData => {
+    }).then(response => {
+      //if (!response.ok) throw new Error(response.statusText);
+      // Get the error Body (JSON)
+      if (!response.ok) return response.json().then(data => { throw new Error(response.statusText + ":" + data.error) })
 
-        if (authData.error != undefined) {
-          alert('Wrong email or password: ' + authData.error);
-          throw new Error(authData.error);
-        }
+      return response.json()
+    }).then(authData => {
 
-        this.saveAuthenticationInfo(authData);
+      if (authData.error != undefined) {
+        alert('Wrong email or password: ' + authData.error);
+        throw new Error(authData.error);
+      }
 
-        // redirect to the home page
-        window.location.href = '/';
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        this.showErrorMessage('Error: ' + error);
-      });
+      this.saveAuthenticationInfo(authData);
+
+      // redirect to the home page
+      window.location.href = '/';
+    }).catch((error) => {
+      console.error('Error:', error);
+      this.showErrorMessage('Error: ' + error);
+    });
   }
 
   async register() {
@@ -191,26 +198,26 @@ class Login extends LitElement {
         password,
         clientIpAddress
       })
-    })
-      .then(response => {
-        if (!response.ok) throw new Error(response.statusText);
-        return response.json()
-      })
-      .then(authData => {
-        if (authData.error != undefined) {
-          alert('Wrong email or password' + authData.error);
-          throw new Error(authData.error);
-        }
+    }).then(response => {
+      // if (!response.ok) throw new Error(response.statusText);
+      // Get the error Body (JSON)
+      if (!response.ok) return response.json().then(data => { throw new Error(response.statusText + ":" + data.error) })
 
-        this.saveAuthenticationInfo(authData);
+      return response.json()
+    }).then(authData => {
+      if (authData.error != undefined) {
+        alert('Wrong email or password' + authData.error);
+        throw new Error(authData.error);
+      }
 
-        // navigate to the home page
-        window.location.href = '/';
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        this.showErrorMessage('Error: ' + error);
-      });
+      this.saveAuthenticationInfo(authData);
+
+      // navigate to the home page
+      window.location.href = '/';
+    }).catch((error) => {
+      console.error('Error:', error);
+      this.showErrorMessage('Error: ' + error);
+    });
   }
 
   saveAuthenticationInfo({ token, jwtToken, clientIpAddress }) {
@@ -224,6 +231,10 @@ class Login extends LitElement {
     let control = this.shadowRoot.getElementById('error-message');
     control.hidden = false;
     control.innerText = message;
+  }
+
+  resetPassword() {
+    window.location.href = '/reset-password';
   }
 
 }

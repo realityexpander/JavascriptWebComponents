@@ -5,7 +5,7 @@
     "moduleResolution": "node",
     "noEmitOnError": true,
     "lib": [
-      "es2017",
+      "es2022",
       "dom"
     ],
     "strict": true,
@@ -19,6 +19,7 @@
     "rootDir": "./",
     "incremental": true,
     "forceConsistentCasingInFileNames": true,
+    "noUncheckedIndexedAccess": true,
     "allowJs": true,
     "useDefineForClassFields": false
   },
