@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 // import './pages/page_home';
 // import './components';
 
-import './page_home';
+import './page_home'; // statically imported for fast loading.
 
 // export const globalProp = "version-1.2.3.3";
 import { globalProp, authConfig } from './globalProp.js';
@@ -41,7 +41,7 @@ class App extends Router(LitElement) {
             {
                 path: "/",
                 component: "page-home",
-                //import: () => import("./page_home.js") // its already imported,
+                //import: () => import("./page_home.js") // its already imported, so no need to import it again.
                 secured: true
             },
             {

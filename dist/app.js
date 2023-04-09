@@ -730,37 +730,37 @@ class App extends Router(s) {
             {
                 path: "/",
                 component: "page-home",
-                //import: () => import("./page_home.js") // its already imported,
+                //import: () => import("./page_home.js") // its already imported, so no need to import it again.
                 secured: true
             },
             {
                 path: "/stocks",
                 component: "page-stocks",
-                import: () => import('./page_stocks-51536e49.js'),
+                import: () => import('./page_stocks-eedb2715.js'),
                 secured: true
             },
             {
                 path: "/files",
                 component: "page-files",
-                import: () => import('./page_files-58117839.js'),
+                import: () => import('./page_files-732e9506.js'),
                 secured: true
             },
             {
                 path: "/tabsandwindows",
                 component: "page-tabsandwindows",
-                import: () => import('./page_tabsandwindows-1c59bd7b.js'),
+                import: () => import('./page_tabsandwindows-8095d840.js'),
                 secured: true
             },
             {
                 path: "/broadcast-message",
                 component: "page-broadcast-message",
-                import: () => import('./page_broadcast_message-6f60bf25.js'),
+                import: () => import('./page_broadcast_message-baf6a783.js'),
                 secured: true
             },
             {
                 path: "/web-worker",
                 component: "page-web-worker",
-                import: () => import('./page_web_worker-06f3cc1d.js'),
+                import: () => import('./page_web_worker-b0601d63.js'),
                 secured: true
             },
             {
@@ -770,7 +770,7 @@ class App extends Router(s) {
                     <page-reset-password .passwordResetToken=${routeProps.passwordResetToken}>
                     </page-reset-password>
                 `,
-                import: () => import('./page_reset_password-f712f21d.js'),
+                import: () => import('./page_reset_password-ed1efc29.js'),
                 secured: false,
                 publicOnly: false
             },
@@ -778,14 +778,14 @@ class App extends Router(s) {
             {
                 path: "/stock/:type/:day",
                 component: "page-stocks",
-                import: () => import('./page_stocks-51536e49.js'),
+                import: () => import('./page_stocks-eedb2715.js'),
                 secured: true
             },
             // Using 'stockId' and optionally 'againstRate' variable.
             {
                 path: "/trade/:stockId/:?againstRate",
                 component: "page-trade",
-                import: () => import('./page_trade-1acb81bd.js'),
+                import: () => import('./page_trade-2c10ec09.js'),
                 secured: true
             },
             // Using 'category' variable, & is required.
@@ -796,7 +796,7 @@ class App extends Router(s) {
                     <page-news .category=${routeProps.category} .someOtherGlobalProp=${globalProp}>
                     </page-news>
                 `,
-                import: () => import('./page_news-6ff5f03a.js'),
+                import: () => import('./page_news-be9afc7a.js'),
                 secured: true
             },
             // Login page
@@ -806,7 +806,7 @@ class App extends Router(s) {
                     <page-login .category=${routeProps.category}>
                     </page-login>
                 `,
-                import: () => import('./page_login-2494d301.js'),
+                import: () => import('./page_login-46dd28fc.js'),
                 secured: false,
                 publicOnly: true
             },
