@@ -137,7 +137,7 @@ class Login extends LitElement {
 
     // // hallucinated
     // // Remove listeners for all the text fields
-    // const textFields = this.shadowRoot.querySelectorAll('.mdc-text-field');
+    // const textFields = this.shadowRoot.querySelectorAll('.mdc-text-field');  //xxxxx
     // for (let i = 0, textField; textField = textFields[i]; i++) {
     //   mdc.textField.MDCTextField.detachFrom(textField);
     // }
