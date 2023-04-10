@@ -18,7 +18,17 @@ describe('login-spec', () => {
 
   it('is able to log a user in', () => {
     const testName = specName + Cypress.currentTest.title
-    cy.intercept('POST', `/api/login`).as('login'); // note: no baseUrl. This is a relative path in the app.
+    //cy.intercept('POST', `/api/login`).as('login'); // note: no baseUrl. This is a relative path in the app.
+
+    cy.intercept('POST', '/api/login', (req) => {
+      req.continue(res => {
+        res.body = {
+            token: "12345678901234567890123456",
+            jwtToken: "eyj1234567890123456789012345678901234567890",
+            clientIpAddress: "123.456.789.012"
+        }
+      })
+    }).as('login');
 
     // Arrange
     // cy.get('[data-cy="email"]')
