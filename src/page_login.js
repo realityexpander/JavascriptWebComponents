@@ -36,7 +36,7 @@ class Login extends LitElement {
           <label for="email" class="mdc-text-field mdc-text-field--filled">
             <span class="mdc-text-field__ripple"></span>
             <span class="mdc-floating-label" id="hint-email-address">Email Address</span>
-            <input id="email" type="email" class="mdc-text-field__input" aria-labelledby="my-label-id">
+            <input id="email" type="email" class="mdc-text-field__input" aria-labelledby="my-label-id" data-cy="input-text-email">
             <span class="mdc-line-ripple"></span>
           </label>
           <br>
@@ -128,17 +128,19 @@ class Login extends LitElement {
   removeListeners() {
     this.shadowRoot.getElementById('login-form').removeEventListener('submit', (e) => { });
 
-    // Remove listeners for all the buttons
-    const buttons = this.shadowRoot.querySelectorAll('.mdc-button');
-    for (let i = 0, button; button = buttons[i]; i++) {
-      mdc.ripple.MDCRipple.detachFrom(button);
-    }
+    // hallucinated
+    // // Remove listeners for all the buttons
+    // const buttons = this.shadowRoot.querySelectorAll('.mdc-button');
+    // for (let i = 0, button; button = buttons[i]; i++) {
+    //   mdc.ripple.MDCRipple.detachFrom(button);
+    // }
 
-    // Remove listeners for all the text fields
-    const textFields = this.shadowRoot.querySelectorAll('.mdc-text-field');
-    for (let i = 0, textField; textField = textFields[i]; i++) {
-      mdc.textField.MDCTextField.detachFrom(textField);
-    }
+    // // hallucinated
+    // // Remove listeners for all the text fields
+    // const textFields = this.shadowRoot.querySelectorAll('.mdc-text-field');
+    // for (let i = 0, textField; textField = textFields[i]; i++) {
+    //   mdc.textField.MDCTextField.detachFrom(textField);
+    // }
   }
 
   submitLogin() {

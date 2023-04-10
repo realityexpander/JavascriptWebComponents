@@ -6,7 +6,11 @@
   "module": "dist/app.js",
   "type": "module",
   "devDependencies": {
-    "parcel": "latest"
+    "@cypress/webpack-preprocessor": "^5.17.0",
+    "parcel": "latest",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.4",
+    "webpack": "^5.78.0"
   },
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
@@ -32,7 +36,10 @@
     "start-dev-rollup-force-watch": "watch -d -n1 -t -c rollup -c -w --sourcemap",
     "serve-ngrok": "ngrok http http://localhost:8081",
     "serve-ngrok-oauth": "ngrok http http://localhost:8000 --oauth=google --oauth-allow-email=realityexpander@gmail.com",
-    "serve-ngrok-basicauth": "ngrok http http://localhost:8000 --basic-auth user:password"
+    "serve-ngrok-basicauth": "ngrok http http://localhost:8000 --basic-auth user:password",
+    "vite-dev": "vite",
+    "cypress:run": "cypress run --headless --browser chrome",
+    "cypress:open": "cypress open"
   },
   "author": "",
   "license": "ISC",
@@ -51,13 +58,14 @@
     "@web/dev-server": "^0.1.36",
     "@web/dev-server-esbuild": "^0.3.5",
     "concurrently": "^8.0.1",
+    "cypress": "^12.9.0",
     "lit": "^2.7.0",
     "parcel": "^2.8.3",
     "rollup": "^2.79.1",
     "simple-wc-router": "^2.3.4",
     "smart-webcomponents": "^15.0.11",
     "tslib": "^2.5.0",
-    "typescript": "^5.0.2",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "vite": "^4.2.1"
   }
 }

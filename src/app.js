@@ -121,6 +121,29 @@ class App extends Router(LitElement) {
                 secured: false,
                 publicOnly: true
             },
+            // Logout page
+            {
+                path: "/logout",
+                render: () => {
+                    authConfig.logout();
+                    return html`
+                        <!-- center the text H & V -->
+                        <style>
+                            .centered {
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                            }
+                        </style>
+                        <div class="centered">
+                            <h2>Logging out...</h2>
+                        </div>
+                    `;
+                },
+                secured: true,
+                publicOnly: false
+            },
             // Fallback for all unmatched routes.  
             {
                 path: "*",
