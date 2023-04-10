@@ -20,7 +20,11 @@ describe('login-spec', () => {
     const testName = specName + Cypress.currentTest.title
     //cy.intercept('POST', `/api/login`).as('login'); // note: no baseUrl. This is a relative path in the app.
 
+    // Stub the login response
     cy.intercept('POST', '/api/login', (req) => {
+      const { body } = req;
+      req.body.clientIpAddress = "123.456.789.012";
+
       req.continue(res => {
         res.body = {
             token: "12345678901234567890123456",
