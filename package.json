@@ -39,7 +39,8 @@
     "serve-ngrok-basicauth": "ngrok http http://localhost:8000 --basic-auth user:password",
     "vite-dev": "vite",
     "cypress:run": "cypress run --headless --browser chrome",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "ci": "npm run rollup-build && wds --node-resolve --app-index index.html --esbuild-target auto --port 8081"
   },
   "author": "",
   "license": "ISC",
