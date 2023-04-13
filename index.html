@@ -6,10 +6,22 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link defer rel="stylesheet"
-    href="https://unpkg.com/material-components-web@14.0.0/dist/material-components-web.min.css">
-  <script defer src="https://unpkg.com/material-components-web@14.0.0/dist/material-components-web.min.js"></script>
+  <!-- Load Fonts Remotely -->
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+
+  <!-- Load Fonts Locally -->
+  <link rel="preload" href="/fonts/MaterialIcons-Regular.ttf" as="font" type="font/truetype" crossorigin>
+  <link rel="stylesheet" href="/fonts/MaterialIcons-Regular.css">
+
+  <!-- Load CSS & JS Remotely -->
+  <!-- <link defer rel=" stylesheet"
+    href="https://unpkg.com/material-components-web@14.0.0/dist/material-components-web.min.css"> -->
+  <!-- <script defer src="https://unpkg.com/material-components-web@14.0.0/dist/material-components-web.min.js"></script> -->
+
+  <!-- Load CSS & JS Locally -->
+  <link defer rel="stylesheet" href="/styles/material-components-web.min.css">
+  <script defer src="/scripts/material-components-web.min.js"></script>
+
 
   <link rel="stylesheet" href="/index3a.css" />
 
@@ -18,6 +30,7 @@
 
   <title>Router Tester</title>
 </head>
+<!-- ≡ -->
 
 <body>
   <app-root></app-root>

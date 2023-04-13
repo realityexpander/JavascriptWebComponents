@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 //import { Router, RouteMixin } from 'simple-wc-router';
 import { Router, RouteMixin } from '../router/index.js';
-import { styles } from './material-components-web.min.css.js';
+import { styles } from './modified-material-components-web.min.css.js';
 import { v4 as uuidv4 } from 'uuid';
 
 // import './pages/page_home';

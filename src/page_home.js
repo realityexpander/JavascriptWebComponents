@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { styles } from './material-components-web.min.css.js';
+import { styles } from './modified-material-components-web.min.css.js';
 import { globalProp, authConfig } from './globalProp.js';
 
 class Home extends LitElement {

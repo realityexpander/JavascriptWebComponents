@@ -230,7 +230,8 @@ const styles = i$1`
     font-family: 'Material Icons';
     font-style: normal;
     font-weight: 400;
-    src: url(https://fonts.gstatic.com/s/materialicons/v140/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
+    /*src: url(https://fonts.gstatic.com/s/materialicons/v140/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');*/
+    src: url(fonts/Material-Icons.woff2) format('woff2');
   }
   
   html,
@@ -736,31 +737,31 @@ class App extends Router(s) {
             {
                 path: "/stocks",
                 component: "page-stocks",
-                import: () => import('./page_stocks-b4a00f59.js'),
+                import: () => import('./page_stocks-4c6b4d17.js'),
                 secured: true
             },
             {
                 path: "/files",
                 component: "page-files",
-                import: () => import('./page_files-ee0a7690.js'),
+                import: () => import('./page_files-c78b97e3.js'),
                 secured: true
             },
             {
                 path: "/tabsandwindows",
                 component: "page-tabsandwindows",
-                import: () => import('./page_tabsandwindows-330a96a8.js'),
+                import: () => import('./page_tabsandwindows-d2c98944.js'),
                 secured: true
             },
             {
                 path: "/broadcast-message",
                 component: "page-broadcast-message",
-                import: () => import('./page_broadcast_message-d4300b68.js'),
+                import: () => import('./page_broadcast_message-b6ba41fe.js'),
                 secured: true
             },
             {
                 path: "/web-worker",
                 component: "page-web-worker",
-                import: () => import('./page_web_worker-ee6996cc.js'),
+                import: () => import('./page_web_worker-fc30e04b.js'),
                 secured: true
             },
             {
@@ -770,7 +771,7 @@ class App extends Router(s) {
                     <page-reset-password .passwordResetToken=${routeProps.passwordResetToken}>
                     </page-reset-password>
                 `,
-                import: () => import('./page_reset_password-87f79737.js'),
+                import: () => import('./page_reset_password-80fcc317.js'),
                 secured: false,
                 publicOnly: false
             },
@@ -778,14 +779,14 @@ class App extends Router(s) {
             {
                 path: "/stock/:type/:day",
                 component: "page-stocks",
-                import: () => import('./page_stocks-b4a00f59.js'),
+                import: () => import('./page_stocks-4c6b4d17.js'),
                 secured: true
             },
             // Using 'stockId' and optionally 'againstRate' variable.
             {
                 path: "/trade/:stockId/:?againstRate",
                 component: "page-trade",
-                import: () => import('./page_trade-fe43ec6f.js'),
+                import: () => import('./page_trade-41337a00.js'),
                 secured: true
             },
             // Using 'category' variable, & is required.
@@ -796,7 +797,7 @@ class App extends Router(s) {
                     <page-news .category=${routeProps.category} .someOtherGlobalProp=${globalProp}>
                     </page-news>
                 `,
-                import: () => import('./page_news-b6647197.js'),
+                import: () => import('./page_news-db2e867a.js'),
                 secured: true
             },
             // Login page
@@ -806,7 +807,7 @@ class App extends Router(s) {
                     <page-login .category=${routeProps.category}>
                     </page-login>
                 `,
-                import: () => import('./page_login-b40e22f7.js'),
+                import: () => import('./page_login-5e862f02.js'),
                 secured: false,
                 publicOnly: true
             },
